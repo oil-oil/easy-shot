@@ -122,6 +122,7 @@ Page({
     }
   },
   like(){
+    // 点赞并发送信息
     if(getApp().login_check()){
       if(!this.data.status.like){
         var date = new Date()

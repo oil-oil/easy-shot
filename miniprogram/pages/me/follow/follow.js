@@ -14,7 +14,7 @@ Page({
   },
   get_follow(){
     db.collection('user').where({
-      _openid:_.all(getApp().globalData.user.follow)
+      _openid:_.in(getApp().globalData.user.follow)
     }).get()
     .then(res=>{
       console.log(res)

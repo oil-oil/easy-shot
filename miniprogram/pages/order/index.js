@@ -60,6 +60,7 @@ Page({
     }
   },
   get_ongoing(){
+    // 获取正在进行中的订单数据
     wx.cloud.callFunction({
       name:'lookup_talk',
       data:{
@@ -108,6 +109,7 @@ Page({
     })
   },
   get_evaluate(){
+    // 获取待评价的订单数据
     wx.cloud.callFunction({
       name:'lookup_talk',
       data:{
@@ -157,6 +159,7 @@ Page({
     })
   },
   get_finish(){
+    // 获取已完成的订单数据
     wx.cloud.callFunction({
       name:'lookup_talk',
       data:{
@@ -208,6 +211,7 @@ Page({
     getApp().talk(this.data.ongoing.array[e.currentTarget.dataset.index].user[0])
   },
   finish(e){
+    // 完成约拍订单,改变订单状态
     var index = e.currentTarget.dataset.index
     wx.showModal({
       content:'你确认你的约拍已经完成了吗',
@@ -236,6 +240,7 @@ Page({
     })
   },
   comment(e){
+    // 弹出评论窗口,隐藏其他订单
     this.setData({'comment.flag':true,'comment.index':e.currentTarget.dataset.index})
   },
   hide_comment(){
@@ -248,6 +253,7 @@ Page({
     this.setData({'comment.text':e.detail.value})
   },
   comment_post(){
+    // 发布评价,更新订单状态
     var date = new Date()
     var index = this.data.comment.index
     var new_comment = {

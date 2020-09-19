@@ -14,6 +14,7 @@ data:{
   onLoad: function (options) {
   },
   get_appointment(){
+    // 正则匹配输入内容,实时搜索
     wx.cloud.callFunction({
       name:'lookup_db',
       data:{

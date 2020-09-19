@@ -32,11 +32,11 @@ Page({
     refreshing:false,
   },
   onLoad(){
-      this.get_works()
-      this.get_post()
-      this.get_appointment()
-      this.watch_message()
-      this.watch_message()
+      this.get_works()//获取作品数据
+      this.get_post()//获取动态数据
+      this.get_appointment()//获取约拍数据
+      this.watch_message()//监听消息
+      this.watch_talk()//监听私信
   },
   onShow(){
     if(getApp().globalData.unread_message.length){
@@ -46,6 +46,7 @@ Page({
     }
   },
   get_post(){
+    //调用云数据库，联表查询
     wx.cloud.callFunction({
       name:this.data.post.only_follow?'lookup_db_all2':'lookup_db',
       data:{
@@ -98,6 +99,7 @@ Page({
     })
   },
   get_appointment(){
+    //调用云数据库，联表查询
     wx.cloud.callFunction({
       name:this.data.appointment.only_follow?'lookup_db_all2':'lookup_db',
       data:{
@@ -129,8 +131,6 @@ Page({
         match:this.data.appointment.only_follow?getApp().globalData.user.follow:{}
       }
     }).then(res=>{
-      console.log(getApp().globalData.user.follow)
-      console.log(res)
       this.setData({refreshing:false})
       if(res.result.list.length&&!this.data.appointment.nomore){
         for(let i in res.result.list){
@@ -152,6 +152,7 @@ Page({
     })
   },
   get_works(){
+    //调用云数据库，联表查询
     wx.cloud.callFunction({
       name:this.data.works.only_follow?'lookup_all':'lookup',
       data:{
@@ -193,6 +194,7 @@ Page({
     })
   },
   only_follow(){
+    // 切换为只显示关注用户,重新获取数据
     if(!getApp().login_check()){
       return
     }
@@ -280,6 +282,7 @@ Page({
     })
   },
   refresh(){
+    // 下拉刷新
     if(this.data.top_bar.now_tab == 0){
       this.setData({'works.array':[]})
       this.data.works.nomore = false
@@ -300,6 +303,7 @@ Page({
     }
   },
   post_like(e){
+    //动态点赞,并发送消息至动态发布者
     var index = e.currentTarget.dataset.index
     if(getApp().login_check()){
       if(!this.data.post.array[index].status){
@@ -342,6 +346,7 @@ Page({
     }
   },
   load_more(){
+    // 滚动到底部加载更多数据
     if(this.data.top_bar.now_tab == 0 && !this.data.works.nomore){
       ++this.data.works.skip
       this.get_works()
@@ -363,6 +368,7 @@ Page({
     })
     .watch({
       onChange:snapshot=> {
+        // 有新的消息显示底部栏红点
         if(snapshot.docs.length){
           wx.showTabBarRedDot({
             index: 1,
@@ -384,6 +390,7 @@ Page({
   }
   ,
   watch_talk(){
+    // 有新的消息显示底部栏红点
     const talk_watcher = db.collection('talk_room')
     .where(_.and([
       {

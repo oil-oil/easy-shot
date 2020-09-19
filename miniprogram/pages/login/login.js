@@ -8,6 +8,7 @@ Page({
     this.login_check()
   },
   login_check(){
+    // 登陆检测，如果数据中无该用户则需要获取信息
     return new Promise((suc,rej)=>{
       wx.cloud.callFunction({
         name:'login'
@@ -37,6 +38,7 @@ Page({
     if(this.data.text == '加载中'){
       return
     }
+    // 获取用户信息保存在数据库
     wx.getSetting({
       success:res=>{
         if(!res.authSetting['scope.userInfo']){
@@ -48,6 +50,7 @@ Page({
             title: '登陆中',
           })
           wx.getUserInfo().then(res=>{
+            // 获取用户头像
             wx.getImageInfo({
               src: res.userInfo.avatarUrl,
             }).then(res=>{

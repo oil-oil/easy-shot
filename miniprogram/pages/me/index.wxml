@@ -18,7 +18,7 @@
     </view>
 
     <view style="position:relative">
-      <image style="width:150rpx;height:150rpx;border-radius:50%" src="{{user.avatar}}" bindtap="show_user"></image>
+      <image style="width:150rpx;height:150rpx;border-radius:50%" src="{{user.avatar}}" bindtap="show_user" mode="aspectFill"></image>
       <view class="flex align-center justify-center main-bg-color write" >
         <view class="cuIcon-writefill text-white text-xs " catchtap='change_info'></view>
       </view>

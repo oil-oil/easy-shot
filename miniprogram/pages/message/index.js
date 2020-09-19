@@ -15,6 +15,7 @@ Page({
     refreshing:false,
   },
   watch_talk_room(){
+    // 实时获取聊天室数据更新
     const talk_watcher = db.collection('talk_room')
     .where(
       {
@@ -55,6 +56,7 @@ Page({
     })
   },
   init_unread(){
+    // 根据全局未读信息更新页面提示
     var unread_message = getApp().globalData.unread_message
     this.setData({['unread.like']:0,['unread.notice']:0,['unread.comment']:0})
     if(unread_message.length){
@@ -87,6 +89,7 @@ Page({
     }
   },
   get_talk(){
+    // 获取所有聊天室数据
     wx.showLoading({
       title: '加载中',
     })

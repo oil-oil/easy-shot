@@ -49,7 +49,7 @@ Page({
   },
   ChooseImage() {
     wx.chooseImage({
-      count: 9-this.data.img_list.length, //默认9
+      count: 9-this.data.img_list.length, //最多添加九张图片
       sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
       sourceType: ['album'], //从相册选择
       success: (res) => {
@@ -89,6 +89,7 @@ Page({
     temp[e.currentTarget.dataset.index] = e.detail.value
     this.setData({include:temp})
   },
+  // 表单验证
   choose_date(){
     if(this.data.type == ''){
       getApp().show_modal('请选择约拍类型')
@@ -122,6 +123,7 @@ Page({
       getApp().show_modal('请至少上传一张宣传图片')
       return
     }
+    // 跳转至日期选择页面
     let form = JSON.stringify({
       appoint_type:this.data.appoint_type,
       title:this.data.title,

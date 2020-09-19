@@ -19,6 +19,7 @@ Page({
     this.get_works(e._id)
   },
   init_status(){
+    // 初始化状态
     if(getApp().globalData.user!==null){
       if(this.data.works_array.like.indexOf(getApp().globalData.user._openid)!==-1){
         this.setData({'status.like':true})
@@ -32,6 +33,7 @@ Page({
       
   },
   get_works(_id){
+    // 根据_id获取数据
     wx.showLoading({
       title: '加载中',
     })
@@ -77,9 +79,11 @@ Page({
     })
   },
   show_user(){
+    // 跳转至用户页
    getApp().show_user(this.data.works_array.user[0]._openid)
   },
   img_load(e){
+    // 图片加载事件
     this.data.img_load++
     var type = e.currentTarget.dataset.type
     var index = e.currentTarget.dataset.index
@@ -90,6 +94,7 @@ Page({
     }
   },
   waterfull(){
+    // 瀑布流,计算图片长度分配左右
     if(this.data.left_array.length&&this.data.right_array.length){
       var left_height = 0,
     right_height = 0
@@ -116,6 +121,7 @@ Page({
     }
   },
   like(){
+    // 点赞并发送消息
     if(getApp().login_check()){
       if(!this.data.status.like){
         var date = new Date()
@@ -155,6 +161,7 @@ Page({
     }
   },
   follow(){
+    // 关注功能
     if(getApp().login_check()){
       if(!this.data.status.follow){
         getApp().follow(this.data.works_array.user[0]._openid)

@@ -1,4 +1,8 @@
 <scroll-view scroll-y="true" style="height:100vh" bindscrolltolower="load_more">
+  <view wx:if="{{!follow_array.length}}" class="flex align-center justify-center bg-white" style="width:100%;height:100vh;flex-direction:column">
+    <image src="../../../images/icon2/none_order.png"></image>
+    <view class="text-sm text-gray">还没有关注的用户噢</view>
+  </view>
   <view>
   <view class="flex align-center padding bg-white" wx:for="{{follow_array}}" data-index='{{index}}' bindtap="show_user">
     <image style="width:100rpx;height:100rpx;border-radius:50%" mode="aspectFill" src="{{item.avatar}}" ></image>

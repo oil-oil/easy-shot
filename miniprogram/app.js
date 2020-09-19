@@ -19,6 +19,7 @@ App({
   },
   
   show_modal(text){
+    // 通用提示弹窗
     wx.showModal({
       content:text,
       confirmColor:this.globalData.color,
@@ -26,9 +27,10 @@ App({
     })
   },
   login_check(){
+    // 实名认证检测,暂未实现
     if(!this.globalData.has_login){
       wx.showModal({
-        content:'当前暂未登陆，请登陆后使用',
+        content:'当前实名认证，请认证后使用',
         confirmText:'去登陆',
         cancelText:'暂不登陆',
         cancelColor:'#BBBBBB',
@@ -48,6 +50,7 @@ App({
     }
   },
   follow(_openid){
+    // 通用用户关注功能
     if(!this.login_check()){
       return
     }
@@ -78,6 +81,7 @@ App({
     
   },
   unfollow(_openid){
+    // 通用用户取消关注功能
     const db = wx.cloud.database()
     db.collection('user')
     .where({_openid:_openid})
@@ -102,6 +106,7 @@ App({
     
   },
   talk(user_data){
+    // 通用私信功能
     if(!this.login_check()){
       return
     }
@@ -114,6 +119,7 @@ App({
     })
   },
   show_user(_openid){
+    // 通用展示用户页面功能
     wx.navigateTo({
       url: '/pages/user/user?user_id='+_openid,
     })

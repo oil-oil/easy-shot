@@ -57,9 +57,7 @@ Page({
     })
   },
   show_post(){
-    wx.navigateTo({
-      url: './post/post',
-    })
+    getApp().show_modal('正在全力开发中,敬请期待')
   },
   change_info(){
     wx.navigateTo({

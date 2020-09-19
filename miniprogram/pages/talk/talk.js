@@ -26,6 +26,7 @@ Page({
     this.setData({sender:getApp().globalData.user})
   },
   get_talk_room(){
+    // 检测是否有双方聊天室,若无则建立新的聊天室
     db.collection('talk_room').where({_openid:getApp().globalData.user._openid})
     .get()
     .then(res=>{
@@ -74,7 +75,7 @@ Page({
     })
   },
   get_talk(){
-    console.log(this.data.skip)
+    // 获取聊天数据
     const limit = 20
     db.collection('talk')
     .aggregate()
@@ -111,12 +112,14 @@ Page({
     })
   },
   load_more(){
+    // 滚动到顶部获取更多数据
     if(!this.data.nomore){
       ++this.data.skip
     }
     this.get_talk()
   },
   onwatch(){
+    // 监听数据库聊天数据,实时更新
     const watcher = db.collection('talk')
     .orderBy('_id', 'desc')
     .limit(1)
@@ -164,6 +167,7 @@ Page({
     this.setData({text_line:e.detail.lineCount})
   },
   send(){
+    // 发送消息,添加聊天数据,更新聊天室最后一条数据
     if(!this.data.text){
       return
     }
@@ -197,6 +201,7 @@ Page({
     })
   },
   onUnload(){
+    // 离开聊天房时将目前聊天室状态设置为已读
     db.collection('talk_room').doc(this.data.me_room_id).update({
       data:{
         status:1

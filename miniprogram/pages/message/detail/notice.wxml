@@ -6,7 +6,7 @@
       <view class="text-gray margin-top-xs">下单了你的约拍，快去查看订单详情吧</view>
     </view>
     <view style="margin-left:auto" class="flex align-center">
-      <view class="cuIcon-right text-xl"></view>
+      <view class="cuIcon-right text-xl" data-index="{{index}}" bindtap="show_detail"></view>
     </view>
   </view>
 </view>

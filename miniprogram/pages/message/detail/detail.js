@@ -10,6 +10,7 @@ Page({
   },
   onLoad(e){
     this.setData({page_type:parseInt(e.type)})
+    // 根据页面类型获取相应数据
     if(this.data.page_type === 0){
       this.get_like()
     }
@@ -53,7 +54,7 @@ Page({
         }
       }
     }).then(res=>{
-      console.log(res)
+      // 获取数据后更改状态为已读
       db.collection('message')
       .where({
         receiver:getApp().globalData.user._openid,
@@ -77,8 +78,9 @@ Page({
     })
   },
   get_notice(){
+    
     wx.cloud.callFunction({
-      name:'lookup',
+      name:'lookup_db',
       data:{
         collection:'message',
         skip:this.data.skip,
@@ -87,6 +89,12 @@ Page({
           localField: '_openid',
           foreignField: '_openid',
           as: 'sender',
+        },
+        lookup2:{
+          from: 'order',
+          localField: 'about_id',
+          foreignField: '_id',
+          as: 'about',
         },
         project:{
           date:1,
@@ -102,6 +110,7 @@ Page({
         }
       }
     }).then(res=>{
+      // 获取数据后更改状态为已读
       db.collection('message')
       .where({
         receiver:getApp().globalData.user._openid,
@@ -158,7 +167,7 @@ Page({
         }
       }
     }).then(res=>{
-      console.log(res)
+      // 获取数据后更改状态为已读
       db.collection('message')
       .where({
         receiver:getApp().globalData.user._openid,
@@ -182,6 +191,7 @@ Page({
     })
   },
   load_more(){
+    // 加载更多数据
     if(this.data.nomore){
       return
     }
@@ -197,16 +207,19 @@ Page({
     }
   },
   show_user(e){
-    getApp().show_user(this.data.follow_array[e.currentTarget.dataset.index]._openid)
+    getApp().show_user(this.data.message_array[e.currentTarget.dataset.index].sender[0]._openid)
   },
   show_detail(e){
+    // 跳转至相应订单或内容
     if(this.data.page_type === 0){
       wx.navigateTo({
         url:'../../index/works_detail/works_detail?_id='+this.data.message_array[e.currentTarget.dataset.index].about[0]._id
       })
     }
     else if(this.data.page_type === 1){
-      this.get_notice()
+      wx.navigateTo({
+        url:'../../order/order_detail/order_detail?_id='+this.data.message_array[e.currentTarget.dataset.index].about[0]._id
+      })
     }
     else if(this.data.page_type === 2){
       wx.navigateTo({

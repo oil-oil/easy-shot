@@ -39,6 +39,7 @@ Page({
       }
     })
   },
+  // 初始化日历，
   dateInit: function (setYear, setMonth) {
     //全部时间的月份都是按0~11基准，显示月份才+1
     let dateArr = [];                       //需要遍历的日历数组数据
@@ -77,6 +78,7 @@ Page({
     let nowDay = nowDate.getDate()
     let getYear = setYear || nowYear;
     let getMonth = setMonth >= 0 ? (setMonth + 1) : nowMonth;
+    // 无法选择已经过去的日期
     for(let i in dateArr){
       if(dateArr[i].year < nowYear){
         dateArr[i].status = 'past'
@@ -158,6 +160,7 @@ Page({
     }
    
   },
+  // 更换接单日期类型
   type_change(e){
     this.setData({'type.choose':e.detail.value})
     console.log(e)
@@ -180,11 +183,11 @@ Page({
         filePath:this.data.form.img[this.data.upload_num]
       }).then(result=>{
         this.data.upload_num++
-        if(this.data.upload_num !== this.data.form.img.length){
+        if(this.data.upload_num !== this.data.form.img.length){// 递归上传图片
           this.data.upload_img.push(result.fileID)
           this.upload()
         }
-        else {
+        else {// 图片上传完成后向数据库添加新的约拍信息
           this.data.upload_img.push(result.fileID)
           var timestamp=new Date().getTime()
           const form = this.data.form
