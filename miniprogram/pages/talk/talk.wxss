@@ -1,0 +1,29 @@
+/* miniprogram/pages/talk/talk.wxss */
+.message-other{
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+	}
+	.message-me{
+		display: flex;
+		flex-direction: row-reverse;
+		align-items: center;
+		justify-content: end;
+  }
+  .input-modal{
+		position: fixed;
+		left: 0;
+		bottom:0;
+		width: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 20rpx;
+		background-color: white;
+  }
+  .input-modal>textarea{
+    font-size: 30rpx;
+    width: 80%;
+    border-radius: 10rpx;
+		padding: 15rpx;
+  }

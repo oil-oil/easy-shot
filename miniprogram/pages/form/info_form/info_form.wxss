@@ -1,0 +1,9 @@
+.write{
+  position:absolute;
+  border-radius:50%;
+  top:120rpx;
+  left:130rpx;
+  width:50rpx;
+  height:50rpx;
+  border: white 2rpx solid;
+}

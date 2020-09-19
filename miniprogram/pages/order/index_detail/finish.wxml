@@ -1,0 +1,38 @@
+<scroll-view scroll-y='true' style="height:100vh" >
+  <view wx:if="{{!finish.array.length}}" class="flex align-center justify-center bg-white" style="width:100%;height:100vh;flex-direction:column">
+    <image src="../../images/icon2/none_order.png"></image>
+    <view class="text-sm text-gray">还没有订单噢</view>
+  </view>
+  <view class="margin-sm bg-white padding-sm animation-slide-bottom" style="border-radius:10rpx;" data-index='{{index}}' bindtap="show_detail" wx:for="{{finish.array}}">
+    <view class="flex" style="width:100%">
+    <image src="{{item.appointment[0].img[0]}}" mode="aspectFill" style="width:200rpx;height:200rpx;border-radius:10rpx;"></image>
+    <view class="margin-left flex justify-between" style="flex-direction:column;width:60%" >
+      <view>
+        <view class="text-bold text-xl text-black">{{item.type=='model'?'约拍订单':'拍摄订单'}}</view>
+        <view class="margin-top-xs ">
+          <text>拍摄时间:</text><text class="margin-left-xs text-gray">{{item.appoint_date.year+'-'+item.appoint_date.month+'-'+item.appoint_date.dateNum}}</text>
+        </view>
+        <view class="margin-top-xs ">
+          <text>下单时间:</text><text class="margin-left-xs text-gray">{{item.order_date}}</text>
+        </view>
+        <view class="margin-top-xs ">
+          <text>约拍价格:</text><text class="margin-left-xs text-gray">￥{{item.appointment[0].price}}</text>
+        </view>
+      </view>
+      <view class="flex justify-between align-center text-gray margin-top-xs" style="width:100%">
+        <view class="flex align-center">
+          <image src="{{item.user[0].avatar}}" mode="aspectFill" style="width:50rpx;height:50rpx;border-radius:50%;"></image>
+          <view class="margin-left">{{item.user[0].name}}</view>
+        </view>
+        
+      </view>
+    </view>
+    </view>
+
+    <view class="flex margin-top">
+      <view class="button" style="margin-left:auto;border-radius:20rpx">查看订单详情</view>
+    </view>
+  </view>
+
+</scroll-view>
+

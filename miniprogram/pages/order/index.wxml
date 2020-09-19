@@ -1,0 +1,24 @@
+  <view class="top-bar bg-white">
+    <view class="flex align-center top-tab ">
+      <view wx:for='{{top_bar.array}}' wx: class="text-lg margin-sm {{index==top_bar.now_tab?'text-bold main-text-color':''}}" data-index="{{index}}" bindtap="switch_top_tab">
+        {{item}}
+      </view>
+      <view class="top-bar-line" style="left:{{top_bar.now_tab*33.3}}%">
+        <view class="inner-line main-bg-color"></view>
+      </view>
+    </view> 
+  </view>
+
+<swiper style="height:100vh" bindchange="swiper_change" current="{{top_bar.now_tab}}" >
+  <swiper-item>
+    <include src='../order/index_detail/ongoing.wxml' />
+  </swiper-item>
+  <swiper-item>
+    <include src='../order/index_detail/evaluate.wxml'/>
+  </swiper-item>
+  <swiper-item>
+    <include src='../order/index_detail/finish.wxml'/>
+  </swiper-item>
+</swiper>
+
+

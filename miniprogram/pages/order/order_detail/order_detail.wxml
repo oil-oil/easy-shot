@@ -1,0 +1,60 @@
+<view class="padding-sm">
+  <view class="bg-white padding-sm" style="border-radius:10rpx">
+    <view >
+      <text class="cuIcon-camera margin-right-xs text-lg"></text>
+      <text class="text-bold">{{order.user[0].name}}</text>
+    </view>
+  
+  <view class="flex margin-top-xs">
+    <image style="width:150rpx;height:150rpx;border-radius:10rpx" mode='aspectFill' src="{{order.appointment[0].img[0]}}"></image>
+    <view class="margin-left-sm" style="max-width:70%">
+      <view class="ellipsis">{{order.appointment[0].title}}</view>
+      <view class="text-sm text-gray ">￥{{order.appointment[0].price}}</view>
+      <view class="text-sm text-gray margin-top-xs cu-tag">于{{order.appoint_date.year+'-'+order.appoint_date.month+'-'+order.appoint_date.dateNum}}拍摄</view>
+    </view>
+  </view>
+
+  <view class="flex margin-top">
+      <view class="button" style="margin-left:auto;border-radius:20rpx" catchtap="talk">联系{{order.type=='model'?'摄影师':'约拍者'}}</view>
+      <view class="button margin-left" style="border-radius:20rpx">退款</view>
+  </view>
+
+  <view class="margin-top">
+    <view class="text-bold text-lg">订单信息</view>
+    <view class="margin-top-sm">
+
+      <view class="flex margin-sm">
+        <view class="margin-right">下单时间</view>
+        <view class="text-gray">2020-8-11</view>
+      </view>
+
+      <view class="flex margin-sm">
+        <view class="margin-right">约拍地点</view>
+        <view class="text-gray">{{order.adress}}</view>
+      </view>
+
+      <view class="flex margin-sm">
+        <view class="margin-right">交付时间</view>
+        <view class="text-gray">拍摄完成后{{order.appointment[0].paydate}}天内</view>
+      </view>
+
+      <view class="flex margin-sm">
+        <view class="margin-right">下单用户</view>
+        <view class="text-gray">{{order.type=='model'?user.name:order.user[0].name}}</view>
+      </view>
+
+      <view class="flex margin-sm">
+        <view class="margin-right">订单类型</view>
+        <view class="text-gray">{{order.type=='model'?'约拍订单':'拍摄订单'}}</view>
+      </view>
+
+      <view class="flex margin-sm ">
+        <view class="margin-right">订单号</view>
+        <view class="text-gray">{{order._id}}</view>
+      </view>
+
+    </view>
+  </view>
+  </view>
+</view>
+

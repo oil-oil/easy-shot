@@ -1,0 +1,13 @@
+/* miniprogram/pages/form/appoint_form/appoint_form.wxss */
+.cu-form-group .title {
+  min-width: calc(4em + 30rpx);
+}
+.add-button{
+  width:50rpx;
+  height:50rpx;
+  border-radius:50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+

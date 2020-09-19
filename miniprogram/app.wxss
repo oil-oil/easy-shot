@@ -1,0 +1,63 @@
+/**app.wxss**/
+@import './colorui/icon.wxss';
+@import './colorui/main.wxss';
+@import './colorui/animation.wxss';
+
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+} 
+
+button {
+  background: initial;
+}
+
+button:focus{
+  outline: 0;
+}
+
+button::after{
+  border: none;
+}
+
+page {
+  background: #f6f6f6;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.main-text-color{
+  color:#A58AA9;
+}
+
+.main-bg-color{
+  background-color:#A58AA9; 
+}
+
+.main-border-color{
+  border:#A58AA9 solid 1rpx; 
+}
+
+.button{
+  padding: 10rpx 25rpx;
+  background-color: #EFEFEF;
+  color:#A58AA9;
+  border-radius: 20rpx;
+  font-size: 25rpx;
+}
+.button2{
+  padding: 10rpx 25rpx;
+  background-color:  #A58AA9;
+  color:#EFEFEF;
+  border-radius: 20rpx;
+  font-size: 25rpx;
+}
+.ellipsis{
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}

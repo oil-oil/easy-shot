@@ -1,0 +1,14 @@
+<scroll-view scroll-y="true" style="height:100vh" bindscrolltolower="load_more">
+  <view>
+  <view class="flex align-center padding bg-white" wx:for="{{follow_array}}" data-index='{{index}}' bindtap="show_user">
+    <image style="width:100rpx;height:100rpx;border-radius:50%" mode="aspectFill" src="{{item.avatar}}" ></image>
+    <view class="margin-left-sm">
+      <view class="text-bold">{{item.name}}</view>
+      <view class="text-gray margin-top-xs">{{item.intro}}</view>
+    </view>
+    <view style="margin-left:auto" class="flex align-center">
+      <view class="cuIcon-right text-xl"></view>
+    </view>
+  </view>
+</view>
+</scroll-view>

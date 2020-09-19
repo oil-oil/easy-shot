@@ -1,0 +1,53 @@
+<view class="flex">
+  <view class="flex-sub padding">
+    <view class="bg-white flex justify-center align-center" 
+    style="flex-direction:column;border-radius:20rpx;width:25vw;height:25vw;position:relative" 
+    bindtap="show_detail" data-index='0' >
+      <view class="unread-dot main-bg-color" wx:if="{{unread.like>0}}">{{unread.like}}</view>
+      <view class="cuIcon-likefill text-xl main-text-color" style="font-size:50rpx"></view>
+     <view class="text-bold margin-top-sm">点赞</view>
+    </view>
+  </view>
+  <view class="flex-sub padding">
+    <view class="bg-white flex justify-center align-center" 
+    style="flex-direction:column;border-radius:20rpx;width:25vw;height:25vw;position:relative" 
+    bindtap="show_detail" data-index='1'>
+      <view class="unread-dot main-bg-color" wx:if="{{unread.notice>0}}">{{unread.notice}}</view>
+      <view class="cuIcon-noticefill text-xl main-text-color" style="font-size:50rpx"></view>
+      <view class="text-bold margin-top-sm">通知</view>
+    </view>
+  </view>
+  <view class="flex-sub padding">
+    <view class="bg-white flex justify-center align-center" 
+    style="flex-direction:column;border-radius:20rpx;width:25vw;height:25vw;position:relative" 
+    bindtap="show_detail" data-index='2'>
+      <view class="unread-dot main-bg-color" wx:if="{{unread.comment>0}}">{{unread.comment}}</view>
+      <view class="cuIcon-writefill main-text-color" style="font-size:50rpx"></view>
+      <view class="text-bold margin-top-sm">评论</view>
+    </view>
+  </view>
+</view>
+
+<view class="padding">
+  <view class="text-bold text-xl">全部私信</view>
+</view>
+
+  <view class="flex padding align-center solids-bottom" style="width:100%" wx:for="{{talk_room.array}}" data-index='{{index}}' bindtap="talk">
+    <image style="width:80rpx;height:80rpx;border-radius:50%" src="{{item.sender.avatar}}"></image>
+    <view class="margin-left-sm" style="width:90%">
+      <view class="flex justify-between">
+        <view class="text-bold">{{item.sender.name}}</view>
+        <view class="text-gray text-sm">{{item.date}}</view>
+      </view>
+      <view class="flex justify-between align-center" >
+        <view class="text-gray text-sm margin-top-xs">{{item.last_message}}</view>
+        <view class="red-dot" wx:if="{{!item.status}}" ></view>
+      </view>
+      
+    </view>
+  </view>
+
+  <view wx:if="{{!talk_room.array.length}}" class="flex align-center justify-center bg-white" style="width:100%;height:70vh;flex-direction:column">
+    <image src="../../images/icon2/none_order.png"></image>
+    <view class="text-sm text-gray">还没有私信噢</view>
+  </view>

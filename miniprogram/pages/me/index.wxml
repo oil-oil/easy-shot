@@ -1,0 +1,93 @@
+<view wx:if="{{has_login}}">
+<view class="padding-sm" >
+  <view class="bg-white padding flex justify-between" style="border-radius:20rpx" >
+    <view >
+      <view class="text-xl text-black text-bold">{{user.name}}</view>
+      <view class="text-gray text-sm margin-top-sm">普通用户</view>
+
+      <view class="flex margin-top">
+        <view class="margin-left text-center">
+          <view class="text-bold text-black">{{user.fans.length}}</view>
+          <view class="margin-top-xs text-gray text-sm">粉丝</view>
+        </view>
+        <view class="margin-left text-center">
+          <view class="text-bold text-black">{{user.follow.length}}</view>
+          <view class="margin-top-xs text-gray text-sm">关注</view>
+        </view>
+      </view> 
+    </view>
+
+    <view style="position:relative">
+      <image style="width:150rpx;height:150rpx;border-radius:50%" src="{{user.avatar}}" bindtap="show_user"></image>
+      <view class="flex align-center justify-center main-bg-color write" >
+        <view class="cuIcon-writefill text-white text-xs " catchtap='change_info'></view>
+      </view>
+    </view>
+
+  </view>
+</view>
+
+<view class="padding-left">
+  <view class="text-bold text-xl">约拍</view>
+</view>
+<view class="flex">
+  <view class="flex-sub padding">
+    <view class="bg-white flex justify-center align-center" style="flex-direction:column;border-radius:20rpx;width:25vw;height:25vw" bindtap="show_order">
+      <view class="cuIcon-form text-xl main-text-color" style="font-size:50rpx"></view>
+      <view class="text-bold margin-top-sm">订单管理</view>
+    </view>
+  </view>
+  <view class="flex-sub padding">
+    <view class="bg-white flex justify-center align-center" style="flex-direction:column;border-radius:20rpx;width:25vw;height:25vw" bindtap="show_post">
+      <view class="cuIcon-post main-text-color" style="font-size:50rpx"></view>
+      <view class="text-bold margin-top-sm">发布管理</view>
+    </view>
+  </view>
+  <view class="flex-sub padding">
+    <view class="bg-white flex justify-center align-center" style="flex-direction:column;border-radius:20rpx;width:25vw;height:25vw" bindtap="show_follow">
+      <view class="cuIcon-peoplelist text-xl main-text-color" style="font-size:50rpx"></view>
+     <view class="text-bold margin-top-sm">我的关注</view>
+    </view>
+  </view>
+</view>
+
+<view class="padding">
+  <view class="text-bold text-xl">其他</view>
+</view>
+<view>
+  <view class="flex padding align-center bg-white solids-bottom" bindtap="show_favor">
+    <view class="cuIcon-favorfill main-text-color"></view>
+    <view class="margin-left-sm">我的收藏</view>
+    <view class="cuIcon-right text-gray" style="margin-left:auto"></view>
+  </view>
+  <view class="flex padding align-center bg-white solids-bottom">
+    <view class="cuIcon-myfill main-text-color"></view>
+    <view class="margin-left-sm">身份认证</view>
+    <view class="cuIcon-right text-gray" style="margin-left:auto"></view>
+  </view>
+  <view class="flex padding align-center bg-white solids-bottom">
+    <view class="cuIcon-servicefill main-text-color"></view>
+    <view class="margin-left-sm">联系客服</view>
+    <view class="cuIcon-right text-gray" style="margin-left:auto"></view>
+  </view>
+  <view class="flex padding align-center bg-white solids-bottom">
+    <view class="cuIcon-emoji main-text-color"></view>
+    <view class="margin-left-sm">关于我们</view>
+    <view class="cuIcon-right text-gray" style="margin-left:auto"></view>
+  </view>
+  
+</view>
+</view>
+<view class="mask" wx:if="{{actionsheet}}">
+
+</view>
+<view class="actionsheet" style=" transform: translateY({{actionsheet?'0':'100%'}});">
+  <button open-type="openSetting" class="margin">去获取授权</button>
+  <button class="margin text-gray" bindtap="hide_actionsheet">取消登陆</button>
+</view>
+
+
+<view wx:if="{{!has_login}}" class="flex align-center justify-center bg-white" style="width:100%;height:100vh;flex-direction:column">
+    <image src="../../images/logo.png" mode="aspectFit" style="width:100%"></image>
+    <button class="cu-btn block button lg" open-type="getUserInfo" bindgetuserinfo='login'>立即登陆</button>
+  </view>

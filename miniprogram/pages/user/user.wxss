@@ -1,0 +1,25 @@
+.top-bar{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+.top-tab{
+  position: relative;
+  z-index: 999;
+}
+.top-bar-line{
+  position: absolute;
+  bottom: 0;
+  height: 5rpx;
+  width: 33.3%;
+  transition: 0.3s all;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.inner-line{
+  width: 60%;
+  height: 100%;
+  transition: 0.3s all;
+}

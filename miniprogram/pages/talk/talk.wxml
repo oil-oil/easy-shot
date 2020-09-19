@@ -1,0 +1,13 @@
+<scroll-view style="height: 100vh;padding-bottom:130rpx" scroll-y="true" class="padding-sm" scroll-into-view='{{last_view}}' bindscrolltoupper="load_more">
+	<view class="message-{{item.user}} margin-top-sm" wx:for="{{text_array}}" id='{{index==text_array.length-1?"last_view":""}}'>
+    <image src="{{item.user == 'me'?sender.avatar:receiver.avatar}}" style="width:80rpx;height:80rpx;border-radius:50%"></image>
+    <view class="padding {{item.user == 'me'?'main-bg-color text-white':'bg-white'}} margin-lr-sm animation-scale-down" style="border-radius:10rpx" >{{item.text}}</view>
+  </view>
+ 
+</scroll-view>
+
+<view class="input-modal" >
+			<textarea maxlength="-1" style="height:{{80+(text_line-1)*30}}rpx;" fixed='true' type="text" class="bg-gray" cursor-spacing="5" bindinput="text_input" bindlinechange="line_change" show-confirm-bar="false" value="{{text}}"></textarea>
+			<view class="button margin-left-sm padding-sm" bindtap="send">发送</view>
+</view>
+ 

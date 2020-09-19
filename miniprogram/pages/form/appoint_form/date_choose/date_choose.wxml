@@ -1,0 +1,58 @@
+<wxs src='../../../../utils/utils.wxs' module="utils"></wxs>
+<view class="cu-form-group">
+		<view class="title main-text-color">接单类型</view>
+		<picker bindchange="type_change" range="{{type.array}}" >
+			<view class="picker">
+				{{type.array[type.choose]}}
+			</view>
+		</picker>
+  </view>
+  
+<view class="cu-form-group">
+		<view class="text-gray text-sm">
+      {{type.detail[type.choose]}}
+    </view>
+</view>
+
+<view class="cu-form-group margin-top animation-slide-bottom" wx:if="{{type.choose == 0}}">
+    <view class="title main-text-color">已选择日期</view>
+    <view class="text-gray">共{{choose_array.length}}天</view>
+    
+</view>
+
+
+
+  <!-- 日历年月 -->
+<view class="bg-white  animation-slide-bottom" wx:if="{{type.choose == 0}}">
+<view class='calendar_title flex main-text-color align-center bg-white text-lg'>
+  <view class='icon button' bindtap='lastMonth'>
+    <text class="cuIcon-back"></text>
+  </view>
+  <view>{{year}}年{{month}}月</view>
+  <view class='icon button' bindtap='nextMonth'>
+    <text class="cuIcon-right"></text>
+  </view>
+</view>
+</view>
+<!-- 日历主体 -->
+<view class='calendar animation-slide-bottom' wx:if="{{type.choose == 0}}">
+  <view class='header'>
+    <view wx:for='{{date}}' wx:key='' class='{{(index == todayIndex) && isTodayWeek ? "weekMark" : ""}}'>{{item}}
+      <view></view>
+    </view>
+  </view>
+
+  <view class='date-box'>
+    <block wx:for='{{dateArr}}' wx:key=''>
+      <view class='{{isToday.year==item.year&&isToday.month==item.month&&isToday.dateNum==item.dateNum ? "main-text-color bg-gray" : ""}} {{item.status=="choose"?"bg-gray":""}}'>
+        <view class='date-head {{item.status=="futrue"?"":"text-gray"}} {{utils.indexOf(choose_array,item)?"main-bg-color text-white":""}}' bindtap='choose_date' data-index='{{index}}'>
+          <view>{{item.dateNum}}</view>
+        </view>
+      </view>
+    </block>
+  </view>
+
+  
+</view>
+
+<button class="cu-btn block button margin-tb-lg lg" bindtap="post">确认发布约拍</button>

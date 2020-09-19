@@ -1,0 +1,35 @@
+<view style="position:relative">
+  <view class="cuIcon-search text-lg search button" bindtap="show_search"></view>
+  <view class="cuIcon-peoplelist text-lg follow  {{top_bar.now_tab===0&&works.only_follow||top_bar.now_tab===1&&appointment.only_follow||top_bar.now_tab===2&&post.only_follow?'button2':'button'}}" bindtap="only_follow"></view>
+  <view class="top-bar bg-white" >
+    <view class="flex align-center top-tab margin-xs" style="width:50%;"  >
+      <view wx:for='{{top_bar.array}}' class="margin-xs text-lg {{index==top_bar.now_tab?'text-bold':''}} text-center" style="width:33.3%" data-index="{{index}}" bindtap="switch_top_tab">
+        {{item}}
+      </view>
+      <view class="top-bar-line" style="left:{{top_bar.now_tab*33.3}}%">
+        
+        <view class="inner-line main-bg-color"></view>
+      </view>
+    </view>
+  </view>
+
+  <view class="add-modal bg-white shadow shadow main-text-color" style="width:{{add_modal?300:0}}rpx;opacity:{{add_modal?1:0}}">
+    <block wx:if='{{add_modal}}'>
+    <view class="flex-sub text-center text-bold" bindtap="show_form" data-page="works">作品</view>
+    <view class="flex-sub text-center text-bold" bindtap="show_form" data-page="appoint"> 约拍</view>
+    <view class="flex-sub text-center text-bold" bindtap="show_form" data-page="post">动态</view>
+    </block>
+  </view>
+
+  <view class="add-button flex align-center justify-center text-white main-bg-color" bindtap="switch_add_modal" style="transform:rotate({{add_modal?45:0}}deg)">
+    <view class="cuIcon-add"></view>
+  </view>
+
+<swiper style="height:100vh" bindchange="swiper_change" current="{{top_bar.now_tab}}" >
+  <swiper-item><include src='../index/index_detail/works.wxml' /></swiper-item>
+  <swiper-item><include src='../index/index_detail/appointment.wxml' /></swiper-item>
+  <swiper-item><include src='../index/index_detail/post.wxml' /></swiper-item>
+</swiper>
+  
+</view>
+

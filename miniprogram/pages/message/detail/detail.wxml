@@ -1,0 +1,5 @@
+<scroll-view scroll-y="true" style="height:100vh" bindscrolltolower="load_more">
+  <include src='../detail/like.wxml' wx:if="{{page_type === 0}}"></include>
+  <include src='../detail/notice.wxml' wx:if="{{page_type === 1}}"></include>
+  <include src='../detail/comment.wxml' wx:if="{{page_type === 2}}"></include>
+</scroll-view>

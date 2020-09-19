@@ -1,0 +1,41 @@
+<view class="padding">
+  <view class="text-xl text-bold">{{works_array.title}}</view>
+  <view class="margin-top-sm">{{works_array.intro}}</view>
+  <view class="margin-top flex align-center" >
+    <image style="width:100rpx;height:100rpx;border-radius:50%" bindtap="show_user" mode="aspectFill" src="{{works_array.user[0].avatar}}" ></image>
+    <view class="margin-left-sm">
+      <view class="text-bold">{{works_array.user[0].name}}</view>
+      <view class="text-gray margin-top-xs">摄影师</view>
+    </view>
+    <view style="margin-left:auto" class="flex align-center">
+      <view class="margin-left-xs {{status.follow?'text-gray':'button'}}" bindtap="follow">{{status.follow?'已关注':'关注'}}</view>
+    </view>
+  </view>
+</view>
+
+<scroll-view scroll-y='true' style="height:100%">
+<view class="flex">
+  <view style="width:50%" >
+    <view class="margin-xs" wx:for="{{left_array}}">
+      <image mode="widthFix" src="{{item.img}}" bindload="img_load" data-index='{{index}}' data-type="left" style="width:100%;height:100%;border-radius:10rpx" ></image>
+    </view>
+  </view>
+
+  <view style="width:50%" >
+   <view class="margin-xs" wx:for="{{right_array}}">
+      <image mode="widthFix" src="{{item.img}}" bindload="img_load" data-index='{{index}}' data-type="right" style="width:100%;height:100%;border-radius:10rpx" ></image>
+    </view>
+  </view>
+</view>
+
+<view class="padding">
+  <view class="text-sm text-gray ">2020/5/20</view>
+  <view class="fr margin-bottom" >
+    <text class="{{status.like?'cuIcon-likefill text-red':'cuIcon-like'}} text-lg " bindtap="like"></text>
+    <text class="margin-left-xs">{{works_array.like.length}}</text>
+  </view>
+</view>
+
+
+</scroll-view>
+

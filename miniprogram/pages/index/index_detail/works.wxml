@@ -1,0 +1,22 @@
+<scroll-view scroll-y='true' refresher-enabled='true' bindrefresherrefresh='refresh' refresher-triggered='{{refreshing}}' bindscrolltolower="load_more" style="height:100vh;padding-top:80rpx">
+  <view class="">
+    <view class="margin-sm bg-white padding-sm animation-slide-bottom" style="border-radius:10rpx;" data-page='works' data-index='{{index}}' bindtap="show_detail" wx:for="{{works.array}}">
+      <view class="flex align-center">
+          <image style="width:50rpx;height:50rpx;border-radius:50%" class="margin-right-sm" mode="aspectFill" src="{{item.user[0].avatar}}"></image> 
+          <view>{{item.user[0].name}}</view>
+        </view>
+      <view class="text-bold text-lg margin-top-sm">{{item.title}}</view>
+      <view class="text-gray text-sm margin-top-sm">{{item.intro}}</view>
+      <view style="width:100%">
+      <scroll-view scroll-x="true" style="width:100%;height:260rpx;white-space: nowrap;" class="margin-top-sm" >
+        <image wx:for="{{item.img}}" src="{{item}}" mode="heightFix" style="height:250rpx;border-radius:10rpx;" class="margin-xs"></image>
+      </scroll-view>
+      </view>
+        <view class="margin-top text-right" >
+          <text class="cuIcon-likefill text-red"></text>
+          <text class="margin-left-xs">{{item.like.length}}</text>
+        </view> 
+    </view> 
+  </view>
+
+</scroll-view>

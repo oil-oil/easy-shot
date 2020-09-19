@@ -1,0 +1,13 @@
+.top-bar{
+  display: flex;
+  align-items: center;
+  width: 100%;
+  position:fixed;
+  z-index: 999;
+  justify-content: center;
+  transition: all 0.3s;
+}
+.top-tab{
+  position: relative;
+  border-radius: 20rpx;
+}

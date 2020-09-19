@@ -1,0 +1,89 @@
+
+<view> 
+  <radio-group class="block bg-white margin-top" bindchange='type_change'>
+		<view class="cu-form-group">
+			<view class="title main-text-color">约拍类型</view>
+			<view>
+				<label><radio class="purple" value='free'></radio>
+				<text class="margin-left-sm" >互免约拍</text></label>
+				<label><radio class="purple margin-left-sm" value="special"></radio>
+				<text class="margin-left-sm" checked='true'>付费约拍</text></label>
+				
+			</view>
+		</view>
+	</radio-group>
+  <view class="cu-form-group">
+		<view class="title main-text-color">约拍标题</view>
+		<input placeholder="点击输入" bindinput="title_input"></input>
+  </view>
+  <view class="cu-form-group align-start">
+		<view class="title main-text-color">约拍描述</view>
+		<textarea maxlength="-1"   placeholder="点击输入" bindinput="intro_input"></textarea>
+  </view>
+
+  <view class="cu-form-group">
+		<view class="title main-text-color">约拍地区</view>
+		<picker mode="region" bindchange="region_change" value="{{region}}" custom-item="{{customItem}}">
+			<view class="picker">
+				{{region[0]}}，{{region[1]}}，{{region[2]}}
+			</view>
+		</picker>
+	</view>
+	
+	<view class="cu-form-group">
+		<view class="title main-text-color">拍摄地点</view>
+		<input placeholder="点击输入" bindinput="address_input"></input>
+	</view>
+
+  <view class="cu-form-group margin-top align-center" wx:if="{{appoint_type=='special'}}">
+    <view class="title main-text-color">交付时间</view>
+    <view class="text-gray">拍摄完成后</view>
+    <input placeholder="输入天数" type="number" class="text-center main-text-color" bindinput="paydate_input"></input>
+    <view class="text-gray">天内</view>
+	</view>
+	
+  <view class="cu-form-group align-center" wx:if="{{appoint_type=='special'}}">
+		<view class="title main-text-color">约拍单价</view>
+		<view class="text-gray">单次约拍价格</view>
+		<input placeholder="点击价格" bindinput="title_input" type="number" class="text-center " bindinput="price_input"></input>
+		<view class="text-gray">元</view>
+</view>
+  <view class="cu-bar bg-white margin-top">
+		<view class="action main-text-color">
+			约拍宣传图片
+    </view>
+    <view class="action text-gray text-sm">
+			共{{img_list.length}}张作品
+		</view>
+	</view>
+	<view class="cu-form-group">
+		<view class="grid col-4 grid-square flex-sub">
+			<view class="bg-img" wx:for="{{img_list}}" wx:key="{{index}}" bindtap="ViewImage" data-url="{{img_list[index]}}">
+				<image src='{{img_list[index]}}' mode='aspectFill'></image>
+				<view class="cu-tag bg-red" catchtap="DelImg" data-index="{{index}}">
+					<text class="cuIcon-close"></text>
+				</view>
+			</view>
+			<view class="solids main-text-color" bindtap="ChooseImage">
+				<text class="cuIcon-cameraadd "></text>
+			</view>
+		</view>
+  </view>
+ 
+  <view class="cu-form-group margin-top">
+		<view class="title main-text-color">拍摄包含(拍摄道具等..)</view>
+		<view class="main-bg-color button add-button main-text-color shadow" bindtap="add_include" wx:if="{{!include.length}}"><text class="cuIcon-add text-bold"></text></view>
+  </view>
+  <view class="cu-form-group animation-slide-right" wx:for="{{include}}">
+    <text class="margin-right-xs main-text-color">{{index+1}}.</text><input placeholder="点击输入" class="main-text-color" value="{{item}}" data-index="{{index}}" bindinput="include_input"></input>
+    <view class="main-bg-color button add-button main-text-color shadow margin-right-xs" bindtap="delete_include" data-index='{{index}}'>
+      <text class="cuIcon-move text-bold"></text>
+    </view>
+		<view class="main-bg-color button add-button main-text-color shadow" bindtap="add_include" wx:if="{{index == include.length-1}}">
+      <text class="cuIcon-add text-bold"></text>
+    </view>
+  </view>
+
+
+  <button class="cu-btn block button margin-tb-lg lg" bindtap="choose_date">选择接单日期</button>
+</view>

@@ -1,0 +1,11 @@
+var indexOf = function(array,which){
+  for(var i=0;i<=array.length;i++){
+    if(JSON.stringify(array[i]) === JSON.stringify(which)){
+      return true
+    }
+  }
+  return false
+}
+module.exports ={
+  indexOf:indexOf
+}

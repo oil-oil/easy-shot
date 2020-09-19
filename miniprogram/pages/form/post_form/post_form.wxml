@@ -1,0 +1,22 @@
+<view class="padding bg-white" style="min-height:100vh"> 
+    <textarea placeholder="分享你的约拍动态~" auto-focus="true" bindinput="text_input"></textarea>
+    
+  <view class="cu-form-group margin-top">
+		<view class="grid col-3 grid-square flex-sub">
+			<view class="bg-img" wx:for="{{img_list}}" wx:key="{{index}}" bindtap="ViewImage" data-url="{{img_list[index]}}">
+				<image src='{{img_list[index]}}' mode='aspectFill'></image>
+				<view class="cu-tag bg-red" catchtap="DelImg" data-index="{{index}}">
+					<text class="cuIcon-close"></text>
+				</view>
+      </view>
+      
+      
+
+			<view class="solids main-text-color" bindtap="ChooseImage" wx:if="{{img_list.length<9}}">
+				<text class="cuIcon-cameraadd "></text>
+			</view>
+		</view>
+  </view>
+
+	<button class="cu-btn block button margin-tb-lg lg" bindtap="post">发布动态</button>
+</view>

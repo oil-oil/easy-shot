@@ -1,0 +1,5 @@
+<view wx:if="{{!evaluate.array.length}}" class="flex align-center justify-center bg-white" style="width:100%;height:100vh;flex-direction:column">
+    <image src="../../../../images/icon2/order_finish.png"></image>
+    <view class="text-xl margin text-bold">约拍成功</view>
+    <view class="text-sm text-gray main-text-color" bindtap="show_order">查看订单详情</view>
+  </view>

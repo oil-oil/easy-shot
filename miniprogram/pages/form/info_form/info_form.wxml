@@ -1,0 +1,23 @@
+<scroll-view scroll-y="true" style="height:100vh" class="bg-white">
+  <view style="position:relative" class="padding-sm">
+    <image style="width:150rpx;height:150rpx;border-radius:50%" mode="aspectFill" src="{{user.avatar}}"></image>
+    <view class="flex align-center justify-center main-bg-color write" >
+        <view class="cuIcon-camerafill text-white text-xs "></view>
+    </view>
+  </view>
+  <view class="padding-sm text-bold text-lg">基本资料</view>
+
+  <view class="cu-form-group">
+		<view class="title">用户名</view>
+		<input placeholder="请输入用户名" value="{{user.name}}"></input>
+  </view>
+
+  <view class="cu-form-group margin-top">
+		<view class="title">性别</view>
+		<picker bindchange="PickerChange" value="{{index}}" range="{{picker}}">
+			<view class="picker">
+				保密{{}}
+			</view>
+		</picker>
+	</view>
+</scroll-view>
