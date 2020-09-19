@@ -56,6 +56,20 @@ Page({
         match:{_id}
       }
     }).then(res=>{
+      if(!res.result.list.length){
+        wx.hideLoading()
+        wx.showModal({
+          content:'这条动态已经被作者删除啦，看看其他动态把',
+          confirmColor:getApp().globalData.color,
+          showCancel:false,
+          success:res=>{
+            wx.navigateBack({
+              delta: 1,
+            })
+          }
+        })
+        return
+      }
       this.setData({post_array:res.result.list[0]})
       this.init_status()
     })
@@ -82,6 +96,7 @@ Page({
         match:{post_id:_id}
       }
     }).then(res=>{
+
       if(res.result.list.length&&!this.data.comment.nomore){
         for(let i in res.result.list){
           var temp = this.data.comment.array
@@ -110,15 +125,18 @@ Page({
     }
   },
   follow(){
-    if(getApp().login_check()){
-      if(!this.data.status.follow){
-        getApp().follow(this.data.post_array.user[0]._openid)
-        this.setData({'status.follow':true})
+    // 关注功能
+    if(!this.data.status.follow){
+      if(this.data.post_array.user[0]._openid == getApp().globalData.user._openid){
+        getApp().show_modal('你不能关注你自己')
+        return
       }
-      else{
-        getApp().unfollow(this.data.post_array.user[0]._openid)
-        this.setData({'status.follow':false})
-      }
+      getApp().follow(this.data.post_array.user[0]._openid)
+      this.setData({'status.follow':true})
+    }
+    else{
+      getApp().unfollow(this.data.post_array.user[0]._openid)
+      this.setData({'status.follow':false})
     }
   },
   like(){

@@ -1,4 +1,5 @@
 var indexOf = function(array,which){
+  // 发布约拍表单中，用于检索匹配今天的日期
   for(var i=0;i<=array.length;i++){
     if(JSON.stringify(array[i]) === JSON.stringify(which)){
       return true
@@ -6,6 +7,18 @@ var indexOf = function(array,which){
   }
   return false
 }
+var match = function(choose,item){
+  // 约拍选择日期时，用于检测该日期是否可以选择
+  if(typeof choose == 'undefined'){
+    return true
+  }
+  for(var i=0;i<choose.length;i++){
+    if(item.year == choose[i].year && item.month == choose[i].month && item.dateNum == choose[i].dateNum && item.status!== 'past'){
+      return true
+    }
+  }
+}
 module.exports ={
-  indexOf:indexOf
+  indexOf:indexOf,
+  match:match
 }

@@ -30,11 +30,6 @@
 		</picker>
 	</view>
 	
-	<view class="cu-form-group">
-		<view class="title main-text-color">拍摄地点</view>
-		<input placeholder="点击输入" bindinput="address_input"></input>
-	</view>
-
   <view class="cu-form-group margin-top align-center" wx:if="{{appoint_type=='special'}}">
     <view class="title main-text-color">交付时间</view>
     <view class="text-gray">拍摄完成后</view>

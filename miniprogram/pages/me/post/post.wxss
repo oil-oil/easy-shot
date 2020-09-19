@@ -1,0 +1,28 @@
+.top-bar{
+  display: flex;
+  align-items: center;
+  width: 100%;
+  position:fixed;
+  z-index: 999;
+  justify-content: center;
+  transition: all 0.3s;
+}
+.top-tab{
+  position: relative;
+}
+.top-bar-line{
+  position: absolute;
+  bottom: 0;
+  height: 5rpx;
+  width: 33.3%;
+  transition: 0.3s all;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.inner-line{
+  width: 100%;
+  height: 100%;
+  transition: 0.3s all;
+  margin: 0 auto;
+}

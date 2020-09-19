@@ -1,4 +1,5 @@
 // miniprogram/pages/form/appoint_form/date_choose/date_choose.js
+
 const db = wx.cloud.database()
 Page({
   data: {
@@ -14,7 +15,6 @@ Page({
   },
   onLoad(e){
     this.setData({appoint:JSON.parse(e.appoint)})
-    console.log(this.data.appoint)
     let now = new Date();
     let year = now.getFullYear();
     let month = now.getMonth() + 1;
@@ -91,18 +91,6 @@ Page({
         dateArr[i].status = 'futrue'
       }
     }
-    if(this.data.appoint.date_type === 0){
-      var choose = this.data.appoint.date_choose
-      for(let i in dateArr){
-        for(let j in choose){
-          if(dateArr[i].year == choose[j].year && dateArr[i].month == choose[j].month && dateArr[i].dateNum == choose[j].dateNum && dateArr[i].status
-            !== 'past'){
-            dateArr[i].status = 'futrue'
-          }
-        }
-      }
-    }
-  
     this.setData({
       dateArr: dateArr
     })
@@ -164,46 +152,45 @@ Page({
     })
     var date = new Date()
     let new_message  = {
-       _id:''+ date.getTime(),
+        _id:''+ date.getTime(),
         receiver:this.data.appoint.user[0]._openid,
         type:'notice',
         date:date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate(),
         status:false,
     }
-    const new_photographer_order = {
+    const new_order = {
       date:''+new Date().getTime(),
-      _openid:this.data.appoint._openid,
       appoint_id:this.data.appoint._id,
+      price:this.data.appoint.appoint_type=='free'?'互免约拍':this.data.appoint.price,
+      adress:this.data.appoint.adress,
       appoint_date:this.data.date_choose,
       order_date:date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate()+' '+date.getHours()+':'+date.getMinutes()+':'+date.getSeconds(),
       status:'ongoing',
-      type:'photographer',
-      user_id:getApp().globalData.user._openid
-    }
-    const new_model_order = {
-      date:''+new Date().getTime(),
-      appoint_id:this.data.appoint._id,
-      appoint_date:this.data.date_choose,
-      order_date:date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate()+' '+date.getHours()+':'+date.getMinutes()+':'+date.getSeconds(),
-      status:'ongoing',
-      type:'model',
       user_id:this.data.appoint._openid
     }
-    db.collection('order').add({
-      data:new_photographer_order
+    db.collection('appointment')
+    .doc(this.data.appoint._id).update({
+      data:{
+        date_choose:db.command.pull(this.data.date_choose)
+      }
     }).then(res=>{
-      console.log(res)
-      new_message.about_id = res._id
-      db.collection('message').add({
-        data:new_message
-      })
+      if(res.stats.updated === 1){
+        db.collection('order').add({
+          data:new_order
+        }).then(res=>{
+          new_message.about_id = res._id
+          db.collection('message').add({
+            data:new_message
+          })
+          wx.redirectTo({
+            url: '../finish/finish?order_id='+res._id,
+          })
+        })
+      }
+      else{
+        getApp().show_modal('这个日期刚刚被其他人选择了哦，请重新选择')
+      }
     })
-    db.collection('order').add({
-      data:new_model_order
-    }).then(res=>{
-      wx.redirectTo({
-        url: '../finish/finish?order_id='+res._id,
-      })
-    })
+    
   } 
 })

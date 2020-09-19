@@ -2,7 +2,7 @@
 
 <view class="cu-form-group margin-top animation-slide-bottom">
     <view class="title main-text-color">订单价格</view>
-    <view class="text-gray">￥{{appoint.price}}</view>
+    <view class="text-gray">{{appoint.appoint_type == "free"?"互免约拍":"￥"+appoint.price}}</view>
 </view>
 <view class="cu-form-group margin-top animation-slide-bottom">
     <view class="title main-text-color">已选择日期</view>
@@ -34,7 +34,7 @@
   <view class='date-box'>
     <block wx:for='{{dateArr}}' wx:key='' >
       <view class='{{isToday.year==item.year&&isToday.month==item.month&&isToday.dateNum==item.dateNum ? "main-text-color bg-gray" : ""}} {{item.status=="choose"?"bg-gray":""}}'>
-        <view class='date-head {{item.status=="futrue"?"":"text-gray"}} {{item.year&&date_choose.year===item.year&&date_choose.month===item.month&&date_choose.dateNum===item.dateNum?"main-bg-color text-white":""}}' bindtap='choose_date' data-index='{{index}}'>
+        <view class='date-head {{item.status=="futrue"?"":"text-gray"}} {{!appoint_type&&utils.match(appoint.date_choose,item)?"":"text-gray"}} {{item.year&&date_choose.year===item.year&&date_choose.month===item.month&&date_choose.dateNum===item.dateNum?"main-bg-color text-white":""}}' bindtap='{{!appoint_type&&utils.match(appoint.date_choose,item)?"choose_date":""}}' data-index='{{index}}'>
           <view >{{item.dateNum}}</view>
         </view>
       </view>

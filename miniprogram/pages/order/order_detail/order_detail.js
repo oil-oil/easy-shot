@@ -37,12 +37,12 @@ Page({
           'user.avatar':1,
           'user.name':1,
           'user._openid':1,
+          'price':1,
+          'adress':1,
           appoint_date:1,
           status:1,
           'appointment.img':1,
           'appointment.title':1,
-          'appointment.price':1,
-          'appointment.adress':1,
           'appointment.paydate':1,
         },
         match:{
@@ -51,6 +51,12 @@ Page({
       }
     }).then(res=>{
       wx.hideLoading()
+      if(res.result.list[0].user[0]._openid == getApp().globalData.user._openid){
+        res.result.list[0].type = 'photographer'
+      }
+      else{
+        res.result.list[0].type = 'model'
+      }
       this.setData({order:res.result.list[0]})
     })
   },

@@ -60,6 +60,20 @@ Page({
         match:{_id}
       }
     }).then(res=>{
+      if(!res.result.list.length){
+        wx.hideLoading()
+        wx.showModal({
+          content:'这个作品已经被作者删除啦，看看其他作品把·',
+          confirmColor:getApp().globalData.color,
+          showCancel:false,
+          success:res=>{
+            wx.navigateBack({
+              delta: 1,
+            })
+          }
+        })
+        return
+      }
       this.setData({works_array:res.result.list[0]})
       this.init_status()
       for(let i in this.data.works_array.img){
@@ -87,7 +101,7 @@ Page({
     this.data.img_load++
     var type = e.currentTarget.dataset.type
     var index = e.currentTarget.dataset.index
-    var height = e.detail.height/e.detail.width
+    var height = parseFloat((e.detail.height/e.detail.width).toFixed(2)) 
     this.setData({[type+'_array['+index+'].height']:height})
     if(this.data.img_load == this.data.works_array.img.length){
       this.waterfull()
@@ -112,12 +126,13 @@ Page({
       this.setData({left_array:left,right_array:right})
       this.waterfull()
     }
-    else if(right_height - right[right.length - 1].height >= left_height){
+    else if(right_height - right[right.length - 1].height > left_height){
       right.pop()
       left.push(right[right.length - 1])
       this.setData({left_array:left,right_array:right})
       this.waterfull()
     }
+    else{}
     }
   },
   like(){
@@ -162,8 +177,11 @@ Page({
   },
   follow(){
     // 关注功能
-    if(getApp().login_check()){
       if(!this.data.status.follow){
+        if(this.data.works_array.user[0]._openid == getApp().globalData.user._openid){
+          getApp().show_modal('你不能关注你自己')
+          return
+        }
         getApp().follow(this.data.works_array.user[0]._openid)
         this.setData({'status.follow':true})
       }
@@ -171,7 +189,5 @@ Page({
         getApp().unfollow(this.data.works_array.user[0]._openid)
         this.setData({'status.follow':false})
       }
-      console.log(this.data.status)
-    }
   }
 })

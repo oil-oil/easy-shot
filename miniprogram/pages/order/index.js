@@ -1,4 +1,5 @@
 const db = wx.cloud.database()
+const _ = db.command
 Page({
   data: {
     top_bar:{
@@ -62,7 +63,7 @@ Page({
   get_ongoing(){
     // 获取正在进行中的订单数据
     wx.cloud.callFunction({
-      name:'lookup_talk',
+      name:'lookup_order',
       data:{
         collection:'order',
         skip:this.data.ongoing.skip,
@@ -86,17 +87,24 @@ Page({
           'user._openid':1,
           appoint_date:1,
           'appointment.img':1,
-          'appointment.price':1,
-          'appointment.adress':1,
+          'price':1,
+          'adress':1,
         },
-        match:{
-          _openid:getApp().globalData.user._openid,
-          status:'ongoing'
-        }
+        match:_.and([
+          _.or([
+            {
+              _openid: getApp().globalData.user._openid
+            },
+            {
+              user_id: getApp().globalData.user._openid
+            }
+          ])
+        ]),
+        match2:{status:'ongoing'}    
       }
     }).then(res=>{
-      console.log(res)
       if(res.result.list.length&&!this.data.ongoing.nomore){
+        this.init_status(res.result.list)
         for(let i in res.result.list){
           var temp = this.data.ongoing.array
           temp.push(res.result.list[i])
@@ -111,7 +119,7 @@ Page({
   get_evaluate(){
     // 获取待评价的订单数据
     wx.cloud.callFunction({
-      name:'lookup_talk',
+      name:'lookup_order',
       data:{
         collection:'order',
         skip:this.data.evaluate.skip,
@@ -136,17 +144,26 @@ Page({
           'user._openid':1,
           appoint_date:1,
           'appointment.img':1,
-          'appointment.price':1,
-          'appointment.adress':1,
+          'price':1,
+          'adress':1,
         },
-        match:{
-          _openid:getApp().globalData.user._openid,
-          status:'evaluate'
-        }
+        match:_.and([
+          _.or([
+            {
+              _openid: getApp().globalData.user._openid
+            }, 
+            {
+              user_id: getApp().globalData.user._openid
+            }   
+          ])
+        ])
+        ,
+        match2:{status:'evalute'}
+        
       }
     }).then(res=>{
-      console.log(res)
       if(res.result.list.length&&!this.data.evaluate.nomore){
+        this.init_status(res.result.list)
         for(let i in res.result.list){
           var temp = this.data.evaluate.array
           temp.push(res.result.list[i])
@@ -161,7 +178,7 @@ Page({
   get_finish(){
     // 获取已完成的订单数据
     wx.cloud.callFunction({
-      name:'lookup_talk',
+      name:'lookup_order',
       data:{
         collection:'order',
         skip:this.data.finish.skip,
@@ -185,17 +202,25 @@ Page({
           'user._openid':1,
           appoint_date:1,
           'appointment.img':1,
-          'appointment.price':1,
-          'appointment.adress':1,
+          'price':1,
+          'adress':1,
         },
-        match:{
-          _openid:getApp().globalData.user._openid,
-          status:'finish'
-        }
+        match:_.and([
+          _.or([
+            {
+              _openid: getApp().globalData.user._openid
+            },
+            {
+              user_id: getApp().globalData.user._openid
+            }
+          ])
+        ])
+        ,
+        match2:{status:'finish'}
       }
     }).then(res=>{
-      console.log(res)
       if(res.result.list.length&&!this.data.finish.nomore){
+        this.init_status(res.result.list)
         for(let i in res.result.list){
           var temp = this.data.finish.array
           temp.push(res.result.list[i])
@@ -206,6 +231,17 @@ Page({
         this.data.finish.nomore = true
       }
     })
+  },
+  init_status(array){
+    // 区分订单类型
+    for(let i in array){
+      if(array[i].user[0]._openid == getApp().globalData.user._openid){
+        array[i].type = 'photographer'
+      }
+      else{
+        array[i].type = 'model'
+      }
+    }
   },
   talk(e){
     getApp().talk(this.data.ongoing.array[e.currentTarget.dataset.index].user[0])

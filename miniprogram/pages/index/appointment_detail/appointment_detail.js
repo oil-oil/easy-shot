@@ -50,13 +50,6 @@ Page({
       }
     }).then(res=>{
       if(res.result.list.length){
-        if(res.result.list[0].order.length){
-          for(let j in res.result.list[0].order){
-            if(res.result.list[0].order[j].type!=='model'){
-              res.result.list[0].order.splice(j,1)
-            }
-          }
-        }
         this.setData({appointment:res.result.list[0]})
       }
       this.init_status()
@@ -86,7 +79,6 @@ Page({
     this.setData({current:e.detail.current})
   },
   choose_date(){
-    if(getApp().login_check()){
       if(getApp().globalData.user._openid == this.data.appointment._openid){
         getApp().show_modal('你不能订购自己的约拍')
         return
@@ -94,19 +86,19 @@ Page({
       wx.navigateTo({
         url: './date_choose/date_choose?appoint='+JSON.stringify(this.data.appointment) ,
       })
-    }
-    
   },
   follow(){
-    if(getApp().login_check()){
-      if(!this.data.status.follow){
-        getApp().follow(this.data.appointment.user[0]._openid)
-        this.setData({'status.follow':true})
+    if(!this.data.status.follow){
+      if(this.data.appointment.user[0]._openid == getApp().globalData.user._openid){
+        getApp().show_modal('你不能关注你自己')
+        return
       }
-      else{
-        getApp().unfollow(this.data.appointment.user[0]._openid)
-        this.setData({'status.follow':false})
-      }
+      getApp().follow(this.data.appointment.user[0]._openid)
+      this.setData({'status.follow':true})
+    }
+    else{
+      getApp().unfollow(this.data.appointment.user[0]._openid)
+      this.setData({'status.follow':false})
     }
   },
   favor(){

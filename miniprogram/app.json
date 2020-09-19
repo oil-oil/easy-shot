@@ -21,7 +21,8 @@
     "pages/index/appointment_detail/date_choose/date_choose",
     "pages/me/favor/favor",
     "pages/search/search",
-    "pages/me/follow/follow"
+    "pages/me/follow/follow",
+    "pages/me/post/post"
   ],
   "window": {
     "backgroundColor": "#F6F6F6",

@@ -4,7 +4,7 @@ Page({
   data: {
     _openid:'',
     top_bar:{
-      now_tab:1,
+      now_tab:0,
       array:['作品','约拍','发现'],
       
     },
@@ -32,19 +32,10 @@ Page({
     },
     refreshing:false,
   },
-  onLoad(e){
-    this.setData({_openid:e.user_id})
-    this.get_user(e.user_id)
-    this.get_post(e.user_id)
-    this.get_appointment(e.user_id)
-    this.get_works(e.user_id)
-  },
-  init_status(){
-    if(getApp().globalData.user!==null){
-      if(getApp().globalData.user.follow.indexOf(this.data.user._openid) !== -1){
-        this.setData({'status.follow':true})
-      }
-    }  
+  onLoad(){
+    this.get_post(getApp().globalData.user._openid)
+    this.get_appointment(getApp().globalData.user._openid)
+    this.get_works(getApp().globalData.user._openid)
   },
   get_post(_openid){
     wx.cloud.callFunction({
@@ -177,16 +168,6 @@ Page({
       }
     })
   },
-  get_user(_openid){
-    db.collection('user').where({
-      _openid:_openid
-    })
-    .get()
-    .then(res=>{
-      this.setData({user:res.data[0]})
-      this.init_status()
-    })
-  },
   switch_top_tab(e){
     console.log(e.currentTarget.dataset.index)
     this.setData({['top_bar.now_tab']:e.currentTarget.dataset.index})
@@ -204,12 +185,12 @@ Page({
     const index = e.currentTarget.dataset.index
     if(page == 'post'){
       wx.navigateTo({
-        url: '../index/'+page+'_detail/'+page+'_detail?_id='+this.data[page].array[index]._id+'&current='+e.currentTarget.dataset.img_index,
+        url: '../../index/'+page+'_detail/'+page+'_detail?_id='+this.data[page].array[index]._id+'&current='+e.currentTarget.dataset.img_index,
       })
       return
     }
     wx.navigateTo({
-      url: '../index/'+page+'_detail/'+page+'_detail?_id='+this.data[page].array[index]._id,
+      url: '../../index/'+page+'_detail/'+page+'_detail?_id='+this.data[page].array[index]._id,
     })
   },
   talk(){
@@ -217,69 +198,7 @@ Page({
       url: '../talk/talk?user='+JSON.stringify(this.data.user),
     })
   },
-  refresh(){
-    var _openid = this.data._openid
-    if(this.data.top_bar.now_tab == 0){
-      this.setData({'works.array':[]})
-      this.data.works.nomore = false
-      this.data.works.skip = 0
-      this.get_works(_openid)
-    }
-    if(this.data.top_bar.now_tab == 1){
-      this.setData({'appointment.array':[]})
-      this.data.appointment.nomore = false
-      this.data.appointment.skip = 0
-      this.get_appointment(_openid)
-    }
-    if(this.data.top_bar.now_tab == 2){
-      this.setData({'post.array':[]})
-      this.data.post.nomore = false
-      this.data.post.skip = 0
-      this.get_post(_openid)
-    }
-  },
-  post_like(e){
-    var index = e.currentTarget.dataset.index
-    if(getApp().login_check()){
-      if(!this.data.post.array[index].status){
-        var date = new Date()
-        db.collection('message').add({
-          data:{
-            _id:''+ date.getTime() +'',
-            about_id:this.data.post.array[index]._id,
-            receiver:this.data.post.array[index].user[0]._openid,
-            type:'like',
-            date:date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate(),
-            status:false,
-            from:'动态'
-          }
-        })
-        db.collection('post')
-        .doc(this.data.post.array[index]._id)
-        .update({
-          data:{
-            like:db.command.unshift(getApp().globalData.user._openid)
-          }
-        })
-        .then(res=>{
-          var temp = this.data.post.array[index].like
-          temp.unshift(getApp().globalData.user._openid)
-          const like = 'post.array['+index+'].like'
-          const status = 'post.array['+index+'].status'
-          this.setData({[like]:temp,[status]:true})
-          wx.showToast({
-            title: '点赞成功'
-          })
-        })
-        }
-        else{
-          wx.showToast({
-            title: '已经点过赞啦',
-            icon:'none'
-          })
-        }
-    }
-  },
+
   load_more(){
     var _openid = this.data._openid
     if(this.data.top_bar.now_tab == 0 && !this.data.works.nomore){
@@ -295,20 +214,76 @@ Page({
       this.get_post(_openid)
     }
   },
-  follow(){
-    // 关注功能
-    if(!this.data.status.follow){
-      if(this.data.user._openid == getApp().globalData.user._openid){
-        getApp().show_modal('你不能关注你自己')
-        return
-      }
-      getApp().follow(this.data.user._openid)
-      this.setData({'status.follow':true})
+  delete(e){
+    const index = e.currentTarget.dataset.index
+    if(this.data.top_bar.now_tab == 0){
+      wx.showModal({
+        content:'你确定要删除这个作品吗',
+        confirmText:'确认删除',
+        confirmColor:getApp().globalData.color,
+        success:res=>{
+          if(res.confirm){
+            wx.cloud.deleteFile({
+              fileList:this.data.works.array[index].img
+            }).then(res=>{
+              db.collection('works').doc(this.data.works.array[index]._id)
+              .remove().then(res=>{
+                wx.showToast({
+                  title: '删除成功',
+                })
+                var temp = this.data.works.array
+                temp.splice(index,1)
+                this.setData({'works.array':temp})
+              })
+            })
+          }
+        }
+      })
     }
-    else{
-      getApp().unfollow(this.data.user._openid)
-      this.setData({'status.follow':false})
+    if(this.data.top_bar.now_tab == 1 ){
+      wx.showModal({
+        content:'你确定要删除这个约拍吗',
+        confirmText:'确认删除',
+        confirmColor:getApp().globalData.color
+      })
     }
-    
-  },
+    if(this.data.top_bar.now_tab == 2 ){
+      wx.showModal({
+        content:'你确定要删除这条动态吗',
+        confirmText:'确认删除',
+        confirmColor:getApp().globalData.color,
+        success:res=>{
+          if(res.confirm){
+            if(this.data.post.array[index].img.length){
+              wx.cloud.deleteFile({
+                fileList:this.data.post.array[index].img
+              }).then(res=>{
+                db.collection('post').doc(this.data.post.array[index]._id)
+                .remove().then(res=>{
+                  wx.showToast({
+                    title: '删除成功',
+                  })
+                  var temp = this.data.post.array
+                  temp.splice(index,1)
+                  this.setData({'post.array':temp})
+                })
+              })
+            }
+            else{
+              db.collection('post').doc(this.data.post.array[index]._id)
+              .remove().then(res=>{
+                wx.showToast({
+                  title: '删除成功',
+                })
+                var temp = this.data.post.array
+                temp.splice(index,1)
+                this.setData({'post.array':temp})
+              })
+            }
+           
+          }
+        }
+      })
+    }
+  }
 })

@@ -1,0 +1,26 @@
+<view style="position:relative">
+  <view class="top-bar bg-white" >
+    <view class="flex align-center top-tab margin-xs" style="width:100%;"  >
+      <view wx:for='{{top_bar.array}}' class="margin-xs text-lg {{index==top_bar.now_tab?'text-bold':''}} text-center" style="width:33.3%" data-index="{{index}}" bindtap="switch_top_tab">
+        {{item}}
+      </view>
+      <view class="top-bar-line" style="left:{{top_bar.now_tab*33.3}}%">
+        
+        <view class="inner-line main-bg-color"></view>
+      </view>
+    </view>
+  </view>
+
+
+  <view class="add-button flex align-center justify-center text-white main-bg-color" bindtap="switch_add_modal" style="transform:rotate({{add_modal?45:0}}deg)">
+    <view class="cuIcon-add"></view>
+  </view>
+
+<swiper style="height:100vh" bindchange="swiper_change" current="{{top_bar.now_tab}}" >
+  <swiper-item><include src='./post_detail/works.wxml' /></swiper-item>
+  <swiper-item><include src='./post_detail/appointment.wxml' /></swiper-item>
+  <swiper-item><include src='./post_detail/post.wxml' /></swiper-item>
+</swiper>
+  
+</view>
+

@@ -134,13 +134,6 @@ Page({
       this.setData({refreshing:false})
       if(res.result.list.length&&!this.data.appointment.nomore){
         for(let i in res.result.list){
-          if(res.result.list[i].order.length){
-            for(let j in res.result.list[i].order){
-              if(res.result.list[i].order[j].type!=='model'){
-                res.result.list[i].order.splice(j,1)
-              }
-            }
-          }
           var temp = this.data.appointment.array
           temp.push(res.result.list[i])
           this.setData({['appointment.array']:temp})

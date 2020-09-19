@@ -50,14 +50,6 @@ App({
     }
   },
   follow(_openid){
-    // 通用用户关注功能
-    if(!this.login_check()){
-      return
-    }
-    if(_openid == this.globalData.user._openid){
-      this.show_modal('你不能关注你自己')
-      return
-    }
     const db = wx.cloud.database()
     db.collection('user')
     .where({_openid:_openid})
@@ -107,9 +99,6 @@ App({
   },
   talk(user_data){
     // 通用私信功能
-    if(!this.login_check()){
-      return
-    }
     if(user_data._openid == this.globalData.user._openid){
       this.show_modal('你不能与自己私信')
       return
