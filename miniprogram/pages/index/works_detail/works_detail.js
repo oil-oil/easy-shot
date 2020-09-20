@@ -25,10 +25,9 @@ Page({
       }
       if(getApp().globalData.user.follow.indexOf(this.data.works_array.user[0]._openid) !== -1){
         this.setData({'status.follow':true})
-        console.log(this.data.status)
       }
       var temp = this.data.works_array
-      temp.date = new Date((parseInt(temp._id))).toLocaleString().replace(/:\d{1,2}$/,' ');  
+      temp.date = getApp().get_date(temp._id)  
       this.setData({works_array:temp})  
   },
   get_works(_id){

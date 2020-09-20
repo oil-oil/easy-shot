@@ -112,5 +112,16 @@ App({
     wx.navigateTo({
       url: '/pages/user/user?user_id='+_openid,
     })
-  }
+  },
+  get_date(timestamp) {
+    // 通用时间转换方法 
+    var now=new Date(parseInt(timestamp)); 
+    var year=now.getFullYear(); 
+    var month=now.getMonth()+1; 
+    var date=now.getDate(); 
+    var hour=now.getHours(); 
+    var minute=now.getMinutes(); 
+    var second=now.getSeconds(); 
+    return year+"-"+month+"-"+date+" "+hour+":"+minute+":"+second; 
+} 
 })

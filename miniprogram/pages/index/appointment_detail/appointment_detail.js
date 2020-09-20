@@ -68,7 +68,7 @@ Page({
         this.setData({'status.favor':true})
       }
       var temp = this.data.appointment
-      temp.date = new Date((parseInt(temp._id))).toLocaleString().replace(/:\d{1,2}$/,' ');  
+      temp.date = getApp().get_date(temp._id)  
       this.setData({appointment:temp})
   },
   show_user(){

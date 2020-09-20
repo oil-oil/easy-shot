@@ -85,7 +85,7 @@ Page({
             if(res.result.list[i].like.indexOf(getApp().globalData.user._openid)!==-1){
               res.result.list[i].status = true
             } 
-            res.result.list[i].date = new Date((parseInt(res.result.list[i]._id))).toLocaleString().replace(/:\d{1,2}$/,' ');  
+            res.result.list[i].date = getApp().get_date(res.result.list[i]._id)
           var temp = this.data.post.array
           temp.push(res.result.list[i])
           this.setData({['post.array']:temp})

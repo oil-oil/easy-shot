@@ -18,7 +18,6 @@ Page({
     }
   },
   onLoad(e){
-    console.log(typeof e.current)
     if(e.current !== 'undefined'){
       this.setData({current:e.current})
     }
@@ -115,7 +114,6 @@ Page({
     this.setData({[height]:swiper_height})
   },
   init_status(){
-
       if(this.data.post_array.like.indexOf(getApp().globalData.user._openid)!==-1){
         this.setData({'status.like':true})
       }
@@ -123,7 +121,7 @@ Page({
         this.setData({'status.follow':true})
       }
       var temp = this.data.post_array
-      temp.date = new Date((parseInt(temp._id))).toLocaleString().replace(/:\d{1,2}$/,' ');  
+      temp.date = getApp().get_date(temp._id)
       this.setData({post_array:temp})
   },
   follow(){
