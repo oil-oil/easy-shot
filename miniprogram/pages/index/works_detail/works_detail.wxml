@@ -29,7 +29,7 @@
 </view>
 
 <view class="padding">
-  <view class="text-sm text-gray ">2020/5/20</view>
+  <view class="text-sm text-gray ">{{works_array.date}}</view>
   <view class="fr margin-bottom" >
     <text class="{{status.like?'cuIcon-likefill text-red':'cuIcon-like'}} text-lg " bindtap="like"></text>
     <text class="margin-left-xs">{{works_array.like.length}}</text>

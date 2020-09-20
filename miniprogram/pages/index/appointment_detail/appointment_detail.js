@@ -61,14 +61,15 @@ Page({
     this.setData({[height]:swiper_height})
   },
   init_status(){
-    if(getApp().globalData.user!==null){
       if(getApp().globalData.user.follow.indexOf(this.data.appointment.user[0]._openid) !== -1){
         this.setData({'status.follow':true})
       }
       if(getApp().globalData.user.favor.indexOf(this.data.appointment._id) !== -1){
         this.setData({'status.favor':true})
       }
-    }
+      var temp = this.data.appointment
+      temp.date = new Date((parseInt(temp._id))).toLocaleString().replace(/:\d{1,2}$/,' ');  
+      this.setData({appointment:temp})
   },
   show_user(){
     wx.navigateTo({

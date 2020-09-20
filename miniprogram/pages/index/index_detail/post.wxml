@@ -11,9 +11,9 @@
 			<view class="bg-img" wx:for="{{item.img}}" wx:for-index='img_index' data-index='{{index}}' data-img_index='{{img_index}}' data-page='post' catchtap='show_detail'>
 				<image src='{{item}}' mode='aspectFill'></image>
       </view>
-		</view>
+    </view>
   </view>
-
+  <view class="padding-sm text-sm text-gray">{{item.date}}</view>
     <view class="margin flex justify-between" style="flex-direction:column"> 
       <view class="flex justify-center align-center text-gray" >
         

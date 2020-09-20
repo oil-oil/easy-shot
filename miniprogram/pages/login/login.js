@@ -2,7 +2,8 @@
 const db = wx.cloud.database()
 Page({
   data: {
-    text:'加载中'
+    text:'加载中',
+    actionsheet:false,
   },
   onLoad: function (options) {
     this.login_check()
@@ -94,5 +95,8 @@ Page({
     })
     
     
+  },
+  hide_actionsheet(){
+    this.setData({actionsheet:false})
   },
 })

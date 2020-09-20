@@ -44,6 +44,7 @@
   <view class="margin-top-sm" >{{date_type[appointment.date_type]}}</view>
 </view>
 
+<view class="padding text-gray text-sm">发布于{{appointment.date}}</view>
 <view class="tabbar bg-white">
   <view class="flex-sub" bindtap="favor">
     <text class="{{status.favor?'cuIcon-favorfill text-yellow':'cuIcon-favor '}}"></text>

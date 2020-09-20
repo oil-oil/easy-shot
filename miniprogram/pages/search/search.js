@@ -67,7 +67,6 @@ data:{
     })
   },
   input(e){
-    console.log(e.detail.value)
     this.setData({search_text:e.detail.value})
     if(this.data.search_text!==''){
       this.get_appointment()

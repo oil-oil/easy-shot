@@ -4,3 +4,9 @@
     </button>
     <view class="text-bold text-xl main-text-color " style="font-style:italic">{{text}}</view>
 </view>
+
+<view class="mask" wx:if="{{actionsheet}}"></view>
+<view class="actionsheet" style=" transform: translateY({{actionsheet?'0':'100%'}});">
+  <button open-type="openSetting" class="margin">去获取授权</button>
+  <button class="margin text-gray" bindtap="hide_actionsheet">取消登陆</button>
+</view>

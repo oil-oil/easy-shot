@@ -1,38 +1,10 @@
 const db = wx.cloud.database()
 Page({
   data: {
-    has_login:false,
-    actionsheet:false,
     user:''
   },
   onLoad(){
-    wx.showLoading({
-      title: '加载中',
-    })
-    this.setData({has_login:getApp().globalData.has_login})
-    if(this.data.has_login){
-      this.setData({user:getApp().globalData.user})
-      db.collection('post')
-      .where({openid:this.data.user.openid})
-      .get().then(res=>{
-        wx.hideLoading()
-        var post = 'user.post'
-        if(res.data.length){
-          this.setData({[post]:res.data})
-        }
-        else{
-          this.setData({[post]:[]})
-        }
-      })
-      
-    }
-    else{
-      wx.hideLoading()
-    }
-  },
-  
-  hide_actionsheet(){
-    this.setData({actionsheet:false})
+    this.setData({user:getApp().globalData.user})
   },
   show_order(e){
     wx.navigateTo({

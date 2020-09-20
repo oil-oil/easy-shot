@@ -78,16 +78,14 @@ Page({
         match:this.data.post.only_follow?getApp().globalData.user.follow:{}
       }
     }).then(res=>{
-      console.log(res)
       this.setData({refreshing:false})
       if(res.result.list.length&&!this.data.post.nomore){
         for(let i in res.result.list){
           res.result.list[i].status = false
-          if(getApp().globalData.has_login == true){
             if(res.result.list[i].like.indexOf(getApp().globalData.user._openid)!==-1){
               res.result.list[i].status = true
-            }   
-          }
+            } 
+            res.result.list[i].date = new Date((parseInt(res.result.list[i]._id))).toLocaleString().replace(/:\d{1,2}$/,' ');  
           var temp = this.data.post.array
           temp.push(res.result.list[i])
           this.setData({['post.array']:temp})

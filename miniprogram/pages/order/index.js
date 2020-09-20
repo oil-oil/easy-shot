@@ -31,7 +31,7 @@ Page({
       ]
     }
   },
-  onLoad(e){
+  async onLoad(e){
     this.get_ongoing()
     this.get_evaluate()
     this.get_finish()

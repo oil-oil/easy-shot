@@ -163,7 +163,6 @@ Page({
   // 更换接单日期类型
   type_change(e){
     this.setData({'type.choose':e.detail.value})
-    console.log(e)
   },
   post(){
     if(this.data.type.choose == 0&&this.data.choose_array.length == 0){

@@ -115,14 +115,16 @@ Page({
     this.setData({[height]:swiper_height})
   },
   init_status(){
-    if(getApp().globalData.user!==null){
+
       if(this.data.post_array.like.indexOf(getApp().globalData.user._openid)!==-1){
         this.setData({'status.like':true})
       }
       if(getApp().globalData.user.follow.indexOf(this.data.post_array.user[0]._openid) !== -1){
         this.setData({'status.follow':true})
       }
-    }
+      var temp = this.data.post_array
+      temp.date = new Date((parseInt(temp._id))).toLocaleString().replace(/:\d{1,2}$/,' ');  
+      this.setData({post_array:temp})
   },
   follow(){
     // 关注功能

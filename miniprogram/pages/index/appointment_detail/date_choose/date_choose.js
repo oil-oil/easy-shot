@@ -155,7 +155,6 @@ Page({
         _id:''+ date.getTime(),
         receiver:this.data.appoint.user[0]._openid,
         type:'notice',
-        date:date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate(),
         status:false,
     }
     const new_order = {

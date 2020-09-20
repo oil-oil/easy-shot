@@ -47,13 +47,11 @@ Page({
     }
     if(!this.data.img_list.length){
       var timestamp=new Date().getTime()
-      var date = new Date()
           const new_post = {
             _id:''+timestamp+'',
             text:this.data.text,
             img:[],
-            like:[],
-            date:date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate()
+            like:[]
           }
           db.collection('post').add({data:new_post}).then(res=>{
             wx.hideLoading({
