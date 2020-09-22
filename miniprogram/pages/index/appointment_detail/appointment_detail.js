@@ -50,6 +50,7 @@ Page({
       }
     }).then(res=>{
       if(res.result.list.length){
+
         this.setData({appointment:res.result.list[0]})
       }
       this.init_status()
@@ -59,6 +60,40 @@ Page({
     var swiper_height = e.detail.height/e.detail.width
     var height = 'height_array['+e.currentTarget.dataset.index+']'
     this.setData({[height]:swiper_height})
+  },
+  get_comment(_id){
+    wx.cloud.callFunction({
+      name:'lookup',
+      data:{
+        collection:'comment',
+        skip:this.data.comment.skip,
+        lookup:{
+          from: 'user',
+          localField: '_openid',
+          foreignField: '_openid',
+          as: 'user',
+        },
+        project:{
+          'text':1,
+          'date':1,
+          'user.name':1,
+          'user._openid':1,
+          'user.avatar':1,
+        },
+        match:{post_id:_id}
+      }
+    }).then(res=>{
+      if(res.result.list.length&&!this.data.comment.nomore){
+        for(let i in res.result.list){
+          var temp = this.data.comment.array
+          temp.push(res.result.list[i])
+        }
+        this.setData({['comment.array']:temp})
+      }
+      else{
+        this.data.comment.nomore = true
+      }
+    })
   },
   init_status(){
       if(getApp().globalData.user.follow.indexOf(this.data.appointment.user[0]._openid) !== -1){

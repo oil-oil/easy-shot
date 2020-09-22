@@ -1,6 +1,6 @@
-<scroll-view scroll-y='true' refresher-enabled='true' bindrefresherrefresh='refresh' refresher-triggered='{{refreshing}}' bindscrolltolower="load_more" style="height:100vh;padding-top:80rpx">
+<scroll-view scroll-y='true' refresher-enabled='true' bindrefresherrefresh='refresh' refresher-triggered='{{refreshing}}' bindscrolltolower="load_more" style="height:100vh;padding-bottom:210rpx">
   
-  <view class="margin-sm bg-white padding-sm animation-slide-bottom" style="border-radius:10rpx;" data-page='appointment' data-index='{{index}}' bindtap="show_detail" wx:for="{{appointment.array}}">
+  <view class="margin-sm bg-white padding-sm animation-slide-bottom shadow" style="border-radius:10rpx;" data-page='appointment' data-index='{{index}}' bindtap="show_detail" wx:for="{{appointment.array}}">
       <view class="flex align-center justify-between">
         <view class="flex align-center">
           <image style="width:50rpx;height:50rpx;border-radius:50%" class="margin-right-sm" mode="aspectFill" src="{{item.user[0].avatar}}"></image> 

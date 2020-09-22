@@ -14,6 +14,7 @@ data:{
   onLoad: function (options) {
   },
   get_appointment(){
+    wx.showNavigationBarLoading()
     // 正则匹配输入内容,实时搜索
     wx.cloud.callFunction({
       name:'lookup_db',
@@ -45,6 +46,10 @@ data:{
         }
       }
     }).then(res=>{
+      wx.hideNavigationBarLoading()
+      if(this.data.search_text==''){
+        return
+      }
       if(res.result.list.length){
         for(let i in res.result.list){
           if(res.result.list[i].order.length){

@@ -1,4 +1,6 @@
 // miniprogram/pages/login/login.js
+var QQMapWX = require('../../utils/qqmap-wx-jssdk')
+var qqmapsdk
 const db = wx.cloud.database()
 Page({
   data: {
@@ -6,6 +8,10 @@ Page({
     actionsheet:false,
   },
   onLoad: function (options) {
+    qqmapsdk = new QQMapWX({
+      key: 'FK4BZ-RGT6O-RISWJ-SMAJK-GVO3F-H4BKE'
+  });
+    wx.showNavigationBarLoading()
     this.login_check()
   },
   login_check(){
@@ -19,13 +25,35 @@ Page({
         .where({_openid:res.result.openId})
         .get()
         .then(res=>{
+          wx.getLocation({
+            type: 'wgs84',
+            success:res=>{
+              console.log(res)
+              const latitude = res.latitude
+              const longitude = res.longitude
+              qqmapsdk.reverseGeocoder({
+                location:{
+                  latitude,
+                  longitude
+                },
+                success:res=>{
+                  getApp().globalData.region = [res.result.address_component.province,res.result.address_component.city,res.result.address_component.district]
+                  wx.reLaunch({
+                    url: '../index/index',
+                  })
+                }
+                
+              })
+            },
+            fail:res=>{
+              wx.reLaunch({
+                url: '../index/index',
+              })
+            }
+           })
           if(res.data.length){
             getApp().globalData.has_login = true
             getApp().globalData.user = res.data[0]
-            wx.reLaunch({
-              url: '../index/index',
-            })
-
           }
           else{
             this.setData({text:'点击相机进入简约约拍'})

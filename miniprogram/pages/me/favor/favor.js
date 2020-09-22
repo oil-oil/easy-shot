@@ -21,6 +21,7 @@ Page({
     this.get_appointment()
   },
   get_appointment(){
+    wx.showNavigationBarLoading()
     wx.cloud.callFunction({
       name:'lookup_db_all',
       data:{
@@ -46,6 +47,7 @@ Page({
         match:getApp().globalData.user.favor
       }
     }).then(res=>{
+      wx.hideNavigationBarLoading()
       if(res.result.list.length&&!this.data.appointment.nomore){
         for(let i in res.result.list){
           var temp = this.data.appointment.array

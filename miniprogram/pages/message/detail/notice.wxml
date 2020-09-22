@@ -1,12 +1,12 @@
 <view>
-  <view class="flex align-center padding bg-white" wx:for="{{message_array}}">
-    <image style="width:100rpx;height:100rpx;border-radius:50%" mode="aspectFill" src="{{item.sender[0].avatar}}" data-index='{{index}}' bindtap="show_user"></image>
+  <view class="flex align-center padding bg-white" wx:for="{{message_array}}" bindtap="show_detail">
+    <image style="width:100rpx;height:100rpx;border-radius:50%" mode="aspectFill" src="{{item.sender[0].avatar}}" data-index='{{index}}' catchtap="show_user"></image>
     <view class="margin-left-sm">
       <view class="text-bold">{{item.sender[0].name}}</view>
       <view class="text-gray margin-top-xs">下单了你的约拍，快去查看订单详情吧</view>
     </view>
     <view style="margin-left:auto" class="flex align-center">
-      <view class="cuIcon-right text-xl" data-index="{{index}}" bindtap="show_detail"></view>
+      <view class="cuIcon-right text-xl" data-index="{{index}}" ></view>
     </view>
   </view>
 </view>

@@ -1,0 +1,3 @@
+<view class="padding">
+  <image style="margin:0 auto" src="../../../images/logo.png" style="width:100%" mode="aspectFit"></image>
+</view>

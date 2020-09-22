@@ -22,6 +22,7 @@ Page({
     }
   },
   get_like(){
+    wx.showNavigationBarLoading()
     wx.cloud.callFunction({
       name:'lookup_db',
       data:{
@@ -54,6 +55,7 @@ Page({
         }
       }
     }).then(res=>{
+      wx.hideNavigationBarLoading()
       // 获取数据后更改状态为已读
       db.collection('message')
       .where({
@@ -69,8 +71,8 @@ Page({
         for(let i in res.result.list){
           var temp = this.data.message_array
           temp.push(res.result.list[i])
-          this.setData({message_array:temp})
         }
+        this.setData({message_array:temp})
       }
       else{
         this.data.nomore = true
@@ -78,7 +80,7 @@ Page({
     })
   },
   get_notice(){
-    
+    wx.showNavigationBarLoading()
     wx.cloud.callFunction({
       name:'lookup_db',
       data:{
@@ -121,12 +123,13 @@ Page({
           status:true
         }
       })
+      wx.hideNavigationBarLoading()
       if(res.result.list.length){
         for(let i in res.result.list){
           var temp = this.data.message_array
           temp.push(res.result.list[i])
-          this.setData({message_array:temp})
         }
+        this.setData({message_array:temp})
       }
       else{
         this.data.nomore = true
@@ -134,6 +137,7 @@ Page({
     })
   },
   get_comment(){
+    wx.showNavigationBarLoading()
     wx.cloud.callFunction({
       name:'lookup_db',
       data:{
@@ -167,6 +171,7 @@ Page({
         }
       }
     }).then(res=>{
+      wx.hideNavigationBarLoading()
       // 获取数据后更改状态为已读
       db.collection('message')
       .where({
@@ -182,8 +187,8 @@ Page({
         for(let i in res.result.list){
           var temp = this.data.message_array
           temp.push(res.result.list[i])
-          this.setData({message_array:temp})
         }
+        this.setData({message_array:temp})
       }
       else{
         this.data.nomore = true

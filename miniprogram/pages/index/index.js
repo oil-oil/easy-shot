@@ -30,8 +30,10 @@ Page({
       nomore:false
     },
     refreshing:false,
+    region:[]
   },
   onLoad(){
+      this.setData({region:getApp().globalData.region})
       this.get_works()//获取作品数据
       this.get_post()//获取动态数据
       this.get_appointment()//获取约拍数据
@@ -97,9 +99,32 @@ Page({
     })
   },
   get_appointment(){
+    wx.showNavigationBarLoading()
+    var match,name
+    if(this.data.only_follow){
+      match = getApp().globalData.user.follow
+      name = 'lookup_db_all2'
+    }
+    else{
+      name = 'lookup_db'
+      if(this.data.region.length || this.data.region[0] == '任意区域'){
+        match = {}
+      }
+      else{
+        if(this.data.region[0] == '任意区域'){
+          match = {}
+        }
+        else if(this.data.region[1] == '任意区域'){
+          match = {'region.0':this.data.region[0]}
+        }
+        else{
+          match = {'region.0':this.data.region[0],'region.1':this.data.region[1]}
+        }
+      }
+    }
     //调用云数据库，联表查询
     wx.cloud.callFunction({
-      name:this.data.appointment.only_follow?'lookup_db_all2':'lookup_db',
+      name:name,
       data:{
         collection:'appointment',
         skip:this.data.appointment.skip,
@@ -126,7 +151,7 @@ Page({
           'img':1,
           'order.type':1
         },
-        match:this.data.appointment.only_follow?getApp().globalData.user.follow:{}
+        match:match
       }
     }).then(res=>{
       this.setData({refreshing:false})
@@ -141,8 +166,10 @@ Page({
         this.data.appointment.nomore = true
       }
     })
+    wx.hideNavigationBarLoading()
   },
   get_works(){
+    wx.showNavigationBarLoading()
     //调用云数据库，联表查询
     wx.cloud.callFunction({
       name:this.data.works.only_follow?'lookup_all':'lookup',
@@ -166,6 +193,7 @@ Page({
         match:this.data.works.only_follow?getApp().globalData.user.follow:{}
       }
     }).then(res=>{
+      wx.hideNavigationBarLoading()
       this.setData({refreshing:false})
       if(res.result.list.length&&!this.data.works.nomore){
         for(let i in res.result.list){
@@ -239,6 +267,17 @@ Page({
         })
       }
     }
+    this.refresh()
+  },
+  region_change(e) {
+    this.setData({
+      region: e.detail.value
+    })
+    wx.showToast({
+      title: '更改地区',
+      icon:'none'
+    })
+    console.log(this.data.region)
     this.refresh()
   },
   switch_top_tab(e){

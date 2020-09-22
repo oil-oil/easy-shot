@@ -3,7 +3,7 @@
     <image src="../../images/icon2/none_order.png"></image>
     <view class="text-sm text-gray">还没有订单噢</view>
   </view>
-  <view class="margin-sm bg-white padding-sm animation-slide-bottom" style="border-radius:10rpx;" data-index='{{index}}' bindtap="show_detail" wx:for="{{ongoing.array}}">
+  <view class="margin-sm bg-white padding-sm animation-slide-bottom shadow" style="border-radius:10rpx;" data-index='{{index}}' bindtap="show_detail" wx:for="{{ongoing.array}}">
     <view class="flex" style="width:100%">
     <image src="{{item.appointment[0].img[0]}}" mode="aspectFill" style="width:200rpx;height:200rpx;border-radius:10rpx;"></image>
     <view class="margin-left flex justify-between" style="flex-direction:column;width:60%" >

@@ -2,11 +2,7 @@ App({
   globalData: {
     color:'#A58AA9',
     has_login: false,
-    onwatch:{
-      talk:false,
-      message:false,
-      talk_room:false
-    },
+    region:[],
     user: null,
     unread_message:[],
     new_talk:''

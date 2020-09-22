@@ -22,10 +22,14 @@
   <view class="margin-top">
     <view class="text-bold text-lg">订单信息</view>
     <view class="margin-top-sm">
+      <view class="flex margin-sm ">
+        <view class="margin-right">备注</view>
+        <view class="text-gray">{{order.remark}}</view>
+      </view>
 
       <view class="flex margin-sm">
         <view class="margin-right">下单时间</view>
-        <view class="text-gray">2020-8-11</view>
+        <view class="text-gray">{{order.date}}</view>
       </view>
 
       <view class="flex margin-sm">

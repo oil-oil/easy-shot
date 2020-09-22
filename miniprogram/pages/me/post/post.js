@@ -38,6 +38,7 @@ Page({
     this.get_works(getApp().globalData.user._openid)
   },
   get_post(_openid){
+    wx.showNavigationBarLoading()
     wx.cloud.callFunction({
       name:'lookup_db',
       data:{
@@ -69,6 +70,7 @@ Page({
       }
     }).then(res=>{
       this.setData({refreshing:false})
+      wx.hideNavigationBarLoading()
       if(res.result.list.length&&!this.data.post.nomore){
         for(let i in res.result.list){
           res.result.list[i].status = false
@@ -88,6 +90,7 @@ Page({
     })
   },
   get_appointment(_openid){
+    wx.showNavigationBarLoading()
     wx.cloud.callFunction({
       name:'lookup_db',
       data:{
@@ -120,6 +123,7 @@ Page({
       }
     }).then(res=>{
       this.setData({refreshing:false})
+      wx.hideNavigationBarLoading()
       if(res.result.list.length&&!this.data.appointment.nomore){
         for(let i in res.result.list){
           var temp = this.data.appointment.array

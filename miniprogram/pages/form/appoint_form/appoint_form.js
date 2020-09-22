@@ -91,7 +91,7 @@ Page({
   },
   // 表单验证
   choose_date(){
-    if(this.data.type == ''){
+    if(this.data.appoint_type == ''){
       getApp().show_modal('请选择约拍类型')
       return
     }
@@ -118,6 +118,12 @@ Page({
     if(this.data.include.length == 0){
       getApp().show_modal('请填写约拍包含内容')
       return
+    }
+    for(let i in this.data.include){
+      if(this.data.include[i] == ''){
+        getApp().show_modal('请填写约拍包含内容')
+        return
+      }
     }
     if(this.data.img_list.length == 0){
       getApp().show_modal('请至少上传一张宣传图片')

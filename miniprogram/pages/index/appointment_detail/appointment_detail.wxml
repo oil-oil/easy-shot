@@ -36,7 +36,7 @@
 
 <view class="padding">
   <view class="text-bold">交付时间</view>
-  <view class="margin-top-sm" >拍摄完成后{{appointment.paydate}}天内</view>
+  <view class="margin-top-sm" >{{appointment.paydate == ''?'':'拍摄完成后天'+appointment.paydate+'内'}}</view>
 </view>
 
 <view class="padding">

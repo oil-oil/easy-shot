@@ -1,6 +1,6 @@
   <view class="top-bar bg-white">
     <view class="flex align-center top-tab ">
-      <view wx:for='{{top_bar.array}}' wx: class="text-lg margin-sm {{index==top_bar.now_tab?'text-bold main-text-color':''}}" data-index="{{index}}" bindtap="switch_top_tab">
+      <view wx:for='{{top_bar.array}}' wx: class="text-lg margin-sm  {{index==top_bar.now_tab?'text-bold main-text-color':''}}" data-index="{{index}}" bindtap="switch_top_tab">
         {{item}}
       </view>
       <view class="top-bar-line" style="left:{{top_bar.now_tab*33.3}}%">

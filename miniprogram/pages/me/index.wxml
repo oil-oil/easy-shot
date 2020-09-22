@@ -1,6 +1,6 @@
 <view>
 <view class="padding-sm" >
-  <view class="bg-white padding flex justify-between" style="border-radius:20rpx" >
+  <view class="bg-white padding flex justify-between shadow" style="border-radius:20rpx" >
     <view >
       <view class="text-xl text-black text-bold">{{user.name}}</view>
       <view class="text-gray text-sm margin-top-sm">普通用户</view>
@@ -32,19 +32,19 @@
 </view>
 <view class="flex">
   <view class="flex-sub padding">
-    <view class="bg-white flex justify-center align-center" style="flex-direction:column;border-radius:20rpx;width:25vw;height:25vw" bindtap="show_order">
+    <view class="bg-white flex justify-center align-center shadow" style="flex-direction:column;border-radius:20rpx;width:25vw;height:25vw" bindtap="show_order">
       <view class="cuIcon-form text-xl main-text-color" style="font-size:50rpx"></view>
       <view class="text-bold margin-top-sm">订单管理</view>
     </view>
   </view>
   <view class="flex-sub padding">
-    <view class="bg-white flex justify-center align-center" style="flex-direction:column;border-radius:20rpx;width:25vw;height:25vw" bindtap="show_post">
+    <view class="bg-white flex justify-center align-center shadow" style="flex-direction:column;border-radius:20rpx;width:25vw;height:25vw" bindtap="show_post">
       <view class="cuIcon-post main-text-color" style="font-size:50rpx"></view>
       <view class="text-bold margin-top-sm">发布管理</view>
     </view>
   </view>
   <view class="flex-sub padding">
-    <view class="bg-white flex justify-center align-center" style="flex-direction:column;border-radius:20rpx;width:25vw;height:25vw" bindtap="show_follow">
+    <view class="bg-white flex justify-center align-center shadow" style="flex-direction:column;border-radius:20rpx;width:25vw;height:25vw" bindtap="show_follow">
       <view class="cuIcon-peoplelist text-xl main-text-color" style="font-size:50rpx"></view>
      <view class="text-bold margin-top-sm">我的关注</view>
     </view>
@@ -55,7 +55,7 @@
   <view class="text-bold text-xl">其他</view>
 </view>
 <view>
-  <view class="flex padding align-center bg-white solids-bottom" bindtap="show_favor">
+  <view class="flex padding align-center bg-white solids-bottom " bindtap="show_favor">
     <view class="cuIcon-favorfill main-text-color"></view>
     <view class="margin-left-sm">我的收藏</view>
     <view class="cuIcon-right text-gray" style="margin-left:auto"></view>
@@ -70,7 +70,7 @@
     <view class="margin-left-sm">联系客服</view>
     <view class="cuIcon-right text-gray" style="margin-left:auto"></view>
   </view>
-  <view class="flex padding align-center bg-white solids-bottom">
+  <view class="flex padding align-center bg-white solids-bottom" bindtap="show_about_us">
     <view class="cuIcon-emoji main-text-color"></view>
     <view class="margin-left-sm">关于我们</view>
     <view class="cuIcon-right text-gray" style="margin-left:auto"></view>

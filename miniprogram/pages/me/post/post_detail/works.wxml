@@ -1,9 +1,9 @@
 <scroll-view scroll-y='true' style="height:100vh;padding-top:50rpx" >
-  <view wx:if="{{!appointment.array.length}}" class="flex align-center justify-center bg-white" style="width:100%;height:100vh;flex-direction:column">
+  <view wx:if="{{!appointment.array.length}}" class="flex align-center justify-center bg-white " style="width:100%;height:100vh;flex-direction:column">
     <image src="../../../images/icon2/none_order.png"></image>
     <view class="text-sm text-gray">还没有发布作品噢</view>
   </view>
-  <view class="margin-sm bg-white padding-sm animation-slide-bottom" style="border-radius:10rpx;" data-index='{{index}}' data-page='works' bindtap="show_detail" wx:for="{{works.array}}">
+  <view class="margin-sm bg-white padding-sm animation-slide-bottom shadow" style="border-radius:10rpx;" data-index='{{index}}' data-page='works' bindtap="show_detail" wx:for="{{works.array}}">
     <view class="flex" style="width:100%">
     <image src="{{item.img[0]}}" mode="aspectFill" style="width:200rpx;height:200rpx;border-radius:10rpx;" ></image>
     <view class="margin-left flex" style="flex-direction:column;width:60%" >

@@ -5,5 +5,6 @@
     <image src="../../../images/icon2/none_order.png"></image>
     <view class="text-sm text-gray">还没有收藏的约拍噢</view>
   </view>
-<include src='../../index/index_detail/appointment.wxml' wx:if="{{appointment.array.length}}" />
-
+<view style="margin-top:100rpx">
+  <include src='../../index/index_detail/appointment.wxml' wx:if="{{appointment.array.length}}" />
+</view>

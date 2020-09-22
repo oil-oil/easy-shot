@@ -11,7 +11,8 @@ Page({
     isTodayWeek: false,
     todayIndex: 0, 
     date_choose:'',
-    appoint:''
+    appoint:'',
+    remark:''
   },
   onLoad(e){
     this.setData({appoint:JSON.parse(e.appoint)})
@@ -142,6 +143,9 @@ Page({
     this.setData({'type.choose':e.detail.value})
     console.log(e)
   },
+  remark_input(e){
+    this.setData({remark:e.detail.value})
+  },
   order(){
     if(this.data.date_choose == ''){
       getApp().show_modal('请选择一个约拍日期')
@@ -163,6 +167,7 @@ Page({
       price:this.data.appoint.appoint_type=='free'?'互免约拍':this.data.appoint.price,
       adress:this.data.appoint.adress,
       appoint_date:this.data.date_choose,
+      remark:remark,
       order_date:date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate()+' '+date.getHours()+':'+date.getMinutes()+':'+date.getSeconds(),
       status:'ongoing',
       user_id:this.data.appoint._openid

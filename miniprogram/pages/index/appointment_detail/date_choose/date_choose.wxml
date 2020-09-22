@@ -42,4 +42,9 @@
   </view>
 </view>
 
+<view class="cu-form-group align-start">
+		<view class="title main-text-color">订单备注</view>
+		<textarea maxlength="-1"   placeholder="点击输入" bindinput="remark_input"></textarea>
+	</view>
+
 <button class="cu-btn block button margin-tb-lg lg" bindtap="order">确认约拍下单</button>

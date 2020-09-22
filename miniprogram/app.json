@@ -2,6 +2,7 @@
   "cloud": true,
   "pages": [
     "pages/login/login",
+    "pages/me/about_us/about_us",
     "pages/index/index",
     "pages/index/appointment_detail/finish/finish",
     "pages/order/order_detail/order_detail",
@@ -24,6 +25,11 @@
     "pages/me/follow/follow",
     "pages/me/post/post"
   ],
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于小程序位置接口的效果展示"
+    }
+  },
   "window": {
     "backgroundColor": "#F6F6F6",
     "backgroundTextStyle": "light",

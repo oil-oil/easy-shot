@@ -1,6 +1,6 @@
 <scroll-view scroll-y='true' refresher-enabled='true' bindrefresherrefresh='refresh' refresher-triggered='{{refreshing}}' bindscrolltolower="load_more" style="height:100vh;padding-top:80rpx" >
   <view class="animation-slide-bottom">
-  <view class="margin-sm bg-white padding-xs animation-slide-bottom" style="border-radius:20rpx;" wx:for="{{post.array}}" data-index='{{index}}' data-page='post' bindtap='show_detail'>
+  <view class="margin-sm bg-white padding-xs animation-slide-bottom shadow" style="border-radius:20rpx;" wx:for="{{post.array}}" data-index='{{index}}' data-page='post' bindtap='show_detail'>
     <view class="flex align-center margin-left-xs">
       <image style="width:50rpx;height:50rpx;border-radius:50%" class="margin-right" mode="aspectFill" src="{{item.user[0].avatar}}" ></image> 
       <view>{{item.user[0].name}}</view>

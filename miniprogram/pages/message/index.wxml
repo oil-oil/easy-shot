@@ -1,6 +1,6 @@
 <view class="flex">
   <view class="flex-sub padding">
-    <view class="bg-white flex justify-center align-center" 
+    <view class="bg-white flex justify-center align-center shadow" 
     style="flex-direction:column;border-radius:20rpx;width:25vw;height:25vw;position:relative" 
     bindtap="show_detail" data-index='0' >
       <view class="unread-dot main-bg-color" wx:if="{{unread.like>0}}">{{unread.like}}</view>
@@ -9,7 +9,7 @@
     </view>
   </view>
   <view class="flex-sub padding">
-    <view class="bg-white flex justify-center align-center" 
+    <view class="bg-white flex justify-center align-center shadow" 
     style="flex-direction:column;border-radius:20rpx;width:25vw;height:25vw;position:relative" 
     bindtap="show_detail" data-index='1'>
       <view class="unread-dot main-bg-color" wx:if="{{unread.notice>0}}">{{unread.notice}}</view>
@@ -18,7 +18,7 @@
     </view>
   </view>
   <view class="flex-sub padding">
-    <view class="bg-white flex justify-center align-center" 
+    <view class="bg-white flex justify-center align-center shadow" 
     style="flex-direction:column;border-radius:20rpx;width:25vw;height:25vw;position:relative" 
     bindtap="show_detail" data-index='2'>
       <view class="unread-dot main-bg-color" wx:if="{{unread.comment>0}}">{{unread.comment}}</view>

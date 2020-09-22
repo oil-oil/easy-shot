@@ -26,9 +26,22 @@
   </view>
 
 <swiper style="height:100vh" bindchange="swiper_change" current="{{top_bar.now_tab}}" >
-  <swiper-item><include src='../index/index_detail/works.wxml' /></swiper-item>
-  <swiper-item><include src='../index/index_detail/appointment.wxml' /></swiper-item>
-  <swiper-item><include src='../index/index_detail/post.wxml' /></swiper-item>
+  
+  <swiper-item>
+    <include src='../index/index_detail/works.wxml'/>
+  </swiper-item>
+  <swiper-item>
+    <view  class="bg-white padding shadow text margin-sm" style="margin-top:100rpx;border-radius:10rpx">
+      <picker mode="region" bindchange="region_change" value="{{region}}" custom-item="任意区域">
+        <text class="cuIcon-location"></text>
+        <text class="margin-left-sm text-gray">{{region.length?region[0]+region[1]:'获取位置失败，点击选择' }}</text>
+      </picker>
+    </view>
+    <include src='../index/index_detail/appointment.wxml' />
+  </swiper-item>
+  <swiper-item>
+    <include src='../index/index_detail/post.wxml' />
+  </swiper-item>
 </swiper>
   
 </view>

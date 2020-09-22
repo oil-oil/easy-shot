@@ -61,6 +61,7 @@ Page({
     }
   },
   get_ongoing(){
+    wx.showNavigationBarLoading()
     // 获取正在进行中的订单数据
     wx.cloud.callFunction({
       name:'lookup_order',
@@ -103,6 +104,7 @@ Page({
         match2:{status:'ongoing'}    
       }
     }).then(res=>{
+      wx.hideNavigationBarLoading()
       if(res.result.list.length&&!this.data.ongoing.nomore){
         this.init_status(res.result.list)
         for(let i in res.result.list){
