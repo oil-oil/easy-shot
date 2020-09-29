@@ -27,9 +27,10 @@ Page({
   },
   get_talk_room(){
     // 检测是否有双方聊天室,若无则建立新的聊天室
-    db.collection('talk_room').where({_openid:getApp().globalData.user._openid})
+    db.collection('talk_room').where({_openid:getApp().globalData.user._openid,_openid2:this.data.receiver._openid})
     .get()
     .then(res=>{
+       console.log(res)
       var date = new Date()
       if(!res.data.length){
         db.collection('talk_room').add({
@@ -52,9 +53,10 @@ Page({
         })
       }
     })
-    db.collection('talk_room').where({_openid:this.data.receiver._openid})
+    db.collection('talk_room').where({_openid:this.data.receiver._openid,_openid2:getApp().globalData.user._openid})
     .get()
     .then(res=>{
+      console.log(res)
       var date = new Date()
       if(!res.data.length){
         db.collection('talk_room').add({

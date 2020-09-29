@@ -294,10 +294,11 @@ Page({
     // 发布评价,更新订单状态
     var date = new Date()
     var index = this.data.comment.index
+    console.log(this.data.evaluate.array[index]._id)
     var new_comment = {
       _id:''+ date.getTime(),
       text:this.data.comment.text,
-      post_id:this.data.evaluate.array[index].appoint_id,
+      order_id:this.data.evaluate.array[index]._id,
       date:date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate(),
       star:this.data.comment.star_num
     }

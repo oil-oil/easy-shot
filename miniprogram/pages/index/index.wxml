@@ -32,9 +32,9 @@
   </swiper-item>
   <swiper-item>
     <view  class="bg-white padding shadow text margin-sm" style="margin-top:100rpx;border-radius:10rpx">
-      <picker mode="region" bindchange="region_change" value="{{region}}" custom-item="任意区域">
+      <picker mode="region" bindchange="region_change" value="{{region}}" custom-item="所有范围">
         <text class="cuIcon-location"></text>
-        <text class="margin-left-sm text-gray">{{region.length?region[0]+region[1]:'获取位置失败，点击选择' }}</text>
+        <text class="margin-left-sm text-gray">{{region.length?region[0] == '所有范围'?region[0]:region[0]+region[1]:'获取位置失败，点击选择' }}</text>
       </picker>
     </view>
     <include src='../index/index_detail/appointment.wxml' />

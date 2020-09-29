@@ -13,7 +13,7 @@ exports.main = async (event, context) => {
     .aggregate()
     .sort({_id:-1}) 
     .lookup(event.lookup)
-    .match({'_openid':_.in(event.match)})
+    .match({[event.where]:_.in(event.match)})
     .skip(event.skip*limit)
     .limit(limit)
     .project(event.project)

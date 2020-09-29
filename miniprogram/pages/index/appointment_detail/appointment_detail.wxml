@@ -23,8 +23,7 @@
 </view>
   
 <view class="padding">
-  <view class="text-xl text-bold">{{appointment.title}}</view>
-  <view class="margin-top-sm">{{appointment.intro}}</view>
+  <view class="margin-top-sm main-text-color">{{appointment.intro}}</view>
 </view>
 
 <view class="padding">
@@ -59,5 +58,19 @@
     <text class="margin-left-sm" >约拍</text>
   </view>
 </view>
-
+<view class="margin-top solids-top">
+  <view class="padding text-bold">共{{comment.array.length}}条评价</view>
+  <view class="padding flex" wx:for="{{comment.array}}">
+    <image src="{{item.user[0].avatar}}" mode="aspectFill" style="width:80rpx;height:80rpx;border-radius:50%"></image>
+    <view class="padding-left" style="width:90%">
+      <view class="flex align-center">
+        <view class="text-bold">{{item.user[0].name}}</view>
+        <view class="margin-left-xs text-gray text-xs">{{item.date}}</view>
+      </view>
+      <view class="margin-top-xs">
+        {{item.text}} 
+      </view>
+    </view>
+  </view>
+</view>
 </scroll-view>

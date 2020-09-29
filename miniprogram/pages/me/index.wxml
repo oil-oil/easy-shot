@@ -30,23 +30,41 @@
 <view class="padding-left">
   <view class="text-bold text-xl">约拍</view>
 </view>
-<view class="flex">
-  <view class="flex-sub padding">
+<view class="grid col-3">
+  <view class="padding">
     <view class="bg-white flex justify-center align-center shadow" style="flex-direction:column;border-radius:20rpx;width:25vw;height:25vw" bindtap="show_order">
       <view class="cuIcon-form text-xl main-text-color" style="font-size:50rpx"></view>
       <view class="text-bold margin-top-sm">订单管理</view>
     </view>
   </view>
-  <view class="flex-sub padding">
+  <view class="padding">
     <view class="bg-white flex justify-center align-center shadow" style="flex-direction:column;border-radius:20rpx;width:25vw;height:25vw" bindtap="show_post">
       <view class="cuIcon-post main-text-color" style="font-size:50rpx"></view>
       <view class="text-bold margin-top-sm">发布管理</view>
     </view>
   </view>
-  <view class="flex-sub padding">
+  <view class="padding">
     <view class="bg-white flex justify-center align-center shadow" style="flex-direction:column;border-radius:20rpx;width:25vw;height:25vw" bindtap="show_follow">
       <view class="cuIcon-peoplelist text-xl main-text-color" style="font-size:50rpx"></view>
      <view class="text-bold margin-top-sm">我的关注</view>
+    </view>
+  </view>
+  <view class="padding">
+    <view class="bg-white flex justify-center align-center shadow" style="flex-direction:column;border-radius:20rpx;width:25vw;height:25vw" bindtap="show_favor">
+      <view class="cuIcon-favor text-xl main-text-color" style="font-size:50rpx"></view>
+      <view class="text-bold margin-top-sm">我的收藏</view>
+    </view>
+  </view>
+  <view class="padding">
+    <view class="bg-white flex justify-center align-center shadow" style="flex-direction:column;border-radius:20rpx;width:25vw;height:25vw" bindtap="show_read_name">
+      <view class="cuIcon-camera main-text-color" style="font-size:50rpx"></view>
+      <view class="text-bold margin-top-sm">摄影师认证</view>
+    </view>
+  </view>
+  <view class="padding">
+    <view class="bg-white flex justify-center align-center shadow" style="flex-direction:column;border-radius:20rpx;width:25vw;height:25vw" bindtap="show_identification">
+      <view class="cuIcon-selection main-text-color" style="font-size:50rpx"></view>
+      <view class="text-bold margin-top-sm">简约约拍认证</view>
     </view>
   </view>
 </view>
@@ -54,29 +72,22 @@
 <view class="padding">
   <view class="text-bold text-xl">其他</view>
 </view>
-<view>
-  <view class="flex padding align-center bg-white solids-bottom " bindtap="show_favor">
-    <view class="cuIcon-favorfill main-text-color"></view>
-    <view class="margin-left-sm">我的收藏</view>
-    <view class="cuIcon-right text-gray" style="margin-left:auto"></view>
+<view class="grid col-3">
+  <view class="padding">
+    <view class="bg-white flex justify-center align-center shadow" style="flex-direction:column;border-radius:20rpx;width:25vw;height:25vw" bindtap="show_follow">
+    <view class="cuIcon-service text-xl main-text-color" style="font-size:50rpx"></view>
+     <view class="text-bold margin-top-sm">联系客服</view>
+    </view>
+    </view>
+
+  <view class="padding">
+    <view class="bg-white flex justify-center align-center shadow" style="flex-direction:column;border-radius:20rpx;width:25vw;height:25vw" bindtap="show_follow">
+    <view class="cuIcon-emoji text-xl main-text-color" style="font-size:50rpx"></view>
+     <view class="text-bold margin-top-sm">关于我们</view>
+    </view>  
   </view>
-  <view class="flex padding align-center bg-white solids-bottom">
-    <view class="cuIcon-myfill main-text-color"></view>
-    <view class="margin-left-sm">身份认证</view>
-    <view class="cuIcon-right text-gray" style="margin-left:auto"></view>
-  </view>
-  <view class="flex padding align-center bg-white solids-bottom">
-    <view class="cuIcon-servicefill main-text-color"></view>
-    <view class="margin-left-sm">联系客服</view>
-    <view class="cuIcon-right text-gray" style="margin-left:auto"></view>
-  </view>
-  <view class="flex padding align-center bg-white solids-bottom" bindtap="show_about_us">
-    <view class="cuIcon-emoji main-text-color"></view>
-    <view class="margin-left-sm">关于我们</view>
-    <view class="cuIcon-right text-gray" style="margin-left:auto"></view>
-  </view>
-  
 </view>
+
 </view>
 
 

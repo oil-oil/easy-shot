@@ -1,17 +1,13 @@
 // miniprogram/pages/form/appoint_form/appoint_form.js
 Page({
 
-  /**
-   * 页面的初始数据
-   */
   data: {
     appoint_type:'',
     title:'',
     intro:'',
     include:[],
-    region: ['广东省', '广州市', '从化区'],
+    region: [],
     paydate:'',
-    address:'',
     price:'',
     img_list:[]
   },
@@ -33,9 +29,6 @@ Page({
   },
   price_input(e){
     this.setData({price:e.detail.value})
-  },
-  address_input(e){
-    this.setData({address:e.detail.value})
   },
   region_change: function(e) {
     this.setData({
@@ -103,10 +96,6 @@ Page({
       getApp().show_modal('请填写约拍描述')
       return
     }
-    if(this.data.intro == ''){
-      getApp().show_modal('请填写拍摄地址')
-      return
-    }
     if(this.data.price == ''&&this.data.appoint_type == 'special'){
       getApp().show_modal('请填写约拍单价')
       return
@@ -138,7 +127,6 @@ Page({
       region: this.data.region,
       paydate:this.data.paydate,
       price:this.data.price,
-      address:this.data.address,
       img:this.data.img_list
     })
     wx.navigateTo({

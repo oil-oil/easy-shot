@@ -125,6 +125,7 @@ Page({
         match: {_openid:getApp().globalData.user._openid}
       }
     }).then(res=>{
+      console.log(res)
       wx.hideLoading()
       if(res.result.list.length){
         var temp = this.data.talk_room.array

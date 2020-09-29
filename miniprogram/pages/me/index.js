@@ -33,6 +33,16 @@ Page({
       url: './post/post',
     })
   },
+  show_identification(){
+    wx.navigateTo({
+      url: './identification/identification',
+    })
+  },
+  show_read_name(){
+    wx.navigateTo({
+      url: './read_name/read_name',
+    })
+  },
   change_info(){
     wx.navigateTo({
       url: '../form/info_form/info_form',

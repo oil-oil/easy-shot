@@ -2,6 +2,8 @@
   "cloud": true,
   "pages": [
     "pages/login/login",
+    "pages/me/read_name/read_name",
+    "pages/me/identification/identification",
     "pages/me/about_us/about_us",
     "pages/index/index",
     "pages/index/appointment_detail/finish/finish",

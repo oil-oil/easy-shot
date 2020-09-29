@@ -32,13 +32,13 @@ Page({
           as: 'user',
         },
         project:{
-          order_date:1,
+          date:1,
           type:1,
+          remark:1,
           'user.avatar':1,
           'user.name':1,
           'user._openid':1,
           'price':1,
-          'adress':1,
           appoint_date:1,
           status:1,
           'appointment.img':1,
@@ -57,6 +57,7 @@ Page({
       else{
         res.result.list[0].type = 'model'
       }
+      res.result.list[0].date = getApp().get_date(res.result.list[0].date)
       this.setData({order:res.result.list[0]})
     })
   },

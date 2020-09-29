@@ -107,14 +107,11 @@ Page({
     }
     else{
       name = 'lookup_db'
-      if(this.data.region.length || this.data.region[0] == '任意区域'){
+      if(this.data.region.length && this.data.region[0] == '所有范围'){
         match = {}
       }
       else{
-        if(this.data.region[0] == '任意区域'){
-          match = {}
-        }
-        else if(this.data.region[1] == '任意区域'){
+        if(this.data.region[1] == '所有范围'){
           match = {'region.0':this.data.region[0]}
         }
         else{
@@ -128,7 +125,6 @@ Page({
       data:{
         collection:'appointment',
         skip:this.data.appointment.skip,
-        field:'_openid',
         lookup:{
           from: 'user',
           localField: '_openid',
@@ -154,6 +150,7 @@ Page({
         match:match
       }
     }).then(res=>{
+      console.log(res)
       this.setData({refreshing:false})
       if(res.result.list.length&&!this.data.appointment.nomore){
         for(let i in res.result.list){
@@ -190,6 +187,7 @@ Page({
           'like':1,
           'img':1,
         },
+        where:'_openid',
         match:this.data.works.only_follow?getApp().globalData.user.follow:{}
       }
     }).then(res=>{

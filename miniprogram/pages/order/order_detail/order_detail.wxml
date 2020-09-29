@@ -33,11 +33,6 @@
       </view>
 
       <view class="flex margin-sm">
-        <view class="margin-right">约拍地点</view>
-        <view class="text-gray">{{order.adress}}</view>
-      </view>
-
-      <view class="flex margin-sm">
         <view class="margin-right">交付时间</view>
         <view class="text-gray">拍摄完成后{{order.appointment[0].paydate}}天内</view>
       </view>

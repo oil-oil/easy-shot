@@ -18,12 +18,20 @@ Page({
       status:{
         follow:false,
         favor:false
-      }
+      },
+      comment:{
+        text:'',
+        array:[],
+        skip:0,
+        nomore:false
+      },
+      order_array:[]
   },
   onLoad(e){
     this.get_appointment(e._id)
   },
   get_appointment(_id){
+    wx.showNavigationBarLoading()
     wx.cloud.callFunction({
       name:'lookup_db',
       data:{
@@ -49,9 +57,20 @@ Page({
         match:{_id}
       }
     }).then(res=>{
+      wx.hideNavigationBarLoading()
       if(res.result.list.length){
-
+        wx.setNavigationBarTitle({
+          title: res.result.list[0].title,
+        })
         this.setData({appointment:res.result.list[0]})
+        if(this.data.appointment.order.length){
+          var temp = this.data.order_array
+          for(let i in this.data.appointment.order){
+            temp.push(this.data.appointment.order[i]._id)
+          }
+          this.setData({order_array:temp})
+          this.get_comment()
+        }
       }
       this.init_status()
     })
@@ -61,9 +80,9 @@ Page({
     var height = 'height_array['+e.currentTarget.dataset.index+']'
     this.setData({[height]:swiper_height})
   },
-  get_comment(_id){
+  get_comment(){
     wx.cloud.callFunction({
-      name:'lookup',
+      name:'lookup_all',
       data:{
         collection:'comment',
         skip:this.data.comment.skip,
@@ -80,9 +99,12 @@ Page({
           'user._openid':1,
           'user.avatar':1,
         },
-        match:{post_id:_id}
+        where:'order_id',
+        match:this.data.order_array
       }
     }).then(res=>{
+      console.log(this.data.order_array)
+      console.log(res)
       if(res.result.list.length&&!this.data.comment.nomore){
         for(let i in res.result.list){
           var temp = this.data.comment.array

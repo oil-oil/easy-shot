@@ -167,8 +167,7 @@ Page({
       price:this.data.appoint.appoint_type=='free'?'互免约拍':this.data.appoint.price,
       adress:this.data.appoint.adress,
       appoint_date:this.data.date_choose,
-      remark:remark,
-      order_date:date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate()+' '+date.getHours()+':'+date.getMinutes()+':'+date.getSeconds(),
+      remark:this.data.remark,
       status:'ongoing',
       user_id:this.data.appoint._openid
     }
