@@ -2,6 +2,7 @@ const db = wx.cloud.database()
 const _ = db.command
 Page({
   data: {
+    loading:true,
     top_bar:{
       now_tab:0,
       array:['进行中','待评价','已完成'],
@@ -31,10 +32,14 @@ Page({
       ]
     }
   },
-  async onLoad(e){
-    this.get_ongoing()
-    this.get_evaluate()
-    this.get_finish()
+  onLoad(e){
+    this.setData({loading:true})
+    Promise.all([this.get_ongoing(),
+      this.get_evaluate(),
+      this.get_finish()])
+      .then(res=>{
+        this.setData({loading:false})
+      })
   },
   switch_top_tab(e){
     var now_tab = 'top_bar.now_tab'
@@ -61,68 +66,73 @@ Page({
     }
   },
   get_ongoing(){
-    wx.showNavigationBarLoading()
-    // 获取正在进行中的订单数据
-    wx.cloud.callFunction({
-      name:'lookup_order',
-      data:{
-        collection:'order',
-        skip:this.data.ongoing.skip,
-        lookup2:{
-          from: 'appointment',
-          localField: 'appoint_id',
-          foreignField: '_id',
-          as: 'appointment',
-        },
-        lookup:{
-          from: 'user',
-          localField: 'user_id',
-          foreignField: '_openid',
-          as: 'user',
-        },
-        project:{
-          order_date:1,
-          type:1,
-          'user.avatar':1,
-          'user.name':1,
-          'user._openid':1,
-          appoint_date:1,
-          'appointment.img':1,
-          'price':1,
-          'adress':1,
-        },
-        match:_.and([
-          _.or([
-            {
-              _openid: getApp().globalData.user._openid
-            },
-            {
-              user_id: getApp().globalData.user._openid
-            }
-          ])
-        ]),
-        match2:{status:'ongoing'}    
-      }
-    }).then(res=>{
-      wx.hideNavigationBarLoading()
-      if(res.result.list.length&&!this.data.ongoing.nomore){
-        this.init_status(res.result.list)
-        for(let i in res.result.list){
-          var temp = this.data.ongoing.array
-          temp.push(res.result.list[i])
-          this.setData({['ongoing.array']:temp})
+    return new Promise((res1,rej)=>{
+      wx.cloud.callFunction({
+        name:'order',
+        data:{
+          type:'get_all_data',
+          collection:'order',
+          skip:this.data.ongoing.skip,
+          lookup2:{
+            from: 'appointment',
+            localField: 'appoint_id',
+            foreignField: '_id',
+            as: 'appointment',
+          },
+          lookup:{
+            from: 'user',
+            localField: 'user_id',
+            foreignField: '_openid',
+            as: 'user',
+          },
+          project:{
+            order_date:1,
+            type:1,
+            'user.avatar':1,
+            'user.name':1,
+            'user._openid':1,
+            appoint_date:1,
+            'appointment.img':1,
+            'price':1,
+            'adress':1,
+          },
+          match:_.and([
+            _.or([
+              {
+                _openid: getApp().globalData.user._openid
+              },
+              {
+                user_id: getApp().globalData.user._openid
+              }
+            ])
+          ]),
+          match2:{status:'ongoing'}    
         }
-      }
-      else{
-        this.data.ongoing.nomore = true
-      }
+      }).then(res=>{
+        if(res.result.list.length&&!this.data.ongoing.nomore){
+          this.init_status(res.result.list)
+          for(let i in res.result.list){
+            var temp = this.data.ongoing.array
+            temp.push(res.result.list[i])
+            this.setData({['ongoing.array']:temp})
+          }
+        }
+        else{
+          this.data.ongoing.nomore = true
+        }
+        res1()
+      })
     })
+    // 获取正在进行中的订单数据
+   
   },
   get_evaluate(){
+    return new Promise((res1,rej)=>{
     // 获取待评价的订单数据
     wx.cloud.callFunction({
-      name:'lookup_order',
+      name:'order',
       data:{
+        type:'get_all_data',
         collection:'order',
         skip:this.data.evaluate.skip,
         lookup2:{
@@ -175,13 +185,17 @@ Page({
       else{
         this.data.evaluate.nomore = true
       }
+      res1()
     })
+  })
   },
   get_finish(){
     // 获取已完成的订单数据
+    return new Promise((res1,rej)=>{
     wx.cloud.callFunction({
-      name:'lookup_order',
+      name:'order',
       data:{
+        type:'get_all_data',
         collection:'order',
         skip:this.data.finish.skip,
         lookup2:{
@@ -232,7 +246,9 @@ Page({
       else{
         this.data.finish.nomore = true
       }
+      res1()
     })
+  })
   },
   init_status(array){
     // 区分订单类型

@@ -15,8 +15,9 @@ Page({
       title: '加载中',
     })
     wx.cloud.callFunction({
-      name:'lookup_talk',
+      name:'order',
       data:{
+        type:'get_detail',
         collection:'order',
         skip:0,
         lookup2:{
@@ -35,12 +36,15 @@ Page({
           date:1,
           type:1,
           remark:1,
+          tel:1,
+          wx:1,
           'user.avatar':1,
           'user.name':1,
           'user._openid':1,
           'price':1,
           appoint_date:1,
           status:1,
+          'appointment._id':1,
           'appointment.img':1,
           'appointment.title':1,
           'appointment.paydate':1,
@@ -63,6 +67,11 @@ Page({
   },
   talk(){
     getApp().talk(this.data.order.user[0])
+  },
+  show_detail(){
+    wx.navigateTo({
+      url: '../../index/appointment_detail/appointment_detail?_id='+this.data.order.appointment[0]._id,
+    })
   },
   finish(){
 

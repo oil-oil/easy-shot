@@ -1,0 +1,5 @@
+<view class="loading" style="{{show?'top:100rpx;':'top:-100%'}}">
+  <view></view>
+  <view style="animation-delay: 0.2s;"></view>
+  <view style="animation-delay: 0.4s;"></view>
+</view>

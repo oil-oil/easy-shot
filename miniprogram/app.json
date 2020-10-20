@@ -2,7 +2,7 @@
   "cloud": true,
   "pages": [
     "pages/login/login",
-    "pages/me/read_name/read_name",
+    "pages/me/authentication/authentication",
     "pages/me/identification/identification",
     "pages/me/about_us/about_us",
     "pages/index/index",
@@ -12,7 +12,6 @@
     "pages/talk/talk",
     "pages/user/user",
     "pages/index/appointment_detail/appointment_detail",
-    "pages/index/works_detail/works_detail",
     "pages/index/post_detail/post_detail",
     "pages/message/index",
     "pages/me/index",
@@ -20,12 +19,12 @@
     "pages/message/detail/detail",
     "pages/form/post_form/post_form",
     "pages/form/appoint_form/appoint_form",
-    "pages/form/appoint_form/date_choose/date_choose",
     "pages/index/appointment_detail/date_choose/date_choose",
     "pages/me/favor/favor",
     "pages/search/search",
     "pages/me/follow/follow",
-    "pages/me/post/post"
+    "pages/me/post/post",
+    "components/user_tab/user_tab"
   ],
   "permission": {
     "scope.userLocation": {
@@ -37,30 +36,6 @@
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#A58AA9",
     "navigationBarTextStyle": "white"
-  },
-  "tabBar": {
-    "color": "#bfbfbf",
-    "selectedColor": "#A58AA9",
-    "list": [
-      {
-        "pagePath": "pages/index/index",
-        "selectedIconPath": "./images/icon/index2.png",
-        "iconPath": "./images/icon/index.png",
-        "text": "首页"
-      },
-      {
-        "pagePath": "pages/message/index",
-        "iconPath": "./images/icon/message.png",
-        "selectedIconPath": "./images/icon/message2.png",
-        "text": "消息"
-      },
-      {
-        "pagePath": "pages/me/index",
-        "selectedIconPath": "./images/icon/me2.png",
-        "iconPath": "./images/icon/me.png",
-        "text": "我的"
-      }
-    ]
   },
   "sitemapLocation": "sitemap.json",
   "style": "v2"

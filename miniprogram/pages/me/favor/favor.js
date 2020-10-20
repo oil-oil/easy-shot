@@ -13,7 +13,8 @@ Page({
       index:0,
       nomore:false
     },
-    user:''
+    user:'',
+    loading:false
   },
 
   onLoad(){
@@ -21,10 +22,12 @@ Page({
     this.get_appointment()
   },
   get_appointment(){
-    wx.showNavigationBarLoading()
+    
+    this.setData({loading:true})
     wx.cloud.callFunction({
-      name:'lookup_db_all',
+      name:'appointment',
       data:{
+        type:'get_favor',
         collection:'appointment',
         skip:this.data.appointment.skip,
         lookup:{
@@ -47,7 +50,8 @@ Page({
         match:getApp().globalData.user.favor
       }
     }).then(res=>{
-      wx.hideNavigationBarLoading()
+      
+      this.setData({loading:false})
       if(res.result.list.length&&!this.data.appointment.nomore){
         for(let i in res.result.list){
           var temp = this.data.appointment.array

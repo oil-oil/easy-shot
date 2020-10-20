@@ -10,7 +10,7 @@
       <view>
         <view class="text-bold text-xl text-black">{{item.type=='model'?'约拍订单':'拍摄订单'}}</view>
         <view class="margin-top-xs ">
-          <text>拍摄时间:</text><text class="margin-left-xs text-gray">{{item.appoint_date.year+'-'+item.appoint_date.month+'-'+item.appoint_date.dateNum}}</text>
+          <text>拍摄时间:</text><text class="margin-left-xs text-gray">{{item.appoint_date}}</text>
         </view>
         <view class="margin-top-xs ">
           <text>下单时间:</text><text class="margin-left-xs text-gray">{{item.order_date}}</text>

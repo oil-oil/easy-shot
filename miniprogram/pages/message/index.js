@@ -13,6 +13,7 @@ Page({
       skip:0
     },
     refreshing:false,
+    loading:false,
   },
   watch_talk_room(){
     // 实时获取聊天室数据更新
@@ -75,27 +76,20 @@ Page({
         }
       }
     }
-    else{
-      wx.hideTabBarRedDot({
-      index: 1
-      })
-    }
+    
   },
   show_detail(e){
-    if(getApp().login_check()){
       wx.navigateTo({
         url: './detail/detail?type='+e.currentTarget.dataset.index,
       })
-    }
   },
   get_talk(){
+    this.setData({loading:true})
     // 获取所有聊天室数据
-    wx.showLoading({
-      title: '加载中',
-    })
     wx.cloud.callFunction({
-      name:'lookup_talk',
+      name:'talk',
       data:{
+        type:'get_talk_room',
         collection:'talk_room',
         skip:this.data.talk_room.skip,
         lookup:{
@@ -125,8 +119,6 @@ Page({
         match: {_openid:getApp().globalData.user._openid}
       }
     }).then(res=>{
-      console.log(res)
-      wx.hideLoading()
       if(res.result.list.length){
         var temp = this.data.talk_room.array
         for(let i in res.result.list){
@@ -140,6 +132,7 @@ Page({
         }
         this.setData({'talk_room.array':temp})
         this.watch_talk_room()
+        this.setData({loading:false})
       }
     })
   }

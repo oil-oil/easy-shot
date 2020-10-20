@@ -2,10 +2,15 @@
 const db = wx.cloud.database()
 Page({
   data:{
+    type:'',
+    loading:false,
     post_array:[],
     height_array:[],
     swiper_height:0,
     current:0,
+    left_array:[],
+    right_array:[],
+    img_load:0,
     status:{
       follow:false,
       like:false
@@ -14,27 +19,34 @@ Page({
       text:'',
       array:[],
       skip:0,
-      nomore:false
-    }
+      nomore:false,
+      focus:false,
+      frist:''
+    },
+    user:{}
   },
   onLoad(e){
     if(e.current !== 'undefined'){
       this.setData({current:e.current})
     }
-    
+    if(typeof e.type !== 'undefined'){
+      this.setData({type:'comment'})
+    }
     this.get_post(e._id)
     this.get_comment(e._id)
   },
-  show_user(){
-    getApp().show_user(this.data.post_array.user[0]._openid)
-   },
+  show_comment(){
+    this.setData({'comment.frist':'comment','comment.focus':true})
+  },
   swiper_change(e){
     this.setData({current:e.detail.current})
   },
   get_post(_id){
+    this.setData({loading:true})
     wx.cloud.callFunction({
-      name:'lookup',
+      name:'post',
       data:{
+        type:'get_detail',
         collection:'post',
         skip:0,
         lookup:{  
@@ -43,15 +55,7 @@ Page({
           foreignField: '_openid',
           as: 'user',
         },
-        project:{
-          'text':1,
-          'user.name':1,
-          'user.avatar':1,
-          'user._openid':1,
-          'date':1,
-          'like':1,
-          'img':1,
-        },
+        _openid:getApp().globalData.user._openid,
         match:{_id}
       }
     }).then(res=>{
@@ -69,14 +73,41 @@ Page({
         })
         return
       }
-      this.setData({post_array:res.result.list[0]})
+      if(res.result.list[0].type == 'works'){
+        wx.setNavigationBarTitle({
+          title: '作品集',
+        })
+        for(let i in res.result.list[0].img){
+          if(i%2 == 0){
+            var left = this.data.left_array
+            left.push({img:res.result.list[0].img[i]})
+            this.setData({left_array:left})
+          }
+          else{
+            var right = this.data.right_array
+            right.push({img:res.result.list[0].img[i]})
+            this.setData({right_array:right})
+          }
+        }
+      }
+      else{
+        wx.setNavigationBarTitle({
+          title: '动态',
+        })
+        if(this.data.type == 'comment'){
+          this.show_comment()
+        }
+      }
+      this.setData({post_array:res.result.list[0],user:res.result.list[0].user[0]})
       this.init_status()
+      this.setData({loading:false})
     })
   },
   get_comment(_id){
     wx.cloud.callFunction({
-      name:'lookup',
+      name:'post',
       data:{
+        type:'get_comment',
         collection:'comment',
         skip:this.data.comment.skip,
         lookup:{
@@ -95,7 +126,6 @@ Page({
         match:{post_id:_id}
       }
     }).then(res=>{
-
       if(res.result.list.length&&!this.data.comment.nomore){
         for(let i in res.result.list){
           var temp = this.data.comment.array
@@ -109,12 +139,56 @@ Page({
     })
   },
   img_load(e){
-    var swiper_height = e.detail.height/e.detail.width
-    var height = 'height_array['+e.currentTarget.dataset.index+']'
-    this.setData({[height]:swiper_height})
+    if(this.data.post_array.type == 'post'){
+      var swiper_height = e.detail.height/e.detail.width
+      var height = 'height_array['+e.currentTarget.dataset.index+']'
+      this.setData({[height]:swiper_height})
+    }
+    else{
+      // 图片加载事件
+    this.data.img_load++
+    var type = e.currentTarget.dataset.type
+    var index = e.currentTarget.dataset.index
+    var height = parseFloat((e.detail.height/e.detail.width).toFixed(2)) 
+    this.setData({[type+'_array['+index+'].height']:height})
+    if(this.data.img_load == this.data.post_array.img.length){
+      this.waterfull()
+      if(this.data.type == 'comment'){
+        this.show_comment()
+      }
+    }
+    }
+  },
+  waterfull(){
+    // 瀑布流,计算图片长度分配左右
+    if(this.data.left_array.length&&this.data.right_array.length){
+      var left_height = 0,
+    right_height = 0
+    var left = this.data.left_array
+    var right = this.data.right_array
+    for(let i in left){
+      left_height += left[i].height
+    }
+    for(let i in right){
+      right_height += right[i].height
+    }
+    if(left_height - left[left.length - 1].height >= right_height){
+      left.pop()
+      right.push(left[left.length - 1])
+      this.setData({left_array:left,right_array:right})
+      this.waterfull()
+    }
+    else if(right_height - right[right.length - 1].height > left_height){
+      right.pop()
+      left.push(right[right.length - 1])
+      this.setData({left_array:left,right_array:right})
+      this.waterfull()
+    }
+    
+    }
   },
   init_status(){
-      if(this.data.post_array.like.indexOf(getApp().globalData.user._openid)!==-1){
+      if(this.data.post_array.like_status){
         this.setData({'status.like':true})
       }
       if(getApp().globalData.user.follow.indexOf(this.data.post_array.user[0]._openid) !== -1){
@@ -163,9 +237,7 @@ Page({
           }
         })
         .then(res=>{
-          var temp = this.data.post_array.like
-          temp.unshift(getApp().globalData.user._openid)
-          this.setData({'post_array.like':temp,'status.like':true})
+          this.setData({'post_array.like_length':++this.data.post_array.like_length,'status.like':true})
           wx.showToast({
             title: '点赞成功'
           })

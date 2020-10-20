@@ -51,7 +51,9 @@ Page({
             _id:''+timestamp+'',
             text:this.data.text,
             img:[],
-            like:[]
+            like:[],
+            date:date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate(),
+            type:'post'
           }
           db.collection('post').add({data:new_post}).then(res=>{
             wx.hideLoading({
@@ -96,7 +98,8 @@ Page({
             text:this.data.text,
             img:this.data.upload_img,
             like:[],
-            date:date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate()
+            date:date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate(),
+            type:'post'
           }
           db.collection('post').add({data:new_post}).then(res=>{
             wx.hideLoading({

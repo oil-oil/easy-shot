@@ -1,34 +1,51 @@
-<scroll-view scroll-y='true' refresher-enabled='true' bindrefresherrefresh='refresh' refresher-triggered='{{refreshing}}' bindscrolltolower="load_more" style="height:100vh;padding-top:80rpx" >
-  <view class="animation-slide-bottom">
-  <view class="margin-sm bg-white padding-xs animation-slide-bottom shadow" style="border-radius:20rpx;" wx:for="{{post.array}}" data-index='{{index}}' data-page='post' bindtap='show_detail'>
+
+<scroll-view scroll-y='true' refresher-enabled='true' bindrefresherrefresh='refresh' refresher-triggered='{{refreshing}}' bindscrolltolower="load_more" style="height:100vh;padding-top:150rpx" >
+  <view  class="bg-white shadow text margin-sm flex align-center" style="border-radius:50rpx;position:relative;overflow:hidden;" wx:if="{{page=='index'}}">
+      <view class="padding-xs flex-sub text-center {{post.follow?'text-gray':'bg-gray  main-text-color'}} " bindtap="switch_follow" data-index="{{false}}">最新</view>
+      <view class="padding-xs flex-sub text-center {{!post.follow?'text-gray':'bg-gray  main-text-color'}}" bindtap="switch_follow" data-index="{{true}}">关注</view>
+    </view>
+  
+    <view wx:if="{{post.nodata}}" class="flex align-center justify-center bg-white" style="width:100%;height:80vh;flex-direction:column">
+      <image src="../../images/icon2/none_order.png"></image>
+      <view class="text-sm text-gray">还没有发布的约拍噢</view>
+    </view> 
+  <view class="margin-sm bg-white padding-xs shadow animation-fade" style="border-radius:20rpx;" wx:for="{{post.array}}" data-index='{{index}}' data-page='post' bindtap='show_detail'>
     <view class="flex align-center margin-left-xs">
-      <image style="width:50rpx;height:50rpx;border-radius:50%" class="margin-right" mode="aspectFill" src="{{item.user[0].avatar}}" ></image> 
+      <image style="width:50rpx;height:50rpx;border-radius:50%" class="margin-right bg-gray animation-fade" mode="aspectFill" src="{{item.user[0].avatar}}" ></image> 
       <view>{{item.user[0].name}}</view>
     </view>
-    <view class="padding">{{item.text}}</view>
-    <view class="cu-form-group margin-top" wx:if="{{item.img.length}}">
+    <view class="text-bold text-lg padding-sm flex align-center" wx:if="{{item.type == 'works'}}">
+      <view>{{item.title}}</view>
+      <view class="cu-tag margin-left-xs main-bg-color text-white">作品集</view>
+    </view>
+    <view class="padding text-lg" wx:if="{{item.type !== 'works'}}">{{item.text}}</view>
+    <view class="cu-form-group margin-top-sm" wx:if="{{item.img.length}}">
 		<view class="grid col-3 grid-square flex-sub">
-			<view class="bg-img" wx:for="{{item.img}}" wx:for-index='img_index' data-index='{{index}}' data-img_index='{{img_index}}' data-page='post' catchtap='show_detail'>
-				<image src='{{item}}' mode='aspectFill'></image>
+			<view class="bg-img" wx:for="{{item.img}}" wx:for-index='img_index' data-index='{{index}}' data-img_index='{{img_index}}' data-page='post' catchtap='show_detail' wx:if="{{img_index<=8}}">
+				<image src='{{item}}' mode='aspectFill' class="animation-fade"></image>
+        <view class="more-mask" wx:if="{{img_index===8&&post.array[index].img.length>9}}">
+          <view>{{post.array[index].img.length  - 9 + '+'}}</view>
+        </view>
       </view>
     </view>
   </view>
+
+  <view class="cu-tag margin-sm main-text-color" wx:for="{{item.tag}}">{{item}}</view>
   <view class="padding-sm text-sm text-gray">{{item.date}}</view>
     <view class="margin flex justify-between" style="flex-direction:column"> 
       <view class="flex justify-center align-center text-gray" >
         
-          <view class="flex align-center flex-sub justify-center">
+          <view class="flex align-center flex-sub justify-center" data-index="{{index}}" catchtap="show_comment">
             <view class="cuIcon-comment"></view>
             <view class="margin-left-xs text-sm">{{item.comment.length}}</view>
           </view>
          
-         <view class="flex align-center justify-center flex-sub">
-            <view class="{{item.status?'cuIcon-likefill text-red':'cuIcon-like'}}" data-index='{{index}}' catchtap="post_like"></view>
-            <view class="margin-left-xs">{{item.like.length}}</view>
+         <view class="flex align-center justify-center flex-sub" data-index='{{index}}'  catchtap="post_like">
+            <view class="{{item.status?'cuIcon-likefill text-red':'cuIcon-like'}}" ></view>
+            <view class="margin-left-xs">{{item.like_length}}</view>
           </view>
         
       </view>
     </view>
-  </view>
 </view>
 </scroll-view>

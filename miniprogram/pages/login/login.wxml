@@ -1,8 +1,10 @@
 <view wx:if="{{!has_login}}" class="flex align-center justify-center bg-white" style="width:100%;height:100vh;flex-direction:column;position:relative;">
-    <button class="margin-top" open-type="getUserInfo" bindgetuserinfo='login'>
-      <image src="../../images/logo.png" mode="aspectFit" style="width:400rpx;height:400rpx;animation-iteration-count:infinite;animation-duration:2s;" class="{{text!=='加载中'?'animation-shake':''}}" ></image>
+  <image src="../../images/icon2/appointment1.png" mode="widthFix" style="width:90%;animation-iteration-count:infinite;animation-duration:2s;" class="{{text!=='加载中'?'animation-shake':''}}" ></image>
+    <button class="margin-top bg-gray" open-type="getUserInfo" bindgetuserinfo='login'>
+      <view class="text-bold text-xl main-text-color " loading='{{text!=="加载中"}}'>{{text}}</view>
     </button>
-    <view class="text-bold text-xl main-text-color " style="font-style:italic">{{text}}</view>
+<loading show='{{loading}}'></loading>
+    
 </view>
 
 <view class="mask" wx:if="{{actionsheet}}"></view>

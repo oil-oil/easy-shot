@@ -1,3 +1,7 @@
 {
-  "usingComponents": {}
+  "usingComponents": {
+    "user_tab":"../../../components/user_tab/user_tab",
+    "loading":"../../../components/loading/loading"
+  },
+  "navigationBarTitleText": "约拍详情"
 }

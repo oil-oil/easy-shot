@@ -1,0 +1,56 @@
+<view class="bg-white flex align-center justify-center" style="height:100%;flex-direction:column" wx:if="{{!start_tag}}">
+  <image src='../../../images/icon2/shoot.png' style="width:100vw" mode="aspectFit"></image>
+  <view class="text-gray text-sm text-center">成为认证摄影师后，你可以发布约拍</view>
+  <button class="cu-btn block button margin-tb-lg lg" bindtap="start">开始认证</button>
+
+</view> 
+<view wx:if="{{start_tag}}" style="min-height:100vh" class="bg-white animation-slide-bottom">
+	<view class="cu-form-group">
+		<view class="title main-text-color"><text class="cuIcon-title margin-right-sm"></text>真实姓名</view>
+		<input placeholder="点击输入" bindinput="name_input"></input>
+	</view>
+	<view class="cu-form-group">
+		<view class="title main-text-color"><text class="cuIcon-title margin-right-sm"></text>手机号码</view>
+		<input placeholder="点击输入" bindinput="tel_input"></input>
+	</view>
+	
+  <view class="cu-bar bg-white padding-top">
+		<view class="action main-text-color text-center">
+			上传身份证正面
+    </view>
+	</view>
+	<view class="cu-form-group">
+		<view class="grid col-2 grid-square flex-sub justify-center">
+			<view class="bg-img" wx:for="{{idcard_1}}" wx:key="{{index}}" style="width:100vw;height:63vw">
+				<image src='{{idcard_1[index]}}' mode='aspectFill' ></image>
+				<view class="cu-tag bg-red" catchtap="DelImg" data-index="1">
+					<text class="cuIcon-close"></text>
+				</view>
+			</view>
+			<view class="solids main-text-color" bindtap="ChooseImage" data-index="2" style="width:100vw;height:63vw" wx:if="{{!idcard_1.length}}">
+        <text class="cuIcon-cameraadd "></text>
+        
+			</view>
+		</view>
+  </view>
+  <view class="cu-bar bg-white padding-top">
+		<view class="action main-text-color text-center">
+			上传身份证反面
+    </view>
+	</view>
+	<view class="cu-form-group">
+		<view class="grid col-2 grid-square flex-sub justify-center">
+			<view class="bg-img" wx:for="{{idcard_2}}" wx:key="{{index}}" style="width:100vw;height:63vw">
+				<image src='{{idcard_2[index]}}' mode='aspectFill' ></image>
+				<view class="cu-tag bg-red" catchtap="DelImg" data-index="2">
+					<text class="cuIcon-close"></text>
+				</view>
+			</view>
+			<view class="solids main-text-color" bindtap="ChooseImage" data-index="2" style="width:100vw;height:63vw" wx:if="{{!idcard_2.length}}">
+        <text class="cuIcon-cameraadd "></text>
+        
+			</view>
+		</view>
+  </view>
+  <button class="cu-btn block button margin-tb-lg lg" bindtap="upload">提交审核</button>
+</view>

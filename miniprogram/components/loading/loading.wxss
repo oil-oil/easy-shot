@@ -1,0 +1,28 @@
+.loading{
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  transition: all 0.3s;
+  display: flex;
+  border: none;
+  align-items: center;
+  justify-content: center;
+  box-shadow:10rpx 10rpx 15rpx rgb(179, 179, 179) ;
+  z-index: 1000;
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: white;
+}
+.loading>view{
+  width: 10rpx;
+  height: 10rpx;
+  border-radius: 50%;
+  background-color: #A58AA9;
+  margin: 5rpx;
+  margin-top: 10rpx;
+  animation: skip 0.6s infinite ease-in-out alternate;
+}
+@-webkit-keyframes skip{
+  to{transform: translateY(-20rpx);}
+}

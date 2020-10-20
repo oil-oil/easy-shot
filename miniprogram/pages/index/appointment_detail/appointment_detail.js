@@ -1,11 +1,13 @@
 // miniprogram/pages/index/appointment_detail/appointment_detail.js
 const db = wx.cloud.database()
+const _ = db.command
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
+    loading:false,
     appointment:[],
     height_array:[],
     swiper_height:0,
@@ -25,16 +27,27 @@ Page({
         skip:0,
         nomore:false
       },
-      order_array:[]
+      order_array:[],
+      user:{}
   },
   onLoad(e){
     this.get_appointment(e._id)
   },
-  get_appointment(_id){
-    wx.showNavigationBarLoading()
-    wx.cloud.callFunction({
-      name:'lookup_db',
+  browse(_id){
+    db.collection('appointment').doc(_id)
+    .update({
       data:{
+        browse:_.inc(1)
+      }
+    })
+  },
+  get_appointment(_id){
+    this.setData({loading:true})
+    
+    wx.cloud.callFunction({
+      name:'appointment',
+      data:{
+        type:'get_detail',
         collection:'appointment',
         skip:0,
         lookup:{
@@ -57,12 +70,9 @@ Page({
         match:{_id}
       }
     }).then(res=>{
-      wx.hideNavigationBarLoading()
+      
       if(res.result.list.length){
-        wx.setNavigationBarTitle({
-          title: res.result.list[0].title,
-        })
-        this.setData({appointment:res.result.list[0]})
+        this.setData({appointment:res.result.list[0],user:res.result.list[0].user[0]})
         if(this.data.appointment.order.length){
           var temp = this.data.order_array
           for(let i in this.data.appointment.order){
@@ -71,6 +81,10 @@ Page({
           this.setData({order_array:temp})
           this.get_comment()
         }
+        else{
+          this.setData({loading:false})
+        }
+        this.browse(this.data.appointment._id)
       }
       this.init_status()
     })
@@ -81,9 +95,11 @@ Page({
     this.setData({[height]:swiper_height})
   },
   get_comment(){
+    this.setData({loading:true})
     wx.cloud.callFunction({
-      name:'lookup_all',
+      name:'appointment',
       data:{
+        type:'get_comment',
         collection:'comment',
         skip:this.data.comment.skip,
         lookup:{
@@ -93,6 +109,7 @@ Page({
           as: 'user',
         },
         project:{
+          'star':1,
           'text':1,
           'date':1,
           'user.name':1,
@@ -103,8 +120,6 @@ Page({
         match:this.data.order_array
       }
     }).then(res=>{
-      console.log(this.data.order_array)
-      console.log(res)
       if(res.result.list.length&&!this.data.comment.nomore){
         for(let i in res.result.list){
           var temp = this.data.comment.array
@@ -115,8 +130,10 @@ Page({
       else{
         this.data.comment.nomore = true
       }
+      this.setData({loading:false})
     })
   },
+  
   init_status(){
       if(getApp().globalData.user.follow.indexOf(this.data.appointment.user[0]._openid) !== -1){
         this.setData({'status.follow':true})
@@ -141,23 +158,10 @@ Page({
         getApp().show_modal('你不能订购自己的约拍')
         return
       }
+      
       wx.navigateTo({
         url: './date_choose/date_choose?appoint='+JSON.stringify(this.data.appointment) ,
       })
-  },
-  follow(){
-    if(!this.data.status.follow){
-      if(this.data.appointment.user[0]._openid == getApp().globalData.user._openid){
-        getApp().show_modal('你不能关注你自己')
-        return
-      }
-      getApp().follow(this.data.appointment.user[0]._openid)
-      this.setData({'status.follow':true})
-    }
-    else{
-      getApp().unfollow(this.data.appointment.user[0]._openid)
-      this.setData({'status.follow':false})
-    }
   },
   favor(){
     if(!getApp().login_check()){
@@ -198,7 +202,11 @@ Page({
   talk(){
     getApp().talk(this.data.appointment.user[0])
   },
-  show_user(){
-    getApp().show_user(this.data.appointment.user[0]._openid)
-   },
+  load_more(){
+    // 滚动到底部加载更多数据
+    if(!this.data.comment.nomore){
+      ++this.data.comment.skip
+      this.get_comment()
+    }
+  },
 })

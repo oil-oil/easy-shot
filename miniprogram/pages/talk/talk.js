@@ -30,7 +30,6 @@ Page({
     db.collection('talk_room').where({_openid:getApp().globalData.user._openid,_openid2:this.data.receiver._openid})
     .get()
     .then(res=>{
-       console.log(res)
       var date = new Date()
       if(!res.data.length){
         db.collection('talk_room').add({

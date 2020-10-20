@@ -6,16 +6,18 @@ Page({
   data: {
     text:'加载中',
     actionsheet:false,
+    loading:false
   },
   onLoad: function (options) {
     qqmapsdk = new QQMapWX({
       key: 'FK4BZ-RGT6O-RISWJ-SMAJK-GVO3F-H4BKE'
   });
-    wx.showNavigationBarLoading()
+    
     this.login_check()
   },
   login_check(){
     // 登陆检测，如果数据中无该用户则需要获取信息
+    this.setData({loading:true})
     return new Promise((suc,rej)=>{
       wx.cloud.callFunction({
         name:'login'
@@ -25,38 +27,46 @@ Page({
         .where({_openid:res.result.openId})
         .get()
         .then(res=>{
-          wx.getLocation({
-            type: 'wgs84',
-            success:res=>{
-              console.log(res)
-              const latitude = res.latitude
-              const longitude = res.longitude
-              qqmapsdk.reverseGeocoder({
-                location:{
-                  latitude,
-                  longitude
-                },
-                success:res=>{
-                  getApp().globalData.region = [res.result.address_component.province,res.result.address_component.city,res.result.address_component.district]
-                  wx.reLaunch({
-                    url: '../index/index',
-                  })
-                }
-                
-              })
-            },
-            fail:res=>{
-              wx.reLaunch({
-                url: '../index/index',
-              })
-            }
-           })
           if(res.data.length){
             getApp().globalData.has_login = true
             getApp().globalData.user = res.data[0]
+            wx.getLocation({
+              type: 'wgs84',
+              success:res=>{
+                const latitude = res.latitude
+                const longitude = res.longitude
+                qqmapsdk.reverseGeocoder({
+                  location:{
+                    latitude,
+                    longitude
+                  },
+                  success:res=>{
+                    this.setData({loading:false})
+                    getApp().globalData.region = [res.result.address_component.province,res.result.address_component.city,res.result.address_component.district]
+                    wx.reLaunch({
+                      url: '../index/index',
+                    })
+                  },
+                  fail:res=>{
+                    this.setData({loading:false})
+                    wx.reLaunch({
+                      url: '../index/index',
+                    })
+                  }
+                  
+                })
+              },
+              fail:res=>{
+                this.setData({loading:false})
+                wx.reLaunch({
+                  url: '../index/index',
+                })
+              }
+             })
           }
           else{
-            this.setData({text:'点击相机进入简约约拍'})
+            this.setData({loading:false})
+            this.setData({text:'首次登陆'})
           }
           suc()
         })
@@ -67,6 +77,7 @@ Page({
     if(this.data.text == '加载中'){
       return
     }
+    this.setData({loading:true})
     // 获取用户信息保存在数据库
     wx.getSetting({
       success:res=>{
@@ -75,9 +86,7 @@ Page({
           return
         }
         else{
-          wx.showLoading({
-            title: '登陆中',
-          })
+          this.setData({loading:true})
           wx.getUserInfo().then(res=>{
             // 获取用户头像
             wx.getImageInfo({
@@ -94,17 +103,20 @@ Page({
                   fans:[],
                   follow:[],
                   status:'normal',
+                  wx:'',
+                  tel:'',
+                  intro:'',
                   favor:[]
                 }
                 db.collection('user').add({
                   data:new_user
                 })
                 .then(res=>{
-                  wx.hideLoading()
+                  this.setData({loading:false})
                   new_user.post = []
                   getApp().globalData.has_login = true
                   getApp().globalData.user = new_user
-                  this.setData({user:new_user,has_login:true})
+                  this.setData({user:new_user,has_login:true,loading:false})
                   wx.reLaunch({
                     url: '../index/index',
                   })
@@ -112,6 +124,7 @@ Page({
               })
             }
             ,rej=>{
+              this.setData({loading:false})
               wx.showToast({
                 title: '登陆失败',
               })

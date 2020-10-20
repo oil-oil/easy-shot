@@ -1,32 +1,57 @@
-<scroll-view scroll-y='true' refresher-enabled='true' bindrefresherrefresh='refresh' refresher-triggered='{{refreshing}}' bindscrolltolower="load_more" style="height:100vh;padding-bottom:210rpx">
+<scroll-view scroll-y='true' refresher-enabled="{{page=='index'?true:false}}" bindrefresherrefresh='refresh' refresher-triggered='{{refreshing}}' bindscrolltolower="load_more" style="height:100vh;padding-top:150rpx">  
   
-  <view class="margin-sm bg-white padding-sm animation-slide-bottom shadow" style="border-radius:10rpx;" data-page='appointment' data-index='{{index}}' bindtap="show_detail" wx:for="{{appointment.array}}">
+  <swiper class="margin-sm  bg-white shadow" style="border-radius:20rpx;overflow:hidden;height:40vw" autoplay="true" circular="true" indicator-dots="true" indicator-active-color='#A58AA9' wx:if="{{page=='index'}}">
+    <swiper-item wx:for="{{banner}}">
+      <image class="animation-fade" src="{{item.imgUrl}}" style="width:100%;height:40vw" mode="aspectFill"></image>
+    </swiper-item>
+  </swiper>
+
+  <view  class="bg-white shadow text margin-sm flex align-center margin-bottom" style="border-radius:10rpx" wx:if="{{page=='index'}}">
+      <picker mode="region" bindchange="region_change" value="{{region}}" custom-item="所有范围" class="margin-xs padding-xs padding-right solids-right">
+        <text class="cuIcon-location"></text>
+        <text class="margin-left-xs text-gray text-sm">{{region.length?region[0]+region[1]:'获取位置失败' }}</text>
+      </picker>
+      <view class="text-center text-gray" style="width:60%" bindtap="show_search">
+        <text class="cuIcon-search margin-right-xs text-sm"></text>
+        <text>搜索你感兴趣的内容吧</text>
+      </view>
+    </view>
+
+  
+  <view wx:if="{{appointment.nodata}}" class="flex align-center justify-center bg-white " style="width:100%;height:60vh;flex-direction:column">
+      <image src="../../images/icon2/none_order.png"></image>
+      <view class="text-sm text-gray">还没有发布的约拍噢</view>
+    </view>
+
+  <view class="margin-sm bg-white padding-xs shadow animation-fade" style="border-radius:10rpx;" data-page='appointment' data-index='{{index}}' bindtap="show_detail" wx:for="{{appointment.array}}">
       <view class="flex align-center justify-between">
         <view class="flex align-center">
-          <image style="width:50rpx;height:50rpx;border-radius:50%" class="margin-right-sm" mode="aspectFill" src="{{item.user[0].avatar}}"></image> 
+          <image style="width:50rpx;height:50rpx;border-radius:50%" class="margin-right-sm bg-gray " mode="aspectFill" src="{{item.user[0].avatar}}"></image> 
           <view>{{item.user[0].name}}</view>
         </view>
         <view class="main-text-color text-xl text-bold margin-top-sm">
         {{item.appoint_type == "free"?"互免约拍":"￥"+item.price}}
         </view>
       </view>
-      <view class="text-bold text-lg margin-top-sm">{{item.title}}</view>
+      <view class="text-bold text-lg margin-top-sm ellipsis">{{item.intro}}</view>
       <view style="width:100%">
       <scroll-view scroll-x="true" style="width:100%;height:260rpx;white-space: nowrap;" class="margin-top-sm">
-        <image wx:for="{{item.img}}" src="{{item}}" mode="heightFix" style="height:250rpx;border-radius:10rpx;" class="margin-xs"></image>
+        <image wx:for="{{item.img}}" src="{{item}}" mode="aspectFill" style="width:250rpx;height:250rpx;border-radius:10rpx;" class="margin-xs bg-gray animation-fade"></image>
       </scroll-view>
+      <view class="cu-tag margin-xs main-text-color" wx:for="{{item.tag}}">{{item}}</view>
       <view class="margin-top-sm flex align-center justify-between">
       <view class="text-sm text-gray ">
         <text class="cuIcon-location"></text>
-        <text class="margin-left-xs">{{item.region[0]}}</text>
-        <text class="margin-left-xs">{{item.region[1]}}</text>
-        <text class="margin-left-xs">{{item.region[2]}}</text>
+        <text class="margin-left-xs">{{item.region[0]=='所有范围'?'任意地区':item.region[0]+'-'+item.region[1]+'-'+item.region[2]}}</text>
       </view>
-      <view>
-        <text class="cuIcon-camera text-lg text-right" ></text>
-        <text class="margin-left-xs">{{item.order.length}}</text>
+      <view class="flex align-center text-gray"> 
+        <view class="cuIcon-attentionfill text-lg text-right" ></view>
+        <view class="margin-left-xs margin-right-sm">{{item.browse}}</view>
+        <view class="cuIcon-camerafill text-lg text-right" ></view>
+        <view class="margin-left-xs">{{item.order.length}}</view>
       </view>
       </view>
+
       </view>
       
     </view> 

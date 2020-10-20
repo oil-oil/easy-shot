@@ -1,0 +1,31 @@
+/* components/drawer/drawer.wxss */
+@import '../../colorui/icon.wxss';
+@import '../../colorui/main.wxss';
+@import '../../colorui/animation.wxss';
+.main-text-color{
+  color:#A58AA9;
+}
+
+.main-bg-color{
+  background-color:#A58AA9; 
+}
+.write{
+  position:absolute;
+  border-radius:50%;
+  bottom:40rpx;
+  right:0;
+  width:50rpx;
+  height:50rpx;
+  border: white 2rpx solid;
+}
+.red-dot{
+  width: 50rpx;
+  height: 30rpx;
+  background-color: red;
+  color: white;
+  border-radius: 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22rpx;
+}

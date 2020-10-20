@@ -7,7 +7,12 @@ Page({
     upload_img:[],
     button_text:'确认发布',
     upload_num:0,
-    type:''
+    tag:{
+      flag:false,
+      text:'',
+      choose:[],
+      list:['旅拍','情侣','校园','纪实','古风','婚礼','复古','穿搭','暗黑','儿童摄影','汉服','JK','Lolita','cosplay','和服','风景','胶片']
+    },
   },
   ChooseImage() {
     wx.chooseImage({
@@ -46,9 +51,43 @@ Page({
   intro_input(e){
     this.setData({intro:e.detail.value})
   },
-  type_change(e){
-    this.setData({type:e.detail.value})
-    console.log(e)
+  switch_add_modal(){
+    this.setData({'tag.flag':!this.data.tag.flag})
+  },
+  tag_input(e){
+    this.setData({'tag.text':e.detail.value})
+  },
+  add_tag(){
+    if(this.data.tag.text == ''){
+      getApp().show_modal('请输入正确标签')
+      return
+    }
+    if(this.data.tag.choose.length>=5){
+      getApp().show_modal('最多选择五个标签')
+      return
+    }
+    var tag_list = this.data.tag.list,
+    choose = this.data.tag.choose
+    tag_list.push(this.data.tag.text)
+    choose.push(this.data.tag.text)
+    this.setData({'tag.choose':choose,'tag.list':tag_list,'tag.text':''})
+    this.switch_add_modal()
+  },
+  choose_tag(e){
+    const index = e.currentTarget.dataset.index
+    const index2 = this.data.tag.choose.indexOf(this.data.tag.list[index])
+    var temp = this.data.tag.choose
+    if(index2 == -1){
+      if(this.data.tag.choose.length>=5){
+        getApp().show_modal('最多选择五个标签')
+        return
+      }
+    temp.push(this.data.tag.list[index])
+    }
+    else{
+      temp.splice(index2,1)
+    }
+    this.setData({'tag.choose':temp})
   },
   post(){
     if(this.data.title == ''){
@@ -88,12 +127,13 @@ Page({
           const new_post = {
             _id:''+timestamp+'',
             title:this.data.title,
-            intro:this.data.intro,
+            text:this.data.intro,
             img:this.data.upload_img,
-            type:this.data.type,
+            type:'works',
+            tag:this.data.tag.choose,
             like:[]
           }
-          db.collection('works').add({data:new_post}).then(res=>{
+          db.collection('post').add({data:new_post}).then(res=>{
             wx.hideLoading({
               success: (res) => {
                 wx.showToast({

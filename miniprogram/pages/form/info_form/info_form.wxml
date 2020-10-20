@@ -9,10 +9,12 @@
 
   <view class="cu-form-group">
 		<view class="title">用户名</view>
-		<input placeholder="请输入用户名" value="{{user.name}}" bindinput="name_input"></input>
+		<input placeholder="点击输入" value="{{user.name}}" bindinput="name_input"></input>
   </view>
 
-  <view class="cu-form-group margin-top">
+  
+
+  <view class="cu-form-group">
 		<view class="title">性别</view>
 		<picker bindchange="PickerChange" value="{{index}}" range="{{picker}}">
 			<view class="picker">
@@ -20,6 +22,17 @@
 			</view>
 		</picker>
   </view>
+
+  <view class="cu-form-group">
+		<view class="title">电话号码</view>
+		<input placeholder="点击输入" value="{{user.tel}}" bindinput="name_input"></input>
+  </view>
+
+  <view class="cu-form-group">
+		<view class="title">一句话介绍你自己</view>
+		<input placeholder="点击输入" value="{{user.intro}}" bindinput="name_input"></input>
+  </view>
+  
 
   <button class="cu-btn block button margin-tb-lg lg" bindtap="change_info">保存个人信息</button>
 </scroll-view>

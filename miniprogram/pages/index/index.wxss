@@ -6,15 +6,17 @@
   z-index: 999;
   justify-content: center;
   transition: all 0.3s;
+  background-color: white;
 }
 .top-tab{
   position: relative;
+  
 }
 .top-bar-line{
   position: absolute;
   bottom: 0;
   height: 5rpx;
-  width: 33.3%;
+  width: 50%;
   transition: 0.3s all;
   display: flex;
   justify-content: center;
@@ -28,29 +30,28 @@
 }
 .add-button{
   position: fixed;
-  bottom: 40rpx;
-  right: 40rpx;
-  width: 80rpx;
-  height: 80rpx;
+  bottom: 30rpx;
+  right: 30rpx;
+  width: 100rpx;
+  height: 100rpx;
   border-radius: 50%;
-  font-size: 35rpx;
-  font-weight: bold;
-  z-index: 999;
+  font-size: 42rpx;
+  z-index: 1001;
   transition: all 0.2s ease-in-out;
+  background: rgb(165,138,169);
+background: linear-gradient(180deg, rgba(165,138,169,1) 0%, rgba(213,203,214,1) 0%, rgba(165,138,169,1) 100%);
 }
 .add-modal{
   position: fixed;
-  width: 300rpx;
-  height: 100rpx;
-  right: 140rpx;
-  bottom: 40rpx;
+  height: 100vh;
+  left: 0;
+  bottom: 0;
   border-radius: 20rpx;
-  z-index: 999;
+  z-index: 1000;
   transition: all 0.2s ease-in-out;
   display: flex;
   align-items: center;
-  justify-content: center;
-  background-color: rgba(255, 255, 255, 0.701);
+  flex-direction: column;
 }
 
 .text-shadow{
@@ -67,4 +68,63 @@
   left: 120rpx;
   top:20rpx;
   z-index: 1000;
+}
+.more-mask{
+  background-color: rgba(0, 0, 0, 0.401);
+  position: relative;
+  color: white;
+  width: 100%;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 25vw;
+  font-size: 35rpx;
+  font-weight: bold;
+}
+view image{
+  transition: all 0.2s;
+}
+.avatar{
+  position: absolute;
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 50%;
+  left: 25rpx;
+  z-index: 1001;
+}
+.avatar > image{
+  width:60rpx;
+  height:60rpx;
+  border-radius:50%
+}
+
+.drawer{
+  position: fixed;
+  left: 0;
+  top: 0;
+  background-color: white;
+  width: 80vw;
+  height: 100vh;
+  z-index: 9999;
+  border-radius: 0  20rpx 20rpx 0;
+  transition: all 0.15s ease-out;
+}
+.mask{
+  position: fixed;
+  left: 0;
+  top: 0;
+  background-color: rgba(128, 128, 128, 0.504);
+  width: 100vw;
+  height: 100vh;
+  z-index: 9998;
+}
+.red-dot{
+  position: absolute;
+  top: 0;
+  left: 50rpx;
+  width: 15rpx;
+  height: 15rpx;
+  border-radius: 20rpx;
+  background-color: red;
 }

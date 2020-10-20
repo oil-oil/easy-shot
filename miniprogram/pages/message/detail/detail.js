@@ -6,26 +6,38 @@ Page({
     page_type:0,
     skip:0,
     message_array:[],
-    nomore:false
+    nomore:false,
+    nodata:false,
+    loading:false
   },
   onLoad(e){
     this.setData({page_type:parseInt(e.type)})
     // 根据页面类型获取相应数据
     if(this.data.page_type === 0){
       this.get_like()
+      wx.setNavigationBarTitle({
+        title: '获得点赞',
+      })
     }
     else if(this.data.page_type === 1){
       this.get_notice()
+      wx.setNavigationBarTitle({
+        title: '我的通知',
+      })
     }
     else if(this.data.page_type === 2){
       this.get_comment()
+      wx.setNavigationBarTitle({
+        title: '获得评论',
+      })
     }
   },
   get_like(){
-    wx.showNavigationBarLoading()
+    this.setData({loading:true})
     wx.cloud.callFunction({
-      name:'lookup_db',
+      name:'message',
       data:{
+        type:'get_all_data',
         collection:'message',
         skip:this.data.skip,
         lookup:{
@@ -35,7 +47,7 @@ Page({
           as: 'sender',
         },
         lookup2:{
-          from: 'works',
+          from: 'post',
           localField: 'about_id',
           foreignField: '_id',
           as: 'about',
@@ -43,6 +55,7 @@ Page({
         project:{
            date:1,
           from:1,
+          status:1,
           'sender.name':1,
           'sender.avatar':1,
           'sender._openid':1,
@@ -55,7 +68,6 @@ Page({
         }
       }
     }).then(res=>{
-      wx.hideNavigationBarLoading()
       // 获取数据后更改状态为已读
       db.collection('message')
       .where({
@@ -68,6 +80,9 @@ Page({
         }
       })
       if(res.result.list.length){
+        if(res.result.list.length < 20){
+          this.data.nomore = true
+        }
         for(let i in res.result.list){
           var temp = this.data.message_array
           temp.push(res.result.list[i])
@@ -75,15 +90,20 @@ Page({
         this.setData({message_array:temp})
       }
       else{
+        if(!this.data.message_array.length){
+          this.setData({nodata:true})
+        }
         this.data.nomore = true
       }
     })
+    this.setData({loading:false})
   },
   get_notice(){
-    wx.showNavigationBarLoading()
+    this.setData({loading:true})
     wx.cloud.callFunction({
-      name:'lookup_db',
+      name:'message',
       data:{
+        type:'get_all_data',
         collection:'message',
         skip:this.data.skip,
         lookup:{
@@ -101,6 +121,7 @@ Page({
         project:{
           date:1,
           from:1,
+          status:1,
           'sender.name':1,
           'sender.avatar':1,
           'sender._openid':1,
@@ -123,8 +144,11 @@ Page({
           status:true
         }
       })
-      wx.hideNavigationBarLoading()
+      
       if(res.result.list.length){
+        if(res.result.list.length < 20){
+          this.data.nomore = true
+        }
         for(let i in res.result.list){
           var temp = this.data.message_array
           temp.push(res.result.list[i])
@@ -132,15 +156,20 @@ Page({
         this.setData({message_array:temp})
       }
       else{
+        if(!this.data.message_array.length){
+          this.setData({nodata:true})
+        }
         this.data.nomore = true
       }
+      this.setData({loading:false})
     })
   },
   get_comment(){
-    wx.showNavigationBarLoading()
+    this.setData({loading:true})
     wx.cloud.callFunction({
-      name:'lookup_db',
+      name:'message',
       data:{
+        type:'get_all_data',
         collection:'message',
         skip:this.data.skip,
         lookup:{
@@ -159,6 +188,7 @@ Page({
           date:1,
           text:1,
           from:1,
+          status:1,
           'sender.name':1,
           'sender.avatar':1,
           'sender._openid':1,
@@ -171,7 +201,7 @@ Page({
         }
       }
     }).then(res=>{
-      wx.hideNavigationBarLoading()
+      
       // 获取数据后更改状态为已读
       db.collection('message')
       .where({
@@ -184,6 +214,9 @@ Page({
         }
       })
       if(res.result.list.length){
+        if(res.result.list.length < 20){
+          this.data.nomore = true
+        }
         for(let i in res.result.list){
           var temp = this.data.message_array
           temp.push(res.result.list[i])
@@ -191,8 +224,12 @@ Page({
         this.setData({message_array:temp})
       }
       else{
+        if(!this.data.message_array.length){
+          this.setData({nodata:true})
+        }
         this.data.nomore = true
       }
+      this.setData({loading:false})
     })
   },
   load_more(){
@@ -217,9 +254,9 @@ Page({
   show_detail(e){
     // 跳转至相应订单或内容
     if(this.data.page_type === 0){
-      wx.navigateTo({
-        url:'../../index/works_detail/works_detail?_id='+this.data.message_array[e.currentTarget.dataset.index].about[0]._id
-      })
+        wx.navigateTo({
+          url:'../../index/post_detail/post_detail?_id='+this.data.message_array[e.currentTarget.dataset.index].about[0]._id
+        })
     }
     else if(this.data.page_type === 1){
       wx.navigateTo({

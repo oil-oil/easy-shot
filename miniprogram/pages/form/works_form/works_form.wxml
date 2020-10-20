@@ -1,15 +1,16 @@
+<wxs src='../../../utils/utils.wxs' module="utils"></wxs>
 <view> 
   <view class="cu-form-group">
-		<view class="title main-text-color">作品标题</view>
+		<view class="title main-text-color"><text class="cuIcon-title margin-right-sm"></text>作品标题</view>
 		<input placeholder="点击输入" bindinput="title_input"></input>
   </view>
   <view class="cu-form-group align-start">
-		<view class="title main-text-color">作品描述</view>
+		<view class="title main-text-color"><text class="cuIcon-titles margin-right-sm"></text>作品描述</view>
 		<textarea maxlength="-1"   placeholder="点击输入" bindinput="intro_input"></textarea>
 	</view>
   <view class="cu-bar bg-white margin-top">
 		<view class="action main-text-color">
-			作品上传
+			<text class="cuIcon-picfill margin-right-sm"></text>作品上传
     </view>
     <view class="action text-gray text-sm">
 			共{{img_list.length}}张作品
@@ -27,18 +28,31 @@
 				<text class="cuIcon-cameraadd "></text>
 			</view>
 		</view>
-  </view>
-	<radio-group class="block bg-white margin-top" bindchange='type_change'>
-		<view class="cu-form-group">
-			<view class="title main-text-color">作品类型</view>
-			<view>
-				<radio class="red" value='orginal'></radio>
-				<text class="margin-left-sm" >原创</text>
-				<radio class="red margin-left-sm" value="reprint"></radio>
-				<text class="margin-left-sm">转载</text>
+	</view>
+	
+	<view class="cu-form-group margin-top">
+		<view class="title main-text-color"> <text class="cuIcon-tagfill margin-right-sm"></text>主题标签</view>
+	</view>
+	<view class="padding-top-sm flex flex-wrap bg-white padding-sm">
+			<view wx:for="{{tag.list}}" class="cu-tag {{utils.indexOf(tag.choose,tag.list[index])?'main-bg-color text-white':'line-gray'}} margin-xs" data-index="{{index}}" bindtap="choose_tag">{{item}}</view>
+			<view class="cu-tag main-text-color margin-xs" bindtap="switch_add_modal"><text class="cuIcon-add"></text>自定义</view>
+		</view >
+
+		<view class="cu-modal bottom-modal {{tag.flag?'show':''}}">
+  <view class="cu-dialog">
+    <view class="cu-bar bg-white">
+      <view class="action text-gray" bindtap="switch_add_modal">取消</view>
+      <view class="action main-text-color" bindtap="add_tag">添加</view>
+    </view>
+    <view class="padding-xl">
+			<view class="padding cu-tag">
+				<input type="text" placeholder="请输入自定义标签内容" bindinput="tag_input" value='{{tag.text}}'></input>
 			</view>
-		</view>
-		
-	</radio-group>
-  <button class="cu-btn block button margin-tb-lg lg" bindtap="post">{{button_text}}</button>
+      
+    </view>
+  </view>
+</view>
+
+
+  <button class="cu-btn block button margin-tb-lg lg " style="background:white"  bindtap="post">{{button_text}}</button>
 </view>

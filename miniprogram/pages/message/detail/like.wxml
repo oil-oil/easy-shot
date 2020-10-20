@@ -1,4 +1,5 @@
 <view>
+  <view class="text-bold text-lg padding bg-white">全部消息</view>
   <view class="flex align-center padding bg-white" wx:for="{{message_array}}">
     <image style="width:100rpx;height:100rpx;border-radius:50%" mode="aspectFill" src="{{item.sender[0].avatar}}" data-index='{{index}}' bindtap="show_user"></image>
     <view class="margin-left-sm">
@@ -7,6 +8,8 @@
     </view>
     <view style="margin-left:auto" class="flex align-center">
       <image style="width:100rpx;height:100rpx;" mode="aspectFill" src="{{item.about[0].img[0]}}" data-index='{{index}}' bindtap="show_detail"></image>
+      <view class="cuIcon-right text-xl" data-index="{{index}}" bindtap="show_detail" wx:if="{{!item.about[0].img.length}}"></view>
     </view>
   </view>
+ 
 </view>

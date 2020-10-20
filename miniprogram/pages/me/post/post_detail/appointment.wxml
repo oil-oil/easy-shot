@@ -1,4 +1,4 @@
-<scroll-view scroll-y='true' style="height:100vh;padding-top:50rpx" >
+<scroll-view scroll-y='true' style="height:100vh;padding-top:70rpx" >
   <view wx:if="{{!appointment.array.length}}" class="flex align-center justify-center bg-white" style="width:100%;height:100vh;flex-direction:column">
     <image src="../../../images/icon2/none_order.png"></image>
     <view class="text-sm text-gray">还没有发布约拍噢</view>
@@ -26,7 +26,7 @@
 
     <view class="flex margin-top">
       <view class="button" style="margin-left:auto;border-radius:20rpx">更改约拍信息</view>
-      <view class="button margin-left" data-index='{{index}}' style="border-radius:20rpx" catchtap='finish'>删除约拍</view>
+      <view class="button margin-left" data-index='{{index}}' style="border-radius:20rpx" catchtap='delete'>删除约拍</view>
     </view>
   </view>
 

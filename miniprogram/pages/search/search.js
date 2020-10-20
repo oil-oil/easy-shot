@@ -8,17 +8,17 @@ data:{
       array:[],
       index:0,
     },
-    search_text:''
+    search_text:'',
+    no_data:false
   },
-
   onLoad: function (options) {
   },
   get_appointment(){
-    wx.showNavigationBarLoading()
     // 正则匹配输入内容,实时搜索
     wx.cloud.callFunction({
-      name:'lookup_db',
+      name:'appointment',
       data:{
+        type:'get_all_data',
         collection:'appointment',
         skip:0,
         lookup:{
@@ -46,7 +46,6 @@ data:{
         }
       }
     }).then(res=>{
-      wx.hideNavigationBarLoading()
       if(this.data.search_text==''){
         return
       }
@@ -73,11 +72,5 @@ data:{
   },
   input(e){
     this.setData({search_text:e.detail.value})
-    if(this.data.search_text!==''){
-      this.get_appointment()
-    }
-    else{
-      this.setData({'appointment.array':[]})
-    }
   }
 })

@@ -1,4 +1,6 @@
-<view class="flex">
+<view style="height:100vh" class="bg-white">
+  <loading show='{{loading}}'></loading>
+  <view class="flex" >
   <view class="flex-sub padding">
     <view class="bg-white flex justify-center align-center shadow" 
     style="flex-direction:column;border-radius:20rpx;width:25vw;height:25vw;position:relative" 
@@ -29,10 +31,10 @@
 </view>
 
 <view class="padding">
-  <view class="text-bold text-xl">全部私信</view>
+  <view class="text-gray">私信</view>
 </view>
 
-  <view class="flex padding align-center solids-bottom" style="width:100%" wx:for="{{talk_room.array}}" data-index='{{index}}' bindtap="talk">
+  <view class="flex padding align-center bg-white margin-sm shadow animation-fade" style="border-radius:10rpx" wx:for="{{talk_room.array}}" data-index='{{index}}' bindtap="talk">
     <image style="width:80rpx;height:80rpx;border-radius:50%" src="{{item.sender.avatar}}"></image>
     <view class="margin-left-sm" style="width:90%">
       <view class="flex justify-between">
@@ -51,3 +53,4 @@
     <image src="../../images/icon2/none_order.png"></image>
     <view class="text-sm text-gray">还没有私信噢</view>
   </view>
+</view>

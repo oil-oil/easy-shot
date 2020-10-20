@@ -1,50 +1,32 @@
 <wxs src='../../../../utils/utils.wxs' module="utils"></wxs>
-
-<view class="cu-form-group margin-top animation-slide-bottom">
-    <view class="title main-text-color">订单价格</view>
+<user_tab user='{{user}}' follow='{{status.follow}}'></user_tab>
+<view class="cu-form-group">
+    <view class="title main-text-color"><text class="cuIcon-pay margin-right-sm"></text>订单价格</view>
     <view class="text-gray">{{appoint.appoint_type == "free"?"互免约拍":"￥"+appoint.price}}</view>
 </view>
-<view class="cu-form-group margin-top animation-slide-bottom">
-    <view class="title main-text-color">已选择日期</view>
-    <view class="text-gray">{{date_choose!==''?date_choose.year+'-'+date_choose.month+'-'+date_choose.dateNum:'未选择'}}</view>
+
+<view class="cu-form-group">
+    <view class="title main-text-color"><text class="cuIcon-calendar margin-right-sm"></text>约拍日期</view>
+    <picker mode="date" value="{{date}}" start="{{now_date}}" end="{{end_date}}" bindchange="date_change">
+		<view class="picker text-gray">
+			{{date}}
+		</view>
+	</picker>
 </view>
 
- 
-
-  <!-- 日历年月 -->
-<view class="bg-white  animation-slide-bottom" >
-<view class='calendar_title flex main-text-color align-center bg-white text-lg'>
-  <view class='icon button' bindtap='lastMonth'>
-    <text class="cuIcon-back"></text>
-  </view>
-  <view>{{year}}年{{month}}月</view>
-  <view class='icon button' bindtap='nextMonth'>
-    <text class="cuIcon-right"></text>
-  </view>
-</view>
-</view>
-<!-- 日历主体 -->
-<view class='calendar animation-slide-bottom'>
-  <view class='header'>
-    <view wx:for='{{date}}' wx:key='' class='{{(index == todayIndex) && isTodayWeek ? "weekMark" : ""}}'>{{item}}
-      <view></view>
-    </view>
-  </view>
-
-  <view class='date-box'>
-    <block wx:for='{{dateArr}}' wx:key='' >
-      <view class='{{isToday.year==item.year&&isToday.month==item.month&&isToday.dateNum==item.dateNum ? "main-text-color bg-gray" : ""}} {{item.status=="choose"?"bg-gray":""}}'>
-        <view class='date-head {{item.status=="futrue"?"":"text-gray"}} {{!appoint_type&&utils.match(appoint.date_choose,item)?"":"text-gray"}} {{item.year&&date_choose.year===item.year&&date_choose.month===item.month&&date_choose.dateNum===item.dateNum?"main-bg-color text-white":""}}' bindtap='{{!appoint_type&&utils.match(appoint.date_choose,item)?"choose_date":""}}' data-index='{{index}}'>
-          <view >{{item.dateNum}}</view>
-        </view>
-      </view>
-    </block>
-  </view>
+<view class="cu-form-group margin-top">
+	<view class="title main-text-color"><text class="cuIcon-phone margin-right-sm"></text>手机号码</view>
+	<input placeholder="点击输入" bindinput="tel_input" type="number"></input>
 </view>
 
-<view class="cu-form-group align-start">
-		<view class="title main-text-color">订单备注</view>
+<view class="cu-form-group">
+	<view class="title main-text-color"><text class="cuIcon-weixin margin-right-sm"></text>微信号</view>
+	<input placeholder="点击输入" bindinput="wx_input"></input>
+</view>
+
+<view class="cu-form-group align-start margin-top">
+		<view class="title main-text-color"><text class="cuIcon-list margin-right-sm"></text>约拍要求</view>
 		<textarea maxlength="-1"   placeholder="点击输入" bindinput="remark_input"></textarea>
 	</view>
 
-<button class="cu-btn block button margin-tb-lg lg" bindtap="order">确认约拍下单</button>
+<button class="cu-btn block bg-white main-text-color margin-tb-lg lg" bindtap="order">确认约拍下单</button>

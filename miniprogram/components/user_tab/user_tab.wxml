@@ -1,0 +1,13 @@
+<view class="flex align-center padding bg-white" >
+    <image style="width:100rpx;height:100rpx;border-radius:50%" bindtap="show_user" mode="aspectFill" src="{{user.avatar}}" ></image>
+    <view class="margin-left-sm">
+      <view class="text-bold">{{user.name}}</view>
+      <view class="text-gray margin-top-xs">摄影师</view>
+    </view>
+    <view style="margin-left:auto" class="flex align-center" wx:if="{{user._openid !== _openid}}">
+      <view class="margin-left-xs {{follow?'button2':'button'}}" bindtap="follow" >{{follow?'已关注':'关注'}}</view>
+      <slot></slot>
+    </view>
+    
+</view>
+

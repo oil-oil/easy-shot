@@ -1,12 +1,14 @@
-<view class="bg-white margin-sm search-bar padding shadow">
-  <input type="text" placeholder="搜索你喜欢的约拍吧~" bindinput="input" value="{{search_text}}"></input>
+<view style="height:100vh" class="bg-white"> 
+  <view class="bg-white margin-sm search-bar padding-xs shadow flex align-center" style="border-radius:20rpx">
+  <view class="cuIcon-search text-gray margin-right-sm"></view>
+  <input type="text" placeholder="搜索你喜欢的约拍吧~" bindconfirm="get_appointment" bindinput="input" confirm-type="search" value="{{search_text}}" auto-focus="true"></input>
 </view>
-<view wx:if="{{!appointment.array.length}}" class="flex align-center justify-center bg-white " style="width:100%;height:100vh;flex-direction:column">
+<view wx:if="{{nodata}}" class="flex align-center justify-center bg-white " style="width:100%;height:100vh;flex-direction:column">
     <image src="../../images/icon2/none_order.png"></image>
     <view class="text-sm text-gray">没有相关约拍噢</view>
   </view>
-  <view style="margin-top:120rpx">
+  <view>
     <include src='../index/index_detail/appointment.wxml' />
-
   </view>
+</view>
 

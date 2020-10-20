@@ -1,5 +1,6 @@
 var indexOf = function(array,which){
   // 发布约拍表单中，用于检索匹配今天的日期
+  // 发布约拍表单中，用户匹配已选择标签
   for(var i=0;i<=array.length;i++){
     if(JSON.stringify(array[i]) === JSON.stringify(which)){
       return true

@@ -1,5 +1,5 @@
 <view style="min-height:100vh" class="bg-white">
-  <image src='../../../images/icon2/identification.png' style="width:100vw" mode="aspectFit"></image>
+  <image src='../../../images/icon2/shoot.png' style="width:100vw" mode="aspectFit"></image>
   <view>
     <view class="text-gray text-center">暂未上线，敬请期待</view>
   </view>

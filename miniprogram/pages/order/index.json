@@ -1,4 +1,7 @@
 {
-  "usingComponents": {},
+  "usingComponents": {
+    "loading":"../../../components/loading/loading"
+  },
   "navigationBarTitleText": "订单管理"
+  
 }

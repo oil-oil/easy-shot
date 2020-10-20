@@ -1,41 +1,42 @@
-<view class="margin-sm shadow bg-white">
-  <view class="flex align-center padding " >
-      <image style="width:100rpx;height:100rpx;border-radius:50%" bindtap="show_user" mode="aspectFill" src="{{user.avatar}}" ></image>
-      <view class="margin-left-sm">
-        <view class="text-bold">{{user.name}}</view>
-        <view class="text-gray margin-top-xs">摄影师</view>
-      </view>
-      <view style="margin-left:auto" class="flex align-center">
-        <view class="margin-right-xs {{status.follow?'text-gray':'button'}}" bindtap="follow">{{status.follow?'已关注':'关注'}}</view>
-        <view class="margin-left-xs button" bindtap="talk">私信</view>
-      </view>
+<loading show='{{loading}}'></loading>
+<view class="margin-sm shadow bg-white" style="border-radius:10rpx">
+  <view class="flex align-center padding" >
+    <image style="width:100rpx;height:100rpx;border-radius:50%" bindtap="show_user" mode="aspectFill" src="{{user.avatar}}" ></image>
+    <view class="margin-left-sm">
+      <view class="text-bold">{{user.name}}</view>
+      <view class="text-gray margin-top-xs">摄影师</view>
     </view>
+    <view style="margin-left:auto" class="flex align-center">
+      <view class="margin-left-xs {{follow?'button2':'button'}}" bindtap="follow">{{follow?'已关注':'关注'}}</view>
+      <view class="margin-left-xs button" bindtap="talk">私信</view>
+    </view>
+    
+</view>
 
   <view class="padding flex" style="border-radius:20rpx">
     <view class="flex-sub flex justify-center align-center" style="flex-direction:column">
-      <view class="text-bold text-xl">3</view>
+      <view class="text-bold text-xl">{{user.fans.length}}</view>
       <view class="text-gray text-sm margin-top-xs">粉丝</view>
     </view>
     <view class="flex-sub flex justify-center align-center" style="flex-direction:column">
-      <view class="text-bold text-xl">3</view>
+      <view class="text-bold text-xl">{{user.follow.length}}</view>
       <view class="text-gray text-sm margin-top-xs">关注</view>
     </view>
   </view>
 </view>
-<scroll-view scroll-y="true">
-  <view class="top-bar bg-white" >
+<scroll-view scroll-y="true" class="bg-white">
+  <view class="top-bar" >
     <view class="flex align-center top-tab margin-xs">
       <view wx:for='{{top_bar.array}}' class="text-lg margin-sm {{index==top_bar.now_tab?'text-bold':''}}" data-index="{{index}}" bindtap="switch_top_tab">
         {{item}}
       </view>
-      <view class="top-bar-line" style="left:{{top_bar.now_tab*33.3}}%">
+      <view class="top-bar-line" style="left:{{top_bar.now_tab*50}}%">
         <view class="inner-line main-bg-color"></view>
       </view>
     </view> 
   </view>
 <swiper style="height:100vh;margin-top:-80rpx" bindchange="swiper_change" current="{{top_bar.now_tab}}" >
-  <swiper-item><include src='../index/index_detail/works.wxml' /></swiper-item>
-  <swiper-item style="margin-top:80rpx"><include  src='../index/index_detail/appointment.wxml' /></swiper-item>
+  <swiper-item><include  src='../index/index_detail/appointment.wxml' /></swiper-item>
   <swiper-item><include src='../index/index_detail/post.wxml' /></swiper-item>
 </swiper>
 </scroll-view>

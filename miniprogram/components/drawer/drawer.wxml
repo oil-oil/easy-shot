@@ -1,0 +1,93 @@
+<scroll-view scroll-y="true" class="bg-white"  style="height:100vh;">
+<view class="padding-sm" style="margin-top:{{status_height+10}}px">
+  <view class="bg-white padding flex justify-between shadow" style="border-radius:20rpx" >
+    <view >
+      <view class="text-xl text-black text-bold">{{user.name}}</view>
+      <view class="text-gray text-sm margin-top-sm">普通用户</view>
+
+      <view class="flex margin-top">
+        <view class="margin-left text-center">
+          <view class="text-bold text-black">{{user.fans.length}}</view>
+          <view class="margin-top-xs text-gray text-sm">粉丝</view>
+        </view>
+        <view class="margin-left text-center">
+          <view class="text-bold text-black">{{user.follow.length}}</view>
+          <view class="margin-top-xs text-gray text-sm">关注</view>
+        </view>
+      </view> 
+    </view>
+
+    <view style="position:relative">
+      <image style="width:150rpx;height:150rpx;border-radius:50%" src="{{user.avatar}}" bindtap="show_user" mode="aspectFill"></image>
+      <view class="flex align-center justify-center main-bg-color write" >
+        <view class="cuIcon-writefill text-white text-xs " catchtap='change_info'></view>
+      </view>
+    </view>
+
+  </view>
+</view>
+
+<view class="margin-sm bg-white shadow padding flex align-center" style="border-radius:10rpx;position:relative" bindtap="show_message">
+  <view class="bg-gray flex align-center justify-center" style="width:100rpx;height:100rpx;border-radius:50%">
+    <view class="cuIcon-commentfill main-text-color " style="font-size:40rpx"></view>
+  </view>
+
+  <view class="margin-left-sm">
+    <view class="flex align-center">
+      <view class="text-bold text-lg margin-bottom-xs ">我的消息</view>
+      <view class="red-dot margin-left-sm margin-bottom-sm" wx:if="{{unread_message.length}}">{{unread_message.length}}</view> 
+    </view>
+    <view class="text-gray">{{message}}</view>
+  </view>
+
+</view> 
+
+<view class="margin-sm bg-white shadow" style="border-radius:10rpx">
+  <view class="text-gray text-sm solid-bottom padding">约拍</view>
+  <view class="flex align-center padding" bindtap="show_order">
+    <view class="cuIcon-form text-lg main-text-color" ></view>
+    <view class="margin-left">订单管理</view>
+  </view>
+  <view class="flex align-center padding" bindtap="show_post">
+    <view class="cuIcon-post text-lg main-text-color" ></view>
+    <view class="margin-left">发布管理</view>
+  </view>
+  <view class="flex align-center padding" bindtap="show_favor">
+    <view class="cuIcon-favor text-lg main-text-color" ></view>
+    <view class="margin-left">我的收藏</view>
+  </view>
+  <view class="flex align-center padding" bindtap="show_follow" >
+    <view class="cuIcon-peoplelist text-lg main-text-color" ></view>
+    <view class="margin-left">我的关注</view>
+  </view>
+</view>
+
+<view class="margin-sm bg-white shadow" style="border-radius:10rpx">
+  <view class="text-gray text-sm solid-bottom padding">认证</view>
+  <view class="flex align-center padding" bindtap="show_read_name">
+    <view class="cuIcon-camera text-lg main-text-color" ></view>
+    <view class="margin-left">摄影师认证</view>
+  </view>
+  <view class="flex align-center padding" bindtap="show_identification">
+    <view class="cuIcon-selection text-lg main-text-color" ></view>
+    <view class="margin-left">简约约拍认证</view>
+  </view>
+</view>
+
+<view class="margin-sm bg-white shadow" style="border-radius:10rpx">
+  <view class="text-gray text-sm solid-bottom padding">其他</view>
+  <view class="flex align-center padding" bindtap="show_read_name">
+    <view class="cuIcon-service text-lg main-text-color" ></view>
+    <view class="margin-left">联系客服</view>
+  </view>
+  <view class="flex align-center padding" bindtap="show_identification">
+    <view class="cuIcon-emoji text-lg main-text-color" ></view>
+    <view class="margin-left">关于我们</view>
+  </view>
+</view>
+
+
+</scroll-view>
+
+
+

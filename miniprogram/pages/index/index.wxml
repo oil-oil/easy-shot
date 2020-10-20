@@ -1,42 +1,61 @@
-<view style="position:relative">
-  <view class="cuIcon-search text-lg search button" bindtap="show_search"></view>
-  <view class="cuIcon-peoplelist text-lg follow  {{top_bar.now_tab===0&&works.only_follow||top_bar.now_tab===1&&appointment.only_follow||top_bar.now_tab===2&&post.only_follow?'button2':'button'}}" bindtap="only_follow"></view>
-  <view class="top-bar bg-white" >
-    <view class="flex align-center top-tab margin-xs" style="width:50%;"  >
-      <view wx:for='{{top_bar.array}}' class="margin-xs text-lg {{index==top_bar.now_tab?'text-bold':''}} text-center" style="width:33.3%" data-index="{{index}}" bindtap="switch_top_tab">
+<loading show='{{loading}}'></loading>
+<view class="drawer" style="transform: translateX({{drawer.flag?'':'-100%'}});" bindtouchstart="drawer_start" bindtouchmove="drawer_move" >
+  <drawer user='{{user}}' status_height='{{status_height+10}}' unread_message='{{unread_message}}'></drawer>
+</view>
+<view class="mask" wx:if="{{drawer.flag}}" bindtap="hide_drawer"></view>
+<view style="position:relative" class="bg-white">
+
+  
+  <view class="avatar shadow bg-white" style="top:{{status_height+5}}px" bindtap="show_drawer">
+      <image src="{{user.avatar}}" mode="aspectFill" ></image>
+      <view class="red-dot" wx:if="{{red_dot}}"></view>
+  </view>
+
+  <view class="top-bar" style="margin-top:{{status_height}}px" >
+    <view class="flex align-center top-tab margin-xs" style="width:30%;"  >
+      <view wx:for='{{top_bar.array}}' class="margin-xs text-lg {{index==top_bar.now_tab?'text-bold':''}} text-center" style="width:50%" data-index="{{index}}" bindtap="switch_top_tab">
         {{item}}
       </view>
-      <view class="top-bar-line" style="left:{{top_bar.now_tab*33.3}}%">
+      <view class="top-bar-line" style="left:{{top_bar.now_tab*50}}%">
         
         <view class="inner-line main-bg-color"></view>
       </view>
     </view>
+    
   </view>
-
-  <view class="add-modal bg-white shadow shadow main-text-color" style="width:{{add_modal?300:0}}rpx;opacity:{{add_modal?1:0}}">
+  
+  <view class="add-modal bg-white shadow padding" style="width:{{add_modal?100:0}}%;opacity:{{add_modal?1:0}};padding-top:{{status_height+30}}px">
     <block wx:if='{{add_modal}}'>
-    <view class="flex-sub text-center text-bold" bindtap="show_form" data-page="works">作品</view>
-    <view class="flex-sub text-center text-bold" bindtap="show_form" data-page="appoint"> 约拍</view>
-    <view class="flex-sub text-center text-bold" bindtap="show_form" data-page="post">动态</view>
+    
+      <view class="padding-sm">
+      <view class="bg-white flex justify-center align-center shadow padding" style="flex-direction:column;border-radius:20rpx;" bindtap="show_form" data-page="appoint">
+      <image src="../../images/icon2/shoot.png" style="height:18vh"  mode="aspectFit"></image>
+      <view class="text-lg main-text-color text-bold margin-top-sm">发布约拍</view>
+      </view>
+    </view>
+
+    <view class="padding-sm">
+    <view class="bg-white flex justify-center align-center shadow padding" style="flex-direction:column;border-radius:20rpx;" bindtap="show_form" data-page="works">
+      <image src="../../images/icon2/works.png" style="height:18vh" mode="aspectFit"></image>
+      <view class="text-lg main-text-color text-bold margin-top-sm">发布作品集</view>
+    </view>
+    </view>
+    
+    <view class="padding-sm">
+      <view class="bg-white flex justify-center align-center shadow padding" style="flex-direction:column;border-radius:20rpx;" bindtap="show_form" data-page="post">
+      <image src="../../images/icon2/post.png"  style="height:18vh" mode="aspectFit"></image>
+      <view class="text-lg main-text-color text-bold margin-top-sm">分享动态</view>
+    </view>
+    </view>
     </block>
   </view>
 
-  <view class="add-button flex align-center justify-center text-white main-bg-color" bindtap="switch_add_modal" style="transform:rotate({{add_modal?45:0}}deg)">
+  <view class="add-button flex align-center justify-center text-white shadow" bindtap="switch_add_modal" style="transform:rotate({{add_modal?45:0}}deg)">
     <view class="cuIcon-add"></view>
   </view>
 
 <swiper style="height:100vh" bindchange="swiper_change" current="{{top_bar.now_tab}}" >
-  
   <swiper-item>
-    <include src='../index/index_detail/works.wxml'/>
-  </swiper-item>
-  <swiper-item>
-    <view  class="bg-white padding shadow text margin-sm" style="margin-top:100rpx;border-radius:10rpx">
-      <picker mode="region" bindchange="region_change" value="{{region}}" custom-item="所有范围">
-        <text class="cuIcon-location"></text>
-        <text class="margin-left-sm text-gray">{{region.length?region[0] == '所有范围'?region[0]:region[0]+region[1]:'获取位置失败，点击选择' }}</text>
-      </picker>
-    </view>
     <include src='../index/index_detail/appointment.wxml' />
   </swiper-item>
   <swiper-item>

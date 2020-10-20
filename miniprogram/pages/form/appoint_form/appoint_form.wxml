@@ -1,8 +1,10 @@
-
+<wxs src='../../../utils/utils.wxs' module="utils"></wxs>
 <view> 
   <radio-group class="block bg-white margin-top" bindchange='type_change'>
 		<view class="cu-form-group">
-			<view class="title main-text-color">约拍类型</view>
+			<view class="title main-text-color">
+				<text class="cuIcon-camerafill margin-right-sm"></text>约拍类型
+			</view>
 			<view>
 				<label><radio class="purple" value='free'></radio>
 				<text class="margin-left-sm" >互免约拍</text></label>
@@ -12,20 +14,20 @@
 			</view>
 		</view>
 	</radio-group>
-  <view class="cu-form-group">
-		<view class="title main-text-color">约拍标题</view>
-		<input placeholder="点击输入" bindinput="title_input"></input>
-  </view>
   <view class="cu-form-group align-start">
-		<view class="title main-text-color">约拍描述</view>
+		<view class="title main-text-color">
+			<text class="cuIcon-title margin-right-sm"></text>约拍描述
+		</view>
 		<textarea maxlength="-1"   placeholder="点击输入" bindinput="intro_input"></textarea>
   </view>
 
   <view class="cu-form-group">
-		<view class="title main-text-color">约拍地区</view>
-		<picker mode="region" bindchange="region_change" value="{{region}}" custom-item="{{customItem}}">
+		<view class="title main-text-color">
+			<text class="cuIcon-locationfill margin-right-sm"></text>约拍面向地区
+		</view>
+		<picker mode="region" bindchange="region_change" value="{{region}}" custom-item="所有范围">
 			<view class="picker">
-				{{region[0]}}，{{region[1]}}，{{region[2]}}
+				{{region.length?region[0]+region[1]+region[2]:'点击选择'}}
 			</view>
 		</picker>
 	</view>
@@ -44,11 +46,12 @@
 		<view class="text-gray">元</view>
 </view>
   <view class="cu-bar bg-white margin-top">
-		<view class="action main-text-color">
+		<view class="action title main-text-color">
+			<text class="cuIcon-picfill margin-right-sm"></text>
 			约拍宣传图片
     </view>
     <view class="action text-gray text-sm">
-			共{{img_list.length}}张作品
+			共{{img_list.length}}张图片
 		</view>
 	</view>
 	<view class="cu-form-group">
@@ -66,7 +69,8 @@
   </view>
  
   <view class="cu-form-group margin-top">
-		<view class="title main-text-color">拍摄包含(拍摄道具等..)</view>
+		<view class="title main-text-color">
+			<text class="cuIcon-formfill margin-right-sm"></text>拍摄包含(拍摄道具等..)</view>
 		<view class="main-bg-color button add-button main-text-color shadow" bindtap="add_include" wx:if="{{!include.length}}"><text class="cuIcon-add text-bold"></text></view>
   </view>
   <view class="cu-form-group animation-slide-right" wx:for="{{include}}">
@@ -79,6 +83,29 @@
     </view>
   </view>
 
+	<view class="cu-form-group margin-top">
+		<view class="title main-text-color"> <text class="cuIcon-tagfill margin-right-sm"></text>主题标签</view>
+	</view>
+	<view class="padding-top-sm flex flex-wrap bg-white padding-sm">
+			<view wx:for="{{tag.list}}" class="cu-tag {{utils.indexOf(tag.choose,tag.list[index])?'main-bg-color text-white':'line-gray'}} margin-xs" data-index="{{index}}" bindtap="choose_tag">{{item}}</view>
+			<view class="cu-tag main-text-color margin-xs" bindtap="switch_add_modal"><text class="cuIcon-add"></text>自定义</view>
+		</view >
 
-  <button class="cu-btn block button margin-tb-lg lg" bindtap="choose_date">选择接单日期</button>
+		<view class="cu-modal bottom-modal {{tag.flag?'show':''}}">
+  <view class="cu-dialog">
+    <view class="cu-bar bg-white">
+      <view class="action text-gray" bindtap="switch_add_modal">取消</view>
+      <view class="action main-text-color" bindtap="add_tag">添加</view>
+    </view>
+    <view class="padding-xl">
+			<view class="padding cu-tag">
+				<input type="text" placeholder="请输入自定义标签内容" bindinput="tag_input" value='{{tag.text}}'></input>
+			</view>
+      
+    </view>
+  </view>
+</view>
+
+	<button class="cu-btn block button margin-tb-lg lg" style="background:white"  bindtap="post">发布约拍</button>
+	
 </view>

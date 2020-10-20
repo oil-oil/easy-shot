@@ -1,4 +1,8 @@
 {
-  "usingComponents": {},
-  "navigationBarTitleText": "简约约拍"
+  "usingComponents": {
+    "loading":"../../../components/loading/loading",
+    "drawer":"../../../components/drawer/drawer"
+  },
+  "navigationStyle":"custom",
+  "navigationBarTextStyle": "black"
 }

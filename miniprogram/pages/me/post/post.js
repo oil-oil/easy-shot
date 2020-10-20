@@ -5,7 +5,7 @@ Page({
     _openid:'',
     top_bar:{
       now_tab:0,
-      array:['作品','约拍','发现'],
+      array:['约拍','动态'],
       
     },
     user:'',
@@ -31,17 +31,19 @@ Page({
       nomore:false
     },
     refreshing:false,
+    loading:false
   },
   onLoad(){
     this.get_post(getApp().globalData.user._openid)
     this.get_appointment(getApp().globalData.user._openid)
-    this.get_works(getApp().globalData.user._openid)
   },
   get_post(_openid){
-    wx.showNavigationBarLoading()
+    
+    this.setData({loading:true})
     wx.cloud.callFunction({
-      name:'lookup_db',
+      name:'post',
       data:{
+        type:'get_post_data',
         collection:'post',
         skip:this.data.post.skip,
         lookup:{
@@ -56,29 +58,14 @@ Page({
           foreignField: 'post_id',
           as: 'comment',
         },
-        project:{
-          'comment._id':1,
-          'text':1,
-          'date':1,
-          'user.name':1,
-          'user._openid':1,
-          'user.avatar':1,
-          'like':1,
-          'img':1,
-        },
         match:{_openid}
       }
     }).then(res=>{
       this.setData({refreshing:false})
-      wx.hideNavigationBarLoading()
+      
+      this.setData({loading:false})
       if(res.result.list.length&&!this.data.post.nomore){
-        for(let i in res.result.list){
-          res.result.list[i].status = false
-          if(getApp().globalData.has_login == true){
-            if(res.result.list[i].like.indexOf(getApp().globalData.user._openid)!==-1){
-              res.result.list[i].status = true
-            }   
-          }
+        for(let i in res.result.list){   
           var temp = this.data.post.array
           temp.push(res.result.list[i])
           this.setData({['post.array']:temp})
@@ -90,10 +77,11 @@ Page({
     })
   },
   get_appointment(_openid){
-    wx.showNavigationBarLoading()
+    this.setData({loading:true})
     wx.cloud.callFunction({
-      name:'lookup_db',
+      name:'appointment',
       data:{
+        type:'get_all_data',
         collection:'appointment',
         skip:this.data.appointment.skip,
         field:'_openid',
@@ -110,7 +98,8 @@ Page({
           as: 'order',
         },
         project:{
-          'title':1,
+          'browse':1,
+          'intro':1,
           'user.name':1,
           'user.avatar':1,
           'price':1,
@@ -122,8 +111,9 @@ Page({
         match:{_openid}
       }
     }).then(res=>{
+      this.setData({loading:false})
       this.setData({refreshing:false})
-      wx.hideNavigationBarLoading()
+      
       if(res.result.list.length&&!this.data.appointment.nomore){
         for(let i in res.result.list){
           var temp = this.data.appointment.array
@@ -133,42 +123,6 @@ Page({
       }
       else{
         this.data.appointment.nomore = true
-      }
-    })
-  },
-  get_works(_openid){
-    wx.cloud.callFunction({
-      name:'lookup',
-      data:{
-        collection:'works',
-        skip:this.data.works.skip,
-        lookup:{
-          from: 'user',
-          localField: '_openid',
-          foreignField: '_openid',
-          as: 'user',
-        },
-        project:{
-          'title':1,
-          'intro':1,
-          'user.name':1,
-          'user.avatar':1,
-          'like':1,
-          'img':1,
-        },
-        match:{_openid}
-      }
-    }).then(res=>{
-      this.setData({refreshing:false})
-      if(res.result.list.length&&!this.data.works.nomore){
-        for(let i in res.result.list){
-          var temp = this.data.works.array
-          temp.push(res.result.list[i])
-          this.setData({['works.array']:temp})
-        }
-      }
-      else{
-        this.data.works.nomore = true
       }
     })
   },
@@ -205,53 +159,25 @@ Page({
 
   load_more(){
     var _openid = this.data._openid
-    if(this.data.top_bar.now_tab == 0 && !this.data.works.nomore){
-      ++this.data.works.skip
-      this.get_works(_openid)
-    }
-    if(this.data.top_bar.now_tab == 1 && !this.data.appointment.nomore){
+    if(this.data.top_bar.now_tab == 0 && !this.data.appointment.nomore){
       ++this.data.appointment.skip
       this.get_appointment(_openid)
     }
-    if(this.data.top_bar.now_tab == 2 && !this.data.post.nomore){
+    if(this.data.top_bar.now_tab == 1 && !this.data.post.nomore){
       ++this.data.post.skip
       this.get_post(_openid)
     }
   },
   delete(e){
     const index = e.currentTarget.dataset.index
-    if(this.data.top_bar.now_tab == 0){
-      wx.showModal({
-        content:'你确定要删除这个作品吗',
-        confirmText:'确认删除',
-        confirmColor:getApp().globalData.color,
-        success:res=>{
-          if(res.confirm){
-            wx.cloud.deleteFile({
-              fileList:this.data.works.array[index].img
-            }).then(res=>{
-              db.collection('works').doc(this.data.works.array[index]._id)
-              .remove().then(res=>{
-                wx.showToast({
-                  title: '删除成功',
-                })
-                var temp = this.data.works.array
-                temp.splice(index,1)
-                this.setData({'works.array':temp})
-              })
-            })
-          }
-        }
-      })
-    }
-    if(this.data.top_bar.now_tab == 1 ){
+    if(this.data.top_bar.now_tab == 0 ){
       wx.showModal({
         content:'你确定要删除这个约拍吗',
         confirmText:'确认删除',
         confirmColor:getApp().globalData.color
       })
     }
-    if(this.data.top_bar.now_tab == 2 ){
+    if(this.data.top_bar.now_tab == 1 ){
       wx.showModal({
         content:'你确定要删除这条动态吗',
         confirmText:'确认删除',

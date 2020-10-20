@@ -1,4 +1,4 @@
-<view>
+<view class="bg-white" style="min-height:100vh">
 <view class="padding-sm" >
   <view class="bg-white padding flex justify-between shadow" style="border-radius:20rpx" >
     <view >

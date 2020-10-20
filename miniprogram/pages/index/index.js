@@ -3,55 +3,67 @@ const _ = db.command
 const $ = db.command.aggregate
 Page({
   data: {
+    page:"index",
+    loading:false,
+    red_dot:false,
+    drawer:{
+      flag:false,
+      pageX:0
+    },
+    user:{},
     top_bar:{
-      now_tab:1,
-      array:['作品','约拍','发现'],
+      now_tab:0,
+      array:['约拍','发现'],
     },
     add_modal:false,
+    banner:[],
     post:{
       skip:0,
       array:[],
       index:0,
-      only_follow:false,
-      nomore:false
-    },
-    works:{
-      skip:0,
-      array:[],
-      index:0,
-      only_follow:false,
-      nomore:false
+      follow:false,
+      nomore:false,
+      nodata:false
     },
     appointment:{
       skip:0,
       array:[],
       index:0,
-      only_follow:false,
       nomore:false
     },
     refreshing:false,
-    region:[]
+    region:[],
+    status_height:0,
+    unread_message:[]
   },
   onLoad(){
-      this.setData({region:getApp().globalData.region})
-      this.get_works()//获取作品数据
+    console.time()
+      var region = getApp().globalData.region
+      if(region[0] == '所有范围'||region[1] == '所有范围'){
+        region[1]  = ''
+      }
+      this.setData({region:region,status_height:getApp().globalData.status_height,user:getApp().globalData.user})
       this.get_post()//获取动态数据
       this.get_appointment()//获取约拍数据
       this.watch_message()//监听消息
       this.watch_talk()//监听私信
+      this.get_banner()
   },
   onShow(){
     if(getApp().globalData.unread_message.length){
-      wx.showTabBarRedDot({
-        index: 1
-      })
+      this.setData({red_dot:true})
     }
   },
   get_post(){
     //调用云数据库，联表查询
+    if(this.data.post.nomore){
+      return
+    }
+    this.setData({loading:true})
     wx.cloud.callFunction({
-      name:this.data.post.only_follow?'lookup_db_all2':'lookup_db',
+      name:'post',
       data:{
+        type:this.data.post.follow?'get_follow_data':'get_all_data',
         collection:'post',
         skip:this.data.post.skip,
         lookup:{
@@ -66,27 +78,19 @@ Page({
           foreignField: 'post_id',
           as: 'comment',
         },
-        project:{
-          'comment._id':1,
-          'text':1,
-          'date':1,
-          'user.name':1,
-          'user._openid':1,
-          'user.avatar':1,
-          'like':1,
-          'img':1,
-          
-        },
-        match:this.data.post.only_follow?getApp().globalData.user.follow:{}
+        _openid:getApp().globalData.user._openid,
+        match:this.data.post.follow?getApp().globalData.user.follow:{}
       }
     }).then(res=>{
-      this.setData({refreshing:false})
-      if(res.result.list.length&&!this.data.post.nomore){
+      if(res.result.list.length){
+        if(res.result.list.length < 20){
+          this.data.post.nomore = true
+        }
         for(let i in res.result.list){
           res.result.list[i].status = false
-            if(res.result.list[i].like.indexOf(getApp().globalData.user._openid)!==-1){
-              res.result.list[i].status = true
-            } 
+          if(res.result.list[i].like_status){
+            res.result.list[i].status = true
+          }
             res.result.list[i].date = getApp().get_date(res.result.list[i]._id)
           var temp = this.data.post.array
           temp.push(res.result.list[i])
@@ -94,19 +98,28 @@ Page({
         }
       }
       else{
+        if(!this.data.post.array.length){
+          this.setData({'post.nodata':true})
+        }
         this.data.post.nomore = true
       }
+      
+      this.setData({refreshing:false})
+      this.setData({loading:false})
+    })
+  },
+  get_banner(){
+    db.collection('banner').get().then(res=>{
+      this.setData({banner:res.data})
     })
   },
   get_appointment(){
-    wx.showNavigationBarLoading()
-    var match,name
-    if(this.data.only_follow){
-      match = getApp().globalData.user.follow
-      name = 'lookup_db_all2'
+    if(this.data.appointment.nomore){
+      return
     }
-    else{
-      name = 'lookup_db'
+    this.setData({loading:true})
+      var match,type
+      type = 'get_all_data'
       if(this.data.region.length && this.data.region[0] == '所有范围'){
         match = {}
       }
@@ -115,14 +128,14 @@ Page({
           match = {'region.0':this.data.region[0]}
         }
         else{
-          match = {'region.0':this.data.region[0],'region.1':this.data.region[1]}
+          match = { 'region.0':this.data.region[0],'region.1':this.data.region[1]}
         }
       }
-    }
     //调用云数据库，联表查询
     wx.cloud.callFunction({
-      name:name,
+      name:'appointment',
       data:{
+        type:type,
         collection:'appointment',
         skip:this.data.appointment.skip,
         lookup:{
@@ -138,21 +151,24 @@ Page({
           as: 'order',
         },
         project:{
-          'title':1,
+          'intro':1,
           'user.name':1,
           'user.avatar':1,
           'price':1,
           'region':1,
+          'tag':1,
           'appoint_type':1,
           'img':1,
-          'order.type':1
+          'order.type':1,
+          'browse':1
         },
         match:match
       }
     }).then(res=>{
-      console.log(res)
-      this.setData({refreshing:false})
-      if(res.result.list.length&&!this.data.appointment.nomore){
+      if(res.result.list.length){
+        if(res.result.list.length < 20){
+          this.data.appointment.nomore = true
+        }
         for(let i in res.result.list){
           var temp = this.data.appointment.array
           temp.push(res.result.list[i])
@@ -160,114 +176,50 @@ Page({
         }
       }
       else{
+        if(!this.data.appointment.array.length){
+          this.setData({'appointment.nodata':true})
+        }
         this.data.appointment.nomore = true
       }
+    this.setData({refreshing:false})
+    this.setData({loading:false})
+    
     })
-    wx.hideNavigationBarLoading()
+    
   },
-  get_works(){
-    wx.showNavigationBarLoading()
-    //调用云数据库，联表查询
-    wx.cloud.callFunction({
-      name:this.data.works.only_follow?'lookup_all':'lookup',
-      data:{
-        collection:'works',
-        skip:this.data.works.skip,
-        lookup:{
-          from: 'user',
-          localField: '_openid',
-          foreignField: '_openid',
-          as: 'user',
-        },
-        project:{
-          'title':1,
-          'intro':1,
-          'user.name':1,
-          'user.avatar':1,
-          'like':1,
-          'img':1,
-        },
-        where:'_openid',
-        match:this.data.works.only_follow?getApp().globalData.user.follow:{}
-      }
-    }).then(res=>{
-      wx.hideNavigationBarLoading()
-      this.setData({refreshing:false})
-      if(res.result.list.length&&!this.data.works.nomore){
-        for(let i in res.result.list){
-          var temp = this.data.works.array
-          temp.push(res.result.list[i])
-          this.setData({['works.array']:temp})
-        }
-      }
-      else{
-        this.data.works.nomore = true
-      }
-    })
-  },
+  
   show_search(){
     wx.navigateTo({
       url: '../search/search',
     })
   },
-  only_follow(){
-    // 切换为只显示关注用户,重新获取数据
-    if(!getApp().login_check()){
-      return
+  switch_follow(e){
+    let index = e.currentTarget.dataset.index
+   if(this.data.post.follow !== index){
+     this.data.post.nomore = false
+     this.setData({'post.follow':index,'post.array':[],'post.skip':0,'post.nodata':false})
+     this.get_post()
+   }
+  },
+  drawer_start(e){
+    this.setData({'drawer.pageX':e.touches[0].pageX})
+  },
+  drawer_move(e){
+    if(this.data.drawer.pageX - e.touches[0].pageX >=50){
+      this.hide_drawer()
     }
-    if(this.data.top_bar.now_tab == 0){
-      if(this.data.works.only_follow){
-        this.setData({'works.only_follow':false})
-        wx.showToast({
-          title: '查看所有',
-          icon:'none',
-          mask:true
-        })
-      }
-      else{
-        this.setData({'works.only_follow':true})
-        wx.showToast({
-          title: '只看关注',
-          icon:'none',
-          mask:true
-        })
-      }
-    }
-    if(this.data.top_bar.now_tab == 1){
-      if(this.data.appointment.only_follow){
-        this.setData({'appointment.only_follow':false})
-        wx.showToast({
-          title: '查看所有',
-          icon:'none'
-        })
-      }
-      else{
-        this.setData({'appointment.only_follow':true})
-        wx.showToast({
-          title: '只看关注',
-          icon:'none'
-        })
-      }
-    }
-    if(this.data.top_bar.now_tab == 2){
-      if(this.data.post.only_follow){
-        this.setData({'post.only_follow':false})
-        wx.showToast({
-          title: '查看所有',
-          icon:'none'
-        })
-      }
-      else{
-        this.setData({'post.only_follow':true})
-        wx.showToast({
-          title: '只看关注',
-          icon:'none'
-        })
-      }
-    }
-    this.refresh()
+  },
+  show_drawer(){
+    this.setData({'drawer.flag':true})
+  },
+  hide_drawer(){
+    this.setData({'drawer.flag':false})
   },
   region_change(e) {
+     var region = e.detail.value
+      if(region[0] == '所有范围'||region[1] == '所有范围'){
+        region[1]  = ''
+      }
     this.setData({
       region: e.detail.value
     })
@@ -275,7 +227,6 @@ Page({
       title: '更改地区',
       icon:'none'
     })
-    console.log(this.data.region)
     this.refresh()
   },
   switch_top_tab(e){
@@ -303,6 +254,12 @@ Page({
       url: '../index/'+page+'_detail/'+page+'_detail?_id='+this.data[page].array[index]._id,
     })
   },
+  show_comment(e){
+    const index = e.currentTarget.dataset.index
+      wx.navigateTo({
+        url: '../index/post_detail/post_detail?_id='+this.data.post.array[index]._id+'&&type=comment',
+      })
+  },
   show_form(e){
     this.setData({add_modal:false})
     wx.navigateTo({
@@ -312,19 +269,13 @@ Page({
   refresh(){
     // 下拉刷新
     if(this.data.top_bar.now_tab == 0){
-      this.setData({'works.array':[]})
-      this.data.works.nomore = false
-      this.data.works.skip = 0
-      this.get_works()
-    }
-    if(this.data.top_bar.now_tab == 1){
-      this.setData({'appointment.array':[]})
+      this.setData({'appointment.array':[],'appointment.nodata':false})
       this.data.appointment.nomore = false
       this.data.appointment.skip = 0
       this.get_appointment()
     }
-    if(this.data.top_bar.now_tab == 2){
-      this.setData({'post.array':[]})
+    if(this.data.top_bar.now_tab == 1){
+      this.setData({'post.array':[],'post.nodata':false})
       this.data.post.nomore = false
       this.data.post.skip = 0
       this.get_post()
@@ -333,7 +284,7 @@ Page({
   post_like(e){
     //动态点赞,并发送消息至动态发布者
     var index = e.currentTarget.dataset.index
-    if(getApp().login_check()){
+    console.log(index)
       if(!this.data.post.array[index].status){
         var date = new Date()
         db.collection('message').add({
@@ -344,22 +295,20 @@ Page({
             type:'like',
             date:date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate(),
             status:false,
-            from:'动态'
+            from:this.data.post.array[index].type == 'works'?'作品':'动态'
           }
         })
         db.collection('post')
         .doc(this.data.post.array[index]._id)
         .update({
           data:{
-            like:db.command.unshift(getApp().globalData.user._openid)
+            like:_.unshift(getApp().globalData.user._openid)
           }
         })
         .then(res=>{
-          var temp = this.data.post.array[index].like
-          temp.unshift(getApp().globalData.user._openid)
-          const like = 'post.array['+index+'].like'
-          const status = 'post.array['+index+'].status'
-          this.setData({[like]:temp,[status]:true})
+          var like_length = 'post.array['+index+'].like_length'
+          var status = 'post.array['+index+'].status'
+          this.setData({[like_length]:++this.data.post.array[index].like_length,[status]:true})
           wx.showToast({
             title: '点赞成功'
           })
@@ -371,45 +320,37 @@ Page({
             icon:'none'
           })
         }
-    }
+    
   },
   load_more(){
     // 滚动到底部加载更多数据
-    if(this.data.top_bar.now_tab == 0 && !this.data.works.nomore){
-      ++this.data.works.skip
-      this.get_works()
-    }
-    if(this.data.top_bar.now_tab == 1 && !this.data.appointment.nomore){
+    if(this.data.top_bar.now_tab == 0 && !this.data.appointment.nomore){
       ++this.data.appointment.skip
       this.get_appointment()
     }
-    if(this.data.top_bar.now_tab == 2 && !this.data.post.nomore){
+    if(this.data.top_bar.now_tab == 1 && !this.data.post.nomore){
       ++this.data.post.skip
       this.get_post()
     }
   },
   watch_message(){
-    const watcher = db.collection('message')
+    db.collection('message')
     .where({
       receiver:getApp().globalData.user._openid,
       status:false,
     })
     .watch({
       onChange:snapshot=> {
-        // 有新的消息显示底部栏红点
         if(snapshot.docs.length){
-          wx.showTabBarRedDot({
-            index: 1,
-            fail:res=>{
-              console.log('不在主页')
-            }
-          })
+          this.setData({red_dot:true,unread_message:snapshot.docs})
           getApp().globalData.unread_message = snapshot.docs
+          
         }
         else{
+          this.setData({red_dot:false,unread_message:[]})
           getApp().globalData.unread_message = []
+          
         }
-        console.log('message', snapshot)
       },
       onError: function(err) {
         console.error('the watch closed because of error', err)
@@ -419,7 +360,7 @@ Page({
   ,
   watch_talk(){
     // 有新的消息显示底部栏红点
-    const talk_watcher = db.collection('talk_room')
+    db.collection('talk_room')
     .where(_.and([
       {
         _openid:getApp().globalData.user._openid
@@ -431,14 +372,8 @@ Page({
     .limit(1)
     .watch({
       onChange:snapshot=> {
-        console.log('new_talk', snapshot)
         if(snapshot.docs.length){
-          wx.showTabBarRedDot({
-            index: 1,
-            fail:res=>{
-              console.log('不在主页')
-            }
-          })
+          this.setData({red_dot:true})
         }
       },
       onError: function(err) {

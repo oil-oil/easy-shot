@@ -6,18 +6,20 @@ Page({
   data: {
     skip:0,
     follow_array:[],
-    nomore:false
+    nomore:false,
+    loading:false
   },
 
   onLoad: function (options) {
     this.get_follow()
   },
   get_follow(){
+    this.setData({loading:true})
     db.collection('user').where({
       _openid:_.in(getApp().globalData.user.follow)
     }).get()
     .then(res=>{
-      console.log(res)
+      this.setData({loading:false})
       if(res.data.length){
         for(let i in res.data){
           var temp = this.data.follow_array

@@ -1,4 +1,4 @@
-<scroll-view scroll-y='true' style="height:100vh;padding-top:50rpx" >
+<scroll-view scroll-y='true' style="height:100vh;padding-top:70rpx" >
   <view wx:if="{{!appointment.array.length}}" class="flex align-center justify-center bg-white" style="width:100%;height:100vh;flex-direction:column">
     <image src="../../../images/icon2/none_order.png"></image>
     <view class="text-sm text-gray">还没有发布动态噢</view>

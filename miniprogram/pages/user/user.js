@@ -3,12 +3,13 @@ const db = wx.cloud.database()
 Page({
   data: {
     _openid:'',
+    loading:false,
     top_bar:{
-      now_tab:1,
-      array:['作品','约拍','发现'],
+      now_tab:0,
+      array:['约拍','发现'],
       
     },
-    user:'',
+    user:{},
     status:{
         follow:false
     },
@@ -16,28 +17,22 @@ Page({
       skip:0,
       array:[],
       index:0,
-      nomore:false
-    },
-    works:{
-      skip:0,
-      array:[],
-      index:0,
-      nomore:false
+      nomore:false,
+      nodata:false
     },
     appointment:{
       skip:0,
       array:[],
       index:0,
-      nomore:false
-    },
-    refreshing:false,
+      nomore:false,
+      nodata:false
+    }
   },
   onLoad(e){
     this.setData({_openid:e.user_id})
     this.get_user(e.user_id)
     this.get_post(e.user_id)
     this.get_appointment(e.user_id)
-    this.get_works(e.user_id)
   },
   init_status(){
     if(getApp().globalData.user!==null){
@@ -48,8 +43,9 @@ Page({
   },
   get_post(_openid){
     wx.cloud.callFunction({
-      name:'lookup_db',
+      name:'post',
       data:{
+        type:'get_all_data',
         collection:'post',
         skip:this.data.post.skip,
         lookup:{
@@ -77,29 +73,34 @@ Page({
         match:{_openid}
       }
     }).then(res=>{
-      this.setData({refreshing:false})
-      if(res.result.list.length&&!this.data.post.nomore){
+      if(res.result.list.length){
+        if(res.result.list.length < 20){
+          this.data.post.nomore = true
+        }
         for(let i in res.result.list){
           res.result.list[i].status = false
-          if(getApp().globalData.has_login == true){
-            if(res.result.list[i].like.indexOf(getApp().globalData.user._openid)!==-1){
-              res.result.list[i].status = true
-            }   
+          if(res.result.list[i].like_status){
+            res.result.list[i].status = true
           }
+            res.result.list[i].date = getApp().get_date(res.result.list[i]._id)
           var temp = this.data.post.array
           temp.push(res.result.list[i])
           this.setData({['post.array']:temp})
         }
       }
       else{
+        if(!this.data.post.array.length){
+          this.setData({'post.nodata':true})
+        }
         this.data.post.nomore = true
       }
     })
   },
   get_appointment(_openid){
     wx.cloud.callFunction({
-      name:'lookup_db',
+      name:'appointment',
       data:{
+        type:'get_all_data',
         collection:'appointment',
         skip:this.data.appointment.skip,
         field:'_openid',
@@ -116,7 +117,8 @@ Page({
           as: 'order',
         },
         project:{
-          'title':1,
+          'browse':1,
+          'intro':1,
           'user.name':1,
           'user.avatar':1,
           'price':1,
@@ -128,8 +130,10 @@ Page({
         match:{_openid}
       }
     }).then(res=>{
-      this.setData({refreshing:false})
-      if(res.result.list.length&&!this.data.appointment.nomore){
+      if(res.result.list.length){
+        if(res.result.list.length < 20){
+          this.data.appointment.nomore = true
+        }
         for(let i in res.result.list){
           var temp = this.data.appointment.array
           temp.push(res.result.list[i])
@@ -137,44 +141,13 @@ Page({
         }
       }
       else{
+        if(!this.data.appointment.array.length){
+          this.setData({'appointment.nodata':true})
+        }
         this.data.appointment.nomore = true
       }
-    })
-  },
-  get_works(_openid){
-    wx.cloud.callFunction({
-      name:'lookup',
-      data:{
-        collection:'works',
-        skip:this.data.works.skip,
-        lookup:{
-          from: 'user',
-          localField: '_openid',
-          foreignField: '_openid',
-          as: 'user',
-        },
-        project:{
-          'title':1,
-          'intro':1,
-          'user.name':1,
-          'user.avatar':1,
-          'like':1,
-          'img':1,
-        },
-        match:{_openid}
-      }
-    }).then(res=>{
-      this.setData({refreshing:false})
-      if(res.result.list.length&&!this.data.works.nomore){
-        for(let i in res.result.list){
-          var temp = this.data.works.array
-          temp.push(res.result.list[i])
-          this.setData({['works.array']:temp})
-        }
-      }
-      else{
-        this.data.works.nomore = true
-      }
+    this.setData({loading:false})
+    
     })
   },
   get_user(_openid){
@@ -212,32 +185,18 @@ Page({
       url: '../index/'+page+'_detail/'+page+'_detail?_id='+this.data[page].array[index]._id,
     })
   },
+  show_comment(e){
+    const index = e.currentTarget.dataset.index
+      wx.navigateTo({
+        url: '../index/post_detail/post_detail?_id='+this.data.post.array[index]._id+'&&type=comment',
+      })
+  },
   talk(){
     wx.navigateTo({
       url: '../talk/talk?user='+JSON.stringify(this.data.user),
     })
   },
-  refresh(){
-    var _openid = this.data._openid
-    if(this.data.top_bar.now_tab == 0){
-      this.setData({'works.array':[]})
-      this.data.works.nomore = false
-      this.data.works.skip = 0
-      this.get_works(_openid)
-    }
-    if(this.data.top_bar.now_tab == 1){
-      this.setData({'appointment.array':[]})
-      this.data.appointment.nomore = false
-      this.data.appointment.skip = 0
-      this.get_appointment(_openid)
-    }
-    if(this.data.top_bar.now_tab == 2){
-      this.setData({'post.array':[]})
-      this.data.post.nomore = false
-      this.data.post.skip = 0
-      this.get_post(_openid)
-    }
-  },
+
   post_like(e){
     var index = e.currentTarget.dataset.index
     if(getApp().login_check()){
@@ -282,15 +241,11 @@ Page({
   },
   load_more(){
     var _openid = this.data._openid
-    if(this.data.top_bar.now_tab == 0 && !this.data.works.nomore){
-      ++this.data.works.skip
-      this.get_works(_openid)
-    }
-    if(this.data.top_bar.now_tab == 1 && !this.data.appointment.nomore){
+    if(this.data.top_bar.now_tab == 0 && !this.data.appointment.nomore){
       ++this.data.appointment.skip
       this.get_appointment(_openid)
     }
-    if(this.data.top_bar.now_tab == 2 && !this.data.post.nomore){
+    if(this.data.top_bar.now_tab == 1 && !this.data.post.nomore){
       ++this.data.post.skip
       this.get_post(_openid)
     }

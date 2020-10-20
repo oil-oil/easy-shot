@@ -1,0 +1,42 @@
+/* miniprogram/components/user_tab/user_tab.wxss */
+@import '../../colorui/icon.wxss';
+@import '../../colorui/main.wxss';
+@import '../../colorui/animation.wxss';
+button {
+  background: initial;
+}
+
+button:focus{
+  outline: 0;
+}
+
+button::after{
+  border: none;
+}
+
+.main-text-color{
+  color:#A58AA9;
+}
+
+.main-bg-color{
+  background-color:#A58AA9; 
+}
+
+.main-border-color{
+  border:#A58AA9 solid 1rpx; 
+}
+
+.button{
+  padding: 10rpx 25rpx;
+  background-color: #EFEFEF;
+  color:#A58AA9;
+  border-radius: 20rpx;
+  font-size: 25rpx;
+}
+.button2{
+  padding: 10rpx 25rpx;
+  background-color: #EFEFEF;
+  color:gray;
+  border-radius: 20rpx;
+  font-size: 25rpx;
+}
